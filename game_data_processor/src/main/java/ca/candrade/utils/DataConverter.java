@@ -1,6 +1,7 @@
 package ca.candrade.utils;
 
 import ca.candrade.data.GameData;
+import ca.candrade.data.TransformedGameData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,27 +20,37 @@ public class DataConverter {
     //Logger
     private final static org.slf4j.Logger LOG = 
             LoggerFactory.getLogger(DataConverter.class);
-    private final String FILENAME;
-    private final String CSVFILELOCATION;
-    private final String JSONFILELOCATION;
+    private final String CSVFILELOCATION = "./src/main/resources/csv_data/";
+    private final String JSONFILELOCATION = 
+            "./src/main/resources/json_data/game_data.json";
     private final List<GameData> GAMEDATALIST;
     
-    public DataConverter(String fileName) {
-        FILENAME = fileName;
-        CSVFILELOCATION = "./src/main/resources/csv_data/" +FILENAME+ ".csv";
-        JSONFILELOCATION = "./src/main/resources/json_data/" +FILENAME+ ".json";
+    public DataConverter() {
         GAMEDATALIST = new ArrayList<>();
     }
     
-    public void parseCSVData() throws IOException {
+    public List<GameData> getGameDataList() {
+        return GAMEDATALIST;
+    }
+    
+    /**
+     * A method used for parsing a video game csv data file and create a game 
+     * data object accordingly.
+     * 
+     * @param fileName The csv filename.
+     * @throws IOException Thrown if the file could not be found.
+     */
+    public void parseCSVData(String fileName) throws IOException {
+        GAMEDATALIST.clear();
+        String csvPath = CSVFILELOCATION + fileName + ".csv";
         BufferedReader br = new BufferedReader(
-                new FileReader(new File(CSVFILELOCATION)));
-        LOG.info("Sucessfully loaded data from: " + CSVFILELOCATION);
+                new FileReader(new File(csvPath)));
+        LOG.info("Sucessfully loaded data from: " + csvPath);
         // Toss the first line as it just contains column titles
         String line = br.readLine();
         while ((line = br.readLine()) != null) {
             String[] columnData = line.split(",");
-            if (FILENAME == "vgsales-12-4-2019")
+            if (fileName.equals("vgsales-12-4-2019"))
                 GAMEDATALIST.add(
                         new GameData(columnData[1],
                                 columnData[3],
@@ -55,7 +66,7 @@ public class DataConverter {
                                 columnData[16],
                                 columnData[17]
                 ));
-            else if (FILENAME == "vgsales")
+            else if (fileName.equals("vgsales"))
                 GAMEDATALIST.add(
                         new GameData(columnData[1],
                                 columnData[4],
@@ -76,14 +87,17 @@ public class DataConverter {
                 GAMEDATALIST.size() + " entries");
     }
     
-    public void writeDataToFile() throws IOException {
+    /**
+     * 
+     * @param tgdList Writes a transformed game data list to a JSON file.
+     * @throws IOException Thrown if the file could not be found.
+     */
+    public void writeDataToFile(List<TransformedGameData> tgdList) 
+            throws IOException {
         LOG.info("Begin writing json data to: " + JSONFILELOCATION);
         ObjectMapper mapper = new ObjectMapper();
         mapper.writerWithDefaultPrettyPrinter().writeValue(
-                new File(JSONFILELOCATION), GAMEDATALIST);
+                new File(JSONFILELOCATION), tgdList);
         LOG.info("Successfully wrote to: " + JSONFILELOCATION);
-        LOG.info("Clearing list");
-        GAMEDATALIST.clear();
-        LOG.info(GAMEDATALIST.size() + " entries in list");
     }
 }

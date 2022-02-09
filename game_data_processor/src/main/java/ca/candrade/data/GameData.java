@@ -1,7 +1,7 @@
 package ca.candrade.data;
 
 /**
- * Object used for storing specific properties of a game as JSON data.
+ * Object used for storing specific properties of a game.
  * @author Christian Andrade
  */
 public class GameData {
@@ -19,6 +19,23 @@ public class GameData {
     private final double OTHERSALES;
     private final int YEAR;
 
+    /**
+     * A constructor for all the parameters for a game.
+     * 
+     * @param NAME The name of the game.
+     * @param GENRE The genre of the game.
+     * @param ESRBRATING The ESRTB rating of the game.
+     * @param PLATFORM The platform for the game.
+     * @param PUBLISHER The publisher of the game.
+     * @param CRITICSCORE The Critic's score of the game.
+     * @param TOTALSHIPPED The Total Shipped units for the game.
+     * @param GLOBALSALES The Global Sales of the game.
+     * @param NASALES The North American sales of the game.
+     * @param EUSALES The European sales of the game.
+     * @param JPSALES The Japanese sales of the game.
+     * @param OTHERSALES The other sales of the game.
+     * @param YEAR The release year of the game.
+     */
     public GameData(String NAME,
             String GENRE,
             String ESRBRATING,

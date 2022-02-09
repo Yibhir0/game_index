@@ -1,3 +1,5 @@
-C:\Users\thatc\Desktop\game_data_processor\src\main\java\ca\candrade\app\RunConverter.java
-C:\Users\thatc\Desktop\game_data_processor\src\main\java\ca\candrade\data\GameData.java
-C:\Users\thatc\Desktop\game_data_processor\src\main\java\ca\candrade\utils\DataConverter.java
+D:\Desktop\game_data_processor\src\main\java\ca\candrade\data\TransformedGameData.java
+D:\Desktop\game_data_processor\src\main\java\ca\candrade\utils\DataConverter.java
+D:\Desktop\game_data_processor\src\main\java\ca\candrade\app\GenerateData.java
+D:\Desktop\game_data_processor\src\main\java\ca\candrade\utils\DataTransformer.java
+D:\Desktop\game_data_processor\src\main\java\ca\candrade\data\GameData.java
