@@ -47,7 +47,8 @@ public class GenerateData {
             }
         }
         LOG.info("Data transformation complete. " + DATASET.size()
-                + " entries created");
+                + " entries created. " + (smallSet.size() - DATASET.size())
+                + " entries dropped.");
     }
     
     private static void assignDataSets() {

@@ -1,5 +1,8 @@
 package ca.candrade.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Object used for storing transformed GameData.
  *
@@ -19,6 +22,8 @@ public class TransformedGameData {
     private final double JPSALES;
     private final double OTHERSALES;
     private final int YEAR;
+    private final double USERRATING;
+    private final List<String> FEEDBACK;
 
     /**
      * A constructor for all the required parameters for a game.
@@ -60,8 +65,18 @@ public class TransformedGameData {
         this.JPSALES = JPSALES;
         this.OTHERSALES = OTHERSALES;
         this.YEAR = YEAR;
+        USERRATING = 0;
+        FEEDBACK = new ArrayList<>();
     }
 
+    public double getUSERRATING() {
+        return USERRATING;
+    }
+
+    public List<String> getFEEDBACK() {
+        return FEEDBACK;
+    }
+    
     public String getNAME() {
         return NAME;
     }
