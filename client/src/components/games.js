@@ -18,8 +18,8 @@ class Games extends Component {
     async fetchGames() {
         let gameUrl = "http://localhost:3001/games";
         let response = await fetch(gameUrl);
+        console.log(response);
         let games = await response.json();
-        console.log(games);
         this.setState({
             gamesL: games
         });

@@ -6,12 +6,16 @@ let games = [{
     "platform": "IDK",
     "year": 2010,
     "genre": "Retro",
-    "publisher": "GameMaker Inc.",
+    "publisher": "GameMaker Inc."
 }];
+
+
+
 
 // Response for endpoint /games
 exports.getGames = async (req, res) => {
     try {
+        
         res.status(200).json(games);
     }
     catch (error) {
@@ -25,6 +29,6 @@ exports.goHome = async (req, res) => {
         res.send('Games Index');
     }
     catch (error) {
-        res.satus(404).json({ message: error.message })
+        res.satus(404).json({ message: error.message });
     }
 };

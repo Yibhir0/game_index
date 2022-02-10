@@ -6,4 +6,8 @@ router.get('/games', games.getGames);
 
 router.get('/', games.goHome);
 
+// Parser middleware will parse the json payload
+router.use(express.json());
+
+
 module.exports = router;
