@@ -36,15 +36,18 @@ public class GenerateData {
     private static void performTransformation() {
         LOG.info("Perform data transformation.");
         for (int i = 0; i < smallSet.size(); i++) {
-            if (i%829 == 0) 
-                LOG.info("Data Transformation: " + 5*i/829 + "% complete.");
-            GameData match = DATATRANSFORMER
+            if (i%(smallSet.size()/100) == 0) LOG.info("Data Transformation: " +
+                    i/(smallSet.size()/100) + "% complete.");
+            int foundIndex = DATATRANSFORMER
                     .findMatchingGame(smallSet.get(i), largeSet);
-            if (match != null)
+            if (foundIndex != -1) {
                 DATASET.add(DATATRANSFORMER
-                        .transformData(smallSet.get(i), match));
+                        .transformData(smallSet.get(i),
+                                largeSet.remove(foundIndex)));
+            }
         }
-        LOG.info("Data transformation complete.");
+        LOG.info("Data transformation complete. " + DATASET.size()
+                + " entries created");
     }
     
     private static void assignDataSets() {
