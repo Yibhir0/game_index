@@ -44,7 +44,7 @@ public class DataTransformer {
         
         return new TransformedGameData(gameDataTwo.getNAME(),
                 gameDataTwo.getGENRE(),
-                gameDataTwo.getESRBRATING(),
+                correctESRBRating(gameDataTwo.getESRBRATING()),
                 gameDataTwo.getPLATFORM(),
                 gameDataTwo.getPUBLISHER(),
                 gameDataTwo.getCRITICSCORE(),
@@ -55,6 +55,11 @@ public class DataTransformer {
                 otherSales,
                 gameDataTwo.getYEAR()
         );
+    }
+    
+    private String correctESRBRating(String esrbRating) {
+        if (esrbRating.equals("")) return "Unknown";
+        else return esrbRating;
     }
     
     private double correctGlobalSales(double totalShipped,
@@ -111,18 +116,18 @@ public class DataTransformer {
      * 
      * @param gameData The game to search for.
      * @param gameList The list to search in.
-     * @return The matching game or null if none was found.
+     * @return The matching game's index.
      */
-    public GameData findMatchingGame(GameData gameData,
+    public int findMatchingGame(GameData gameData,
             List<GameData> gameList) {
-        for (GameData gameInList : gameList) {
+        for (int i = 0; i < gameList.size(); i++) {
             if (normaliseString(gameData.getNAME())
-                    .equals(normaliseString(gameInList.getNAME())) && 
+                    .equals(normaliseString(gameList.get(i).getNAME())) && 
                     normaliseString(gameData.getPLATFORM())
-                    .equals(normaliseString(gameInList.getPLATFORM())))
-                return gameInList;
+                    .equals(normaliseString(gameList.get(i).getPLATFORM())))
+                return i;
         }
-        return null;
+        return -1;
     }
     
     private String normaliseString(String gameName) {
