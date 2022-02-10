@@ -1,16 +1,18 @@
 const mongoose = require("mongoose");
 const gameSchema = new mongoose.Schema({
     name: { type: String },
-    genre: {type: String},
-    rank: { type: Number },
-    platform: { type: String },
-    year: { type: Number },
     genre: { type: String },
+    esrbRating: { type: String },
+    platform: { type: String },
     publisher: { type: String },
-    NA_sales: { type: Number },
-    EU_sales: { type: Number },
-    JP_sales: { type: Number },
-    Other_Sales: {type: Number},
+    criticScore: { type: String },
+    globalSales: { type: Number },
+    genre: { type: String },
+    naSales: { type: Number },
+    euSales: { type: Number },
+    jpSales: { type: Number },
+    otherSales: { type: Number },
+    year: { type: Number },
 })
 
 const model = mongoose.model("GameModels", gameSchema);

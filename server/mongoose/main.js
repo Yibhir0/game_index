@@ -12,4 +12,3 @@ const mongoose = require('mongoose');
     await mongoose.connect("mongodb+srv://BigTimmy:1amsh0rt@cluster0.nszmf.mongodb.net/Gamer_Index?retryWrites=true&w=majority")
         .then(() => { console.log("Connected to MongoDB") })
 })()
-
