@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-constructor */
 import { Component } from "react";
-
+import { Link } from 'react-router-dom';
 
 class Game extends Component {
 
@@ -11,10 +11,15 @@ class Game extends Component {
     render() {
         return (
             <article >
-                <h1>{this.props.game.name}</h1>
+                <h1>{this.props.obj.name}</h1>
                 <section >
-                    {this.props.game.publisher}
+                    {this.props.obj.publisher}
                 </section>
+                <Link to={`/games/${this.props.obj.id}`}>
+                    <button>
+                        View
+                    </button>
+                </Link>
             </article>
         );
     }

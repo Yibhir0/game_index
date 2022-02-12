@@ -4,6 +4,8 @@ const games = require('../controllers/games');
 
 router.get('/games', games.getGames);
 
+router.get('/games/:id', games.getGame);
+
 router.get('/', games.goHome);
 
 // Parser middleware will parse the json payload

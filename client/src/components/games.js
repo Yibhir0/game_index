@@ -8,7 +8,6 @@ class Games extends Component {
         this.state = {
             gamesL: [],
         };
-
     }
 
     async componentDidMount() {
@@ -16,7 +15,7 @@ class Games extends Component {
     }
 
     async fetchGames() {
-        let gameUrl = "http://localhost:3001/games";
+        let gameUrl = "/games";
         let response = await fetch(gameUrl);
         console.log(response);
         let games = await response.json();
@@ -25,19 +24,15 @@ class Games extends Component {
         });
     }
 
-
     render() {
-
+        const list = this.state.gamesL;
         return (
 
             <section >
-                {this.state.gamesL.map((game, index) => <Game obj={game} key={index} />)}
+                {list.map((game, index) => <Game obj={game} key={index} />)}
             </section>
         );
-
     }
-
-
 }
 
 export default Games;
