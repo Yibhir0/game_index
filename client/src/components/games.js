@@ -1,5 +1,6 @@
 import { Component } from "react";
 import Game from './game';
+import TopNav from "./topnav";
 
 class Games extends Component {
 
@@ -27,10 +28,12 @@ class Games extends Component {
     render() {
         const list = this.state.gamesL;
         return (
-
-            <section >
-                {list.map((game, index) => <Game obj={game} key={index} />)}
-            </section>
+            <>
+                <TopNav />
+                <section >
+                    {list.map((game, index) => <Game obj={game} key={index} />)}
+                </section>
+            </>
         );
     }
 }
