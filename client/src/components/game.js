@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-constructor */
 import { Component } from "react";
 import { Link } from 'react-router-dom';
-
+import { Anchor } from "@mantine/core";
 class Game extends Component {
 
     constructor(props) {
@@ -15,11 +15,10 @@ class Game extends Component {
                 <section >
                     {this.props.obj.publisher}
                 </section>
-                <Link to={`/games/${this.props.obj.id}`}>
-                    <button>
-                        View
-                    </button>
-                </Link>
+                <Anchor component={Link} to={`/games/${this.props.obj.id}`} >
+                    View
+                </Anchor>
+
             </article>
         );
     }
