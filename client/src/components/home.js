@@ -11,7 +11,7 @@ class Home extends Component {
     render() {
         return (
             <div className="App">
-                <TopNav />
+                <h1>Home</h1>
             </div>
         );
     }

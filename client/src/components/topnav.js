@@ -19,7 +19,7 @@ export default class TopNav extends Component {
                     }}
                 >
                     
-                    <Anchor component={Link} to={'/'} >
+                    <Anchor component={Link} to={'/home'} >
                         Home
                     </Anchor>
                     <Anchor component={Link} to={'/games'} >

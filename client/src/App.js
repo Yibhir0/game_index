@@ -6,17 +6,20 @@ import {
 } from "react-router-dom";
 import Home from './components/home';
 import Games from './components/games';
-import GameView from './components/gameView'
+import GameView from './components/gameView';
+import TopNav from './components/topnav';
 
 export default function App() {
   return (
-    <div>
+    <>
+      <TopNav />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route exact path="/games" element={<Games />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/games" element={<Games />} />
         <Route path="/games/:id" element={<GameView />} />
       </Routes>
-    </div>
+    </>
+    
   )
 }
 

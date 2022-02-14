@@ -12,7 +12,6 @@ class Game extends Component {
     render() {
         return (
             <>
-            <TopNav />
             <article >
                 <h1>{this.props.obj.name}</h1>
                 <section >

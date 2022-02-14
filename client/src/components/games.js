@@ -29,7 +29,6 @@ class Games extends Component {
         const list = this.state.gamesL;
         return (
             <>
-                <TopNav />
                 <section >
                     {list.map((game, index) => <Game obj={game} key={index} />)}
                 </section>
