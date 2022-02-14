@@ -11,7 +11,7 @@ class Game extends Component {
 
     render() {
         return (
-            <>
+
             <article >
                 <h1>{this.props.obj.name}</h1>
                 <section >
@@ -21,8 +21,8 @@ class Game extends Component {
                     View
                 </Anchor>
 
-                </article>
-            </>
+            </article>
+
         );
     }
 }

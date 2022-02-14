@@ -73,9 +73,6 @@ let games = [{
 }
 ];
 
-
-
-
 // Response for endpoint /games
 exports.getGames = async (req, res) => {
     try {
@@ -91,7 +88,7 @@ exports.getGames = async (req, res) => {
 exports.getGame = async (req, res) => {
     try {
 
-        const game = games.find(g => g.id === req.params.id);
+        const game = games.find(g => g.id == req.params.id);
         res.send(game);
     }
     catch (error) {
