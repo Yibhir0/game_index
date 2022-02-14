@@ -15,6 +15,7 @@ class Games extends Component {
 
     async componentDidMount() {
         await this.fetchGames();
+        this.generateRows();
     }
 
     async fetchGames() {
@@ -44,7 +45,6 @@ class Games extends Component {
     }
 
     render() {
-        this.generateRows();
         return (
             <>
                 <Table verticalSpacing="md">
