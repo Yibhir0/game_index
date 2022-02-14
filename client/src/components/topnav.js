@@ -6,11 +6,11 @@ class TopNav extends Component{
     render() {
         return (
             <>
-                <div>
+                <nav>
                     <Anchor href="">Home</Anchor>
                     <Anchor href="">Games</Anchor>
                     <Anchor href="">Profile</Anchor>
-                </div>
+                </nav>
             </>  
           );
     }
