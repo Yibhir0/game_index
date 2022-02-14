@@ -47,7 +47,7 @@ class Games extends Component {
         this.generateRows();
         return (
             <>
-                <Table>
+                <Table verticalSpacing="md">
                     <thead>
                         <tr>
                             <th>Index</th>
