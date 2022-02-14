@@ -16,6 +16,60 @@ let games = [{
     "year": 2010,
     "genre": "Retro",
     "publisher": "GameMaker Inc."
+},
+{
+    "id": "11111111",
+    "name": "Sonic",
+    "rank": 5,
+    "platform": "IDK",
+    "year": 2010,
+    "genre": "Retro",
+    "publisher": "GameMaker Inc."
+},
+{
+    "id": "5555555",
+    "name": "Sonic2",
+    "rank": 5,
+    "platform": "IDK",
+    "year": 2010,
+    "genre": "Retro",
+    "publisher": "GameMaker Inc."
+},
+{
+    "id": "112513532",
+    "name": "Minecraft",
+    "rank": 5,
+    "platform": "IDK",
+    "year": 2010,
+    "genre": "Retro",
+    "publisher": "GameMaker Inc."
+},
+{
+    "id": "392302",
+    "name": "Roblox",
+    "rank": 5,
+    "platform": "IDK",
+    "year": 2010,
+    "genre": "Retro",
+    "publisher": "GameMaker Inc."
+},
+{
+    "id": "1239012",
+    "name": "Random Game",
+    "rank": 5,
+    "platform": "IDK",
+    "year": 2010,
+    "genre": "Retro",
+    "publisher": "GameMaker Inc."
+},
+{
+    "id": "90808890",
+    "name": "AAAAAAa",
+    "rank": 5,
+    "platform": "IDK",
+    "year": 2010,
+    "genre": "Retro",
+    "publisher": "GameMaker Inc."
 }
 ];
 

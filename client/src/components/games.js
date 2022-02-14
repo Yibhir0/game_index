@@ -1,6 +1,7 @@
 import { Component } from "react";
 import Game from './game';
 import TopNav from "./topnav";
+import { Table } from '@mantine/core';
 
 class Games extends Component {
 
@@ -27,11 +28,33 @@ class Games extends Component {
 
     render() {
         const list = this.state.gamesL;
+        const rows = list.map((game, index) => (
+            <tr key={index}>
+                <td>{index}</td>
+                <td>{game.name}</td>
+                <td>{game.genre}</td>
+                <td>{game.platform}</td>
+                <td>{game.publisher}</td>
+                <td>{game.year}</td>
+            </tr>
+        ));
         return (
             <>
-                <section >
-                    {list.map((game, index) => <Game obj={game} key={index} />)}
-                </section>
+                <Table>
+                    <thead>
+                        <tr>
+                            <th>Index</th>
+                            <th>Name</th>
+                            <th>Genre</th>
+                            <th>Platform</th>
+                            <th>Publisher</th>
+                            <th>Year Released</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rows}
+                    </tbody>
+                </Table>
             </>
         );
     }
