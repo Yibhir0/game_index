@@ -18,7 +18,6 @@ class Game extends Component {
                 <Anchor component={Link} to={`/games/${this.props.obj.id}`} >
                     View
                 </Anchor>
-
             </article>
         );
     }
