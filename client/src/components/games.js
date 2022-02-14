@@ -1,7 +1,8 @@
 import { Component } from "react";
 import Game from './game';
 import TopNav from "./topnav";
-import { Table } from '@mantine/core';
+import { Table, Anchor } from '@mantine/core';
+import { Link } from 'react-router-dom';
 
 class Games extends Component {
 
@@ -26,18 +27,24 @@ class Games extends Component {
         });
     }
 
-    render() {
-        const list = this.state.gamesL;
-        const rows = list.map((game, index) => (
+    //Generates rows for all games
+    async generateRows() {
+        const rows = this.state.gamesL.map((game, index) => (
             <tr key={index}>
                 <td>{index}</td>
-                <td>{game.name}</td>
+                <td><Anchor component={Link} to={`/games/${game.id}`}>{game.name}</Anchor></td>
                 <td>{game.genre}</td>
                 <td>{game.platform}</td>
                 <td>{game.publisher}</td>
                 <td>{game.year}</td>
             </tr>
         ));
+
+        this.setState({rows: rows});
+    }
+
+    render() {
+        this.generateRows();
         return (
             <>
                 <Table>
@@ -52,7 +59,7 @@ class Games extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {rows}
+                        {this.state.rows}
                     </tbody>
                 </Table>
             </>
