@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Feedback from './feedback';
+import Allfeedback from './allFeedback';
+import FeedbackBox from './feedbackBox';
 
 const GameView = () => {
 
@@ -46,9 +47,8 @@ const GameView = () => {
     return (
         <div>
             <h1>{game.name}</h1>
-            <section >
-                {feedback.map((f, index) => <Feedback obj={f} key={index} />)}
-            </section>
+            <FeedbackBox/>
+            <Allfeedback allFeedback={feedback}/>
         </div>
     );
 };
