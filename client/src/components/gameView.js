@@ -3,6 +3,36 @@ import { useParams } from "react-router-dom";
 import Allfeedback from './allFeedback';
 import FeedbackBox from './feedbackBox';
 
+let feeds = [
+    {
+        "gameId": "222222222222",
+        "userId": "234",
+        "comment": "Nice Game",
+        "rating": 3,
+    },
+    {
+        "gameId": "222222222222",
+        "userId": "234",
+        "comment": "Funny",
+        "rating": 3,
+    },
+
+    {
+        "gameId": "124",
+        "userId": "235",
+        "comment": "I played this game when i was a kid",
+        "rating": 2,
+    },
+
+    {
+        "gameId": "125",
+        "userId": "236",
+        "comment": "cool game!!",
+        "rating": 4,
+    },
+
+];
+
 const GameView = () => {
 
     const [game, setGame] = useState({});
@@ -10,6 +40,8 @@ const GameView = () => {
     const { id } = useParams()
 
     useEffect(() => {
+
+        console.log("hookie");
         const url = `/games/${id}`;
 
         const fetchGame = async () => {
@@ -24,18 +56,19 @@ const GameView = () => {
             }
         };
 
-        const feedbackUrl = `/games/${id}/feedback`;
+        //const feedbackUrl = `/games/${id}/feedback`;
 
         const fetchFeedback = async () => {
-            try {
-                const response = await fetch(feedbackUrl);
-                const json = await response.json();
+            // try {
+            //     const response = await fetch(feedbackUrl);
+            //     const json = await response.json();
 
-                setFeedBack(json);
-            } catch (error) {
-                console.log("hhdhh");
-                console.log("error", error);
-            }
+            //     setFeedBack(json);
+            // } catch (error) {
+            //     console.log("hhdhh");
+            //     console.log("error", error);
+            // }
+            setFeedBack(feeds);
         };
 
         fetchGame();
@@ -48,8 +81,6 @@ const GameView = () => {
         // Prevent the default behaviour of form submit
         e.preventDefault()
 
-        
-        
         console.log(e.target.value);
         // Get the value of the comment box
         // and make sure it not some empty strings
@@ -62,12 +93,12 @@ const GameView = () => {
             "rating": 3,
         };
 
-        let feedbacks = feedback;
-        feedbacks.push(newComment);
+        
+        feeds.push(newComment);
 
-        setFeedBack(feedbacks);
+        setFeedBack(feeds);
 
-        console.log(feedback);
+
 
        
         // Get the current time.
