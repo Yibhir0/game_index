@@ -44,11 +44,45 @@ const GameView = () => {
 
     }, [id]);
 
+    const addComment = (e) => {
+        // Prevent the default behaviour of form submit
+        e.preventDefault()
+
+        
+        
+        console.log(e.target.value);
+        // Get the value of the comment box
+        // and make sure it not some empty strings
+        const comment = e.target.elements.comment.value;
+
+        const newComment = {
+            "gameId": "222222222222",
+            "userId": "234",
+            "comment": comment,
+            "rating": 3,
+        };
+
+        let feedbacks = feedback;
+        feedbacks.push(newComment);
+
+        setFeedBack(feedbacks);
+
+        console.log(feedback);
+
+       
+        // Get the current time.
+        const timestamp = Date.now();
+    
+        e.target.elements.comment.value = ""
+
+        console.log(comment+" "+ timestamp)
+        
+      }
     return (
         <div>
             <h1>{game.name}</h1>
-            <FeedbackBox/>
-            <Allfeedback allFeedback={feedback}/>
+            <FeedbackBox addComment={addComment}/>
+            <Allfeedback allFeedback={feedback} />
         </div>
     );
 };
