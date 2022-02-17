@@ -24,6 +24,21 @@ test('Upload model to DB', async () => {
 
   expect(recentlyCreatedFeedback.gameID).toBe(122);
 
-  
-
+  await FeedBack.deleteOne({_id:feedbackTest._id})
 });
+
+test('Delete a specific document', async () => {
+  let feedbackTest = await FeedBack.create({
+    gameID: 122,
+    userID: 43,
+    comment: "Le big bruh",
+    rating: 5
+  })
+  
+  await feedbackTest.save();
+
+  await db.deleteFeedBack(feedbackTest);
+
+  expect(await FeedBack.exists({ _id: feedbackTest._id })).toBe(null)
+})
+
