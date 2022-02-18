@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Feedback from './feedback';
+import { Textarea } from '@mantine/core';
 
 const GameView = () => {
 
@@ -9,9 +10,8 @@ const GameView = () => {
     const { id } = useParams()
 
     useEffect(() => {
-        const url = `/games/${id}`;
-
         const fetchGame = async () => {
+            const url = `/games/${id}`;
             try {
                 const response = await fetch(url);
                 const json = await response.json();
@@ -23,32 +23,38 @@ const GameView = () => {
             }
         };
 
-        const feedbackUrl = `/games/${id}/feedback`;
+
 
         const fetchFeedback = async () => {
+            const feedbackUrl = `/games/${id}/feedback`;
             try {
                 const response = await fetch(feedbackUrl);
                 const json = await response.json();
 
                 setFeedBack(json);
             } catch (error) {
-                console.log("hhdhh");
                 console.log("error", error);
             }
         };
-
         fetchGame();
         fetchFeedback();
 
 
-    }, [id]);
+    });
+
+
 
     return (
         <div>
             <h1>{game.name}</h1>
+            <Textarea
+                placeholder="Your comment"
+                label="Your comment"
+            />
             <section >
                 {feedback.map((f, index) => <Feedback obj={f} key={index} />)}
             </section>
+
         </div>
     );
 };

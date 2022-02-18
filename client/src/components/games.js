@@ -15,7 +15,7 @@ class Games extends Component {
 
     async componentDidMount() {
         await this.fetchGames();
-        this.generateRows();
+        await this.generateRows();
     }
 
     async fetchGames() {
@@ -41,13 +41,14 @@ class Games extends Component {
             </tr>
         ));
 
-        this.setState({rows: rows});
+        this.setState({ rows: rows });
     }
 
     render() {
+
         return (
             <>
-                <Table verticalSpacing="md">
+                <Table>
                     <thead>
                         <tr>
                             <th>Index</th>

@@ -12,13 +12,13 @@ export default class TopNav extends Component {
             <div>
                 <h1>Game Index</h1>
                 <nav
-                    classname="topnav"
+                    className="topnav"
                     style={{
                         borderBottom: "solid 1px",
                         paddingBottom: "1rem"
                     }}
                 >
-                    
+
                     <Anchor component={Link} to={'/home'} >
                         Home
                     </Anchor>
