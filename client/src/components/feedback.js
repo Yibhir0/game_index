@@ -14,7 +14,7 @@ class Feedback extends Component {
     render() {
         return (
             <article >
-                {this.props.obj.comment}
+                {this.props.comment.comment}
             </article>
         );
     }
