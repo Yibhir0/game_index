@@ -30,7 +30,21 @@ module.exports.getFeedback = async (gameId) => {
     return await FeedBack.find({ gameID: gameId })
 }
 
+module.exports.getFeedbacks = async () => {
+    let comments = await FeedBack.find()
+    return comments.toArray()
+}
+
+module.exports.addFeedback = async (feedback) => {
+    await FeedBack.insertOne(feedback)
+}
+
 module.exports.getGame = async (id) => {
     return await Games.findById({ _id: id })
+}
+
+module.exports.getGames = async () => {
+    let games = await Games.find();
+    return games.toArray();
 }
 
