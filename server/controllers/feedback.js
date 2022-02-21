@@ -1,3 +1,4 @@
+const db = require("../mongoose/db");
 
 let feedback = [
     {
@@ -33,10 +34,15 @@ let feedback = [
 
 // Response for a specific game comments
 exports.getComments = async (req, res) => {
-
     try {
-        const comments = feedback.filter(f => f.gameId === req.params.id);
-        res.send(comments);
+        const readyState = await db.connectToDB();
+        if (readyState === 1) {
+            const comments = await db.getFeedbacks(req.params.id)
+            res.send(comments)
+        }
+        else {
+            res.status(404).json({ message: "Could not connect to the database" })
+        }
     }
     catch (error) {
         res.status(404).json({ message: error.message });
@@ -46,11 +52,16 @@ exports.getComments = async (req, res) => {
 // Post comment for a specific game
 exports.addComment = async (req, res) => {
     try {
-        // Get values inside the body and store them in mongoose.
-        console.log(req.body.gameId);
-        feedback.push(req.body);
-        res.send(feedback);
-
+        const readyState = await db.connectToDB()
+        if (readyState === 1) {
+            console.log(req.body.gameId);
+            await db.addFeedback(req.body)
+            let comments = await db.getFeedbacks(req.body.gameId)
+            res.send(comments) 
+        }
+        else {
+            res.status(404).json({ message: "Could not connect to the database" })
+        }
     }
     catch (error) {
         res.status(404).json({ message: error.message });
