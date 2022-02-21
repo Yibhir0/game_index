@@ -44,11 +44,13 @@ exports.getComments = async (req, res) => {
 };
 
 // Post comment for a specific game
-
 exports.addComment = async (req, res) => {
     try {
         // Get values inside the body and store them in mongoose.
-        console.log(req.body);
+        console.log(req.body.gameId);
+        feedback.push(req.body);
+        res.send(feedback);
+
     }
     catch (error) {
         res.status(404).json({ message: error.message });

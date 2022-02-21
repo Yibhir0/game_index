@@ -1,5 +1,5 @@
 import { Component } from "react";
-
+import { Container } from '@mantine/core';
 
 // import { Link } from 'react-router-dom';
 // import { Anchor } from "@mantine/core";
@@ -13,9 +13,11 @@ class Feedback extends Component {
 
     render() {
         return (
-            <article >
+            <Container size="xs" padding="xs">
                 {this.props.comment.comment}
-            </article>
+            </Container>
+
+
         );
     }
 }

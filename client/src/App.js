@@ -5,8 +5,8 @@ import {
   Route
 } from "react-router-dom";
 import Home from './components/home';
-import Games from './components/games';
-import GameView from './components/gameView';
+import Games from './components/games/games';
+import GameView from './components/games/gameView';
 import TopNav from './components/topnav';
 
 export default function App() {
@@ -19,7 +19,7 @@ export default function App() {
         <Route path="/games/:id" element={<GameView />} />
       </Routes>
     </>
-    
+
   )
 }
 
