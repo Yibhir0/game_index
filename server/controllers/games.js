@@ -169,7 +169,6 @@ exports.getGame = async (req, res) => {
         const readyState = await db.connectToDB();
         if (readyState === 1) {
             const game = await db.getGame(req.params.id)
-            //return the feedbacks and the game
             res.send(game)
         }
         else {
