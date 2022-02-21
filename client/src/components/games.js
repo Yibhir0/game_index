@@ -67,6 +67,7 @@ class Games extends Component {
 
     //Generates rows for the games in the list
     async generateRows() {
+        console.log(this.state.gamesL);
         const rows = this.state.gamesL.map((game, index) => (
             <tr key={index}>
                 <td>{index}</td>
@@ -130,6 +131,7 @@ class Games extends Component {
                 </Table>
                 <Pagination
                     total={this.state.totalPages}
+                    page={this.state.pageNumber}
                     onChange={evt => this.changePage(evt)} />
             </>
         );
