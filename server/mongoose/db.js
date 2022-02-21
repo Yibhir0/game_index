@@ -15,23 +15,23 @@ module.exports.closeDB = async () => {
 }
 
 module.exports.deleteFeedBack = async (feedback) => {
-    await FeedBack.deleteOne({ _id: feedback._id });
+    await FeedBack.deleteOne({ _id: feedback._id })
 }
 
 module.exports.deleteAllFeedBack = async () => {
     await FeedBack.deleteMany();
 }
 
-module.exports.editFeedback = async () => {
-    
-}
+module.exports.editFeedback = async (feedback) => {
+    await FeedBack.updateOne({ _id: feedback._id }, feedback)
+} 
 
 module.exports.getFeedback = async (gameId) => {
     return await FeedBack.find({ gameID: gameId })
 }
 
-module.exports.getFeedbacks = async () => {
-    let comments = await FeedBack.find()
+module.exports.getFeedbacks = async (gameId) => {
+    let comments = await FeedBack.find({ gameID: gameId})
     return comments.toArray()
 }
 
@@ -44,7 +44,7 @@ module.exports.getGame = async (id) => {
 }
 
 module.exports.getGames = async () => {
-    let games = await Games.find();
-    return games.toArray();
+    let games = await Games.find()
+    return games.toArray()
 }
 
