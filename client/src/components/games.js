@@ -16,15 +16,28 @@ class Games extends Component {
         super(props);
         this.state = {
             gamesL: [],
-            keywords: ''
+            keywords: '',
+            gamesPerPage: 10,
         };
         
         this.searchKeyword = this.searchKeyword.bind(this);
+        this.generateRows = this.generateRows.bind(this);
+        this.changePage = this.changePage.bind(this);
+        this.setupPagination = this.setupPagination.bind(this);
     }
 
     async componentDidMount() {
-        await this.fetchGames();
+        await this.fetchGames()
+        this.setupPagination();
         this.generateRows();
+    }
+
+    async setupPagination() {
+        this.setState({
+            totalPages: Math.ceil(this.state.gamesL.length / this.state.gamesPerPage)
+        }, () => {
+            console.log(this.state.totalPages);
+        });
     }
 
     async fetchGames() {
@@ -42,6 +55,7 @@ class Games extends Component {
         this.setState({
             gamesL: this.state.gamesL.filter(game => game.name.toLowerCase().includes(this.state.keywords.toLowerCase()))
         }, () => {
+            this.setupPagination();
             this.generateRows();
         });
         
@@ -51,6 +65,7 @@ class Games extends Component {
 
     //Generates rows for the games in the list
     async generateRows() {
+        console.log("5");
         const rows = this.state.gamesL.map((game, index) => (
             <tr key={index}>
                 <td>{index}</td>
@@ -62,17 +77,26 @@ class Games extends Component {
             </tr>
         ));
 
-        this.setState({rows: rows});
+        this.setState({rows: rows.slice(0,10)});
     }
 
     updateKeywords(evt) {
+        
         const val = evt.target.value;
         this.setState({
             keywords: val
         })
     }
+    
+    changePage(evt) {
+        const page = evt;
+        this.setState({
+            pageNumber: page
+        })
+    }
 
     render() {
+        
         return (
             <>
                 <TextInput
@@ -102,10 +126,14 @@ class Games extends Component {
                         {this.state.rows}
                     </tbody>
                 </Table>
+                <Pagination
+                    total={this.state.totalPages}
+                    onChange={evt => this.changePage(evt)} />
             </>
         );
     }
 }
+
 
 export default Games;
 
