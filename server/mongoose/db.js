@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const path = require('path');
 const FeedBack = require('../mongoose/models/feedbackSchema')
+const Games = require("../mongoose/models/gameSchema")
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
 
 module.exports.connectToDB = async () => {
@@ -23,5 +24,13 @@ module.exports.deleteAllFeedBack = async () => {
 
 module.exports.editFeedback = async () => {
     
+}
+
+module.exports.getFeedback = async (gameId) => {
+    return await FeedBack.find({ gameID: gameId })
+}
+
+module.exports.getGame = async (id) => {
+    return await Games.findById({ _id: id })
 }
 
