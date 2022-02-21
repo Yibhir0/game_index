@@ -149,8 +149,14 @@ let games = [{
 // Response for endpoint /games
 exports.getGames = async (req, res) => {
     try {
-
-        res.status(200).json(games);
+        const readyState = await db.connectToDB();
+        if (readyState === 1) {
+            const games = await db.getGames();
+            res.send(games);
+        }
+        else {
+            res.status(404).json({ message: "Could not connect to the database" })
+        }
     }
     catch (error) {
         res.status(404).json({ message: error.message })
