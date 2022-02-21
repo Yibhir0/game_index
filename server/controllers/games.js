@@ -142,6 +142,15 @@ let games = [{
     "year": 2013,
     "genre": "Fantasy",
     "publisher": "Idk"
+},
+{
+    "id": "1",
+    "name": "Don't touch the red cubes",
+    "rank": 1,
+    "platform": "PC",
+    "year": 2019,
+    "genre": "Casual",
+    "publisher": "Daniel"
 }
 ];
 

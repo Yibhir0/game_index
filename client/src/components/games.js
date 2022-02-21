@@ -1,7 +1,13 @@
-import { Component } from "react";
+import { Component, useState } from "react";
 import Game from './game';
 import TopNav from "./topnav";
-import { Table, Anchor } from '@mantine/core';
+import {
+    TextInput,
+    Table,
+    Anchor,
+    Pagination,
+    Button
+} from '@mantine/core';
 import { Link } from 'react-router-dom';
 
 class Games extends Component {
@@ -10,7 +16,10 @@ class Games extends Component {
         super(props);
         this.state = {
             gamesL: [],
+            keywords: ''
         };
+        
+        this.searchKeyword = this.searchKeyword.bind(this);
     }
 
     async componentDidMount() {
@@ -28,7 +37,17 @@ class Games extends Component {
         });
     }
 
-    //Generates rows for all games
+    searchKeyword() {
+        this.fetchGames();
+        const searchedGames = this.state.gamesL.filter(game => game.name.includes(this.state.keywords));
+        this.setState({
+            gamesL: searchedGames
+        });
+        console.log(this.state.gamesL);
+        //this.generateRows();
+    }
+
+    //Generates rows for the games in the list
     async generateRows() {
         const rows = this.state.gamesL.map((game, index) => (
             <tr key={index}>
@@ -44,10 +63,29 @@ class Games extends Component {
         this.setState({rows: rows});
     }
 
+    updateKeywords(evt) {
+        const val = evt.target.value;
+        this.setState({
+            keywords: val
+        })
+    }
+
     render() {
         return (
             <>
-                <Table verticalSpacing="md">
+                <TextInput
+                    onChange={evt => this.updateKeywords(evt)}
+                    placeholder="Keywords"
+                    label="Search:"
+                    description="Find a game by looking them up."
+                    variant="filled"
+                    radius="lg"
+                    size="md"
+                />
+                <Button onClick={this.searchKeyword}>
+                    Search
+                </Button>
+                <Table verticalSpacing="md" striped highlightOnHover>
                     <thead>
                         <tr>
                             <th>Index</th>
