@@ -39,11 +39,13 @@ class Games extends Component {
 
     searchKeyword() {
         this.fetchGames();
-        const searchedGames = this.state.gamesL.filter(game => game.name.includes(this.state.keywords));
         this.setState({
-            gamesL: searchedGames
+            gamesL: this.state.gamesL.filter(game => game.name.toLowerCase().includes(this.state.keywords.toLowerCase()))
+        }, () => {
+            this.generateRows();
         });
-        console.log(this.state.gamesL);
+        
+        // console.log(this.state.gamesL);
         //this.generateRows();
     }
 
