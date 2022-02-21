@@ -17,6 +17,7 @@ class Games extends Component {
         this.state = {
             gamesL: [],
             keywords: '',
+            pageNumber: 1,
             gamesPerPage: 10,
         };
         
@@ -53,6 +54,7 @@ class Games extends Component {
     searchKeyword() {
         this.fetchGames();
         this.setState({
+            pageNumber: 1,
             gamesL: this.state.gamesL.filter(game => game.name.toLowerCase().includes(this.state.keywords.toLowerCase()))
         }, () => {
             this.setupPagination();
@@ -65,7 +67,6 @@ class Games extends Component {
 
     //Generates rows for the games in the list
     async generateRows() {
-        console.log("5");
         const rows = this.state.gamesL.map((game, index) => (
             <tr key={index}>
                 <td>{index}</td>
@@ -76,8 +77,7 @@ class Games extends Component {
                 <td>{game.year}</td>
             </tr>
         ));
-
-        this.setState({rows: rows.slice(0,10)});
+        this.setState({rows: rows.slice(((this.state.pageNumber-1)*10),this.state.pageNumber*10)});
     }
 
     updateKeywords(evt) {
@@ -92,6 +92,8 @@ class Games extends Component {
         const page = evt;
         this.setState({
             pageNumber: page
+        }, () => {
+            this.generateRows();
         })
     }
 
