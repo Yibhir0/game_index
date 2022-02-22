@@ -6,6 +6,6 @@ const Feedback = new mongoose.Schema({
     rating: Number
 })
 
-const model = mongoose.model("Feedback", Feedback);
+const model = mongoose.model("FeedbackModels", Feedback);
 
 module.exports = model;
