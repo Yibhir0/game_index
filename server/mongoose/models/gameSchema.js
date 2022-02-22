@@ -1,20 +1,24 @@
+const { Double } = require("bson");
 const mongoose = require("mongoose");
+const feedbackModel = require("./feedbackSchema").schema
+
 const gameSchema = new mongoose.Schema({
+    jpsales: { type: Number },
+    nasales: { type: Number },
+    othersales: { type: Number },
+    eusales: { type: Number },
+    platform: { type: String },
+    year: { type: Number },
+    publisher: { type: String },
+    esrbrating: { type: String },
+    criticscore: { type: Number },
+    globalsales: { type: Number },
     name: { type: String },
     genre: { type: String },
-    esrbRating: { type: String },
-    platform: { type: String },
-    publisher: { type: String },
-    criticScore: { type: String },
-    globalSales: { type: Number },
-    genre: { type: String },
-    naSales: { type: Number },
-    euSales: { type: Number },
-    jpSales: { type: Number },
-    otherSales: { type: Number },
-    year: { type: Number },
+    feedback: [feedbackModel],
+    userrating: { type: Number }
 })
 
-const model = mongoose.model("GameModels", gameSchema);
+const model = mongoose.model("GameModels", gameSchema, "gamedata");
 
 module.exports = model;
