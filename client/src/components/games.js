@@ -15,10 +15,10 @@ class Games extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            gamesL: [],
-            keywords: '',
-            pageNumber: 1,
-            gamesPerPage: 10,
+            gamesL: [], //contains all the games for the current list, will be changed every time a new query is made
+            keywords: '', //keywords for the search feature, can represent the name, genre, publisher, etc
+            pageNumber: 1, //current page
+            gamesPerPage: 10, //number of games to display per page
         };
         
         this.searchKeyword = this.searchKeyword.bind(this);
@@ -28,12 +28,14 @@ class Games extends Component {
     }
 
     async componentDidMount() {
+        //fetch game, then setup pagination and then generate the rows to be displayed
         await this.fetchGames()
         this.setupPagination();
         this.generateRows();
     }
 
     async setupPagination() {
+        //sets the total number of page for pagination
         this.setState({
             totalPages: Math.ceil(this.state.gamesL.length / this.state.gamesPerPage)
         }, () => {
@@ -42,6 +44,8 @@ class Games extends Component {
     }
 
     async fetchGames() {
+        //fetch all games
+        console.log("game fetched");
         let gameUrl = "/games";
         let response = await fetch(gameUrl);
         console.log(response);
@@ -52,6 +56,9 @@ class Games extends Component {
     }
 
     searchKeyword() {
+        //fetches all the game to reset the list and then filter based on keyword
+        //will be reimplemented later to work with the backend
+        //will only need to send the query when it is implemented with the backend
         this.fetchGames();
         this.setState({
             pageNumber: 1,
@@ -60,9 +67,6 @@ class Games extends Component {
             this.setupPagination();
             this.generateRows();
         });
-        
-        // console.log(this.state.gamesL);
-        //this.generateRows();
     }
 
     //Generates rows for the games in the list
@@ -82,7 +86,7 @@ class Games extends Component {
     }
 
     updateKeywords(evt) {
-        
+        //updates keyword everytime a user writes in the search bar
         const val = evt.target.value;
         this.setState({
             keywords: val
@@ -90,12 +94,19 @@ class Games extends Component {
     }
     
     changePage(evt) {
-        const page = evt;
-        this.setState({
-            pageNumber: page
-        }, () => {
-            this.generateRows();
-        })
+        //if statement to prevent users from clicking on the same page button
+        if (this.state.pageNumber !== evt) {
+            //if user clicks on a different page number, the page number will change and then regenerate the new rows
+            const page = evt;
+            this.setState({
+                pageNumber: page
+            }, () => {
+                this.generateRows();
+            })
+        } else {
+            console.log("same page");
+        }
+        
     }
 
     render() {
