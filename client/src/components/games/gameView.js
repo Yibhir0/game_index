@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Allfeedback from '../feedback/allFeedback';
 import FeedbackBox from '../feedback/feedbackBox';
 
+
 const GameView = () => {
 
     const [game, setGame] = useState({});
@@ -93,6 +94,7 @@ const GameView = () => {
         <div>
             <h1>{game.name}</h1>
             < FeedbackBox addComment={addComment} />
+          
             <Allfeedback allFeedback={feedback} />
         </div>
     );
