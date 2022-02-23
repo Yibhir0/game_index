@@ -172,6 +172,9 @@ test('Get a specific list from user', async () => {
   let list = await db.getList(fakeUser, 2)
 
   expect(list.name).toBe('second-list')
+
+  await db.deleteUser(fakeUser);
+  
 });
 
 
