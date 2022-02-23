@@ -15,6 +15,6 @@ const gameSchema = new mongoose.Schema({
     year: { type: Number },
 })
 
-const model = mongoose.model("GameModels", gameSchema);
+const model = mongoose.model("GameModels", gameSchema, 'gamedata');
 
 module.exports = model;
