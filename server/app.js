@@ -4,6 +4,11 @@ const app = express();
 const path = require("path");
 const PORT = process.env.PORT || 5000;
 const cors = require("cors");
+const bodyParser = require("body-parser");
+
+app.use(express.json());
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const api = require('./routes/api.js');
 

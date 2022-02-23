@@ -1,3 +1,4 @@
+const db = require('../mongoose/db');
 
 let games = [{
     "id": "222222222222",
@@ -307,30 +308,37 @@ let games = [{
     }
 ];
 
-
-
-
 // Response for endpoint /games
 exports.getGames = async (req, res) => {
     try {
-
-        res.status(200).json(games);
+        const readyState = await db.connectToDB();
+        if (readyState === 1) {
+            const games = await db.getGames();
+            res.send(games);
+        }
+        else {
+            res.status(404).json({ message: "Could not connect to the database" })
+        }
     }
     catch (error) {
-        res.satus(404).json({ message: error.message })
+        res.status(404).json({ message: error.message })
     }
 };
 
 // Response for a specific page
 exports.getGame = async (req, res) => {
     try {
-
-        const game = games.find(g => g.id === req.params.id);
-        res.send(game);
+        const readyState = await db.connectToDB();
+        if (readyState === 1) {
+            const game = await db.getGame(req.params.id)
+            res.send(game)
+        }
+        else {
+            res.status(404).json({ message: "Could not connect to the database" })
+        }
     }
     catch (error) {
-
-        res.status(404).json({ message: error.message });
+        res.status(404).json({ message: error.message })
     }
 };
 
@@ -340,7 +348,6 @@ exports.goHome = async (req, res) => {
         res.send('Games Index');
     }
     catch (error) {
-        res.satus(404).json({ message: error.message });
+        res.status(404).json({ message: error.message });
     }
 };
-
