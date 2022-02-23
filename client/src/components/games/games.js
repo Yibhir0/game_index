@@ -73,7 +73,7 @@ class Games extends Component {
         const rows = this.state.gamesL.map((game, index) => (
             <tr key={index}>
                 <td>{index}</td>
-                <td><Anchor component={Link} to={`/games/${game.id}`}  >{game.name}</Anchor></td>
+                <td><Anchor component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
                 <td>{game.genre}</td>
                 <td>{game.platform}</td>
                 <td>{game.publisher}</td>
