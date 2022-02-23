@@ -34,6 +34,23 @@ exports.getGame = async (req, res) => {
     }
 };
 
+// Response for searching game name
+exports.getGamesByName = async (req, res) => {
+    try {
+        const readyState = await db.connectToDB();
+        if (readyState === 1) {
+            const games = await db.getGamesByName(req.params.keyword)
+            res.send(games)
+        }
+        else {
+            res.status(404).json({ message: "Could not connect to the database" })
+        }
+    }
+    catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+};
+
 // Response for home page
 exports.goHome = async (req, res) => {
     try {

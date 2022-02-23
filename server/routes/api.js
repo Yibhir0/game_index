@@ -8,6 +8,8 @@ router.get('/games', games.getGames);
 
 router.get('/games/:id', games.getGame);
 
+router.get('/games/name/:keyword', games.getGamesByName);
+
 router.get('/', games.goHome);
 
 router.get('/games/:id/feedback', feedback.getComments);

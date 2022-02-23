@@ -53,14 +53,29 @@ class Games extends Component {
         });
     }
 
-    searchKeyword() {
-        //fetches all the game to reset the list and then filter based on keyword
-        //will be reimplemented later to work with the backend
-        //will only need to send the query when it is implemented with the backend
-        this.fetchGames();
+    async fetchGamesByKeyword() {
+        //fetch all games by keywords
+        console.log("game fetched by keyword");
+        let gameUrl = "/games/name/" + this.state.keywords;
+        let response = await fetch(gameUrl);
+        console.log(response);
+        let games = await response.json();
+        this.setState({
+            gamesL: games
+        });
+    }
+
+
+    async searchKeyword() {
+        //fetches all the games  with their name containing the keywords the user has written
+        //if no keyword, then just retrieve all games
+        if (this.state.keywords === "" || this.state.keywords.trim().length === 0) {
+            await this.fetchGames();
+        } else {
+            await this.fetchGamesByKeyword();
+        }
         this.setState({
             pageNumber: 1,
-            gamesL: this.state.gamesL.filter(game => game.name.toLowerCase().includes(this.state.keywords.toLowerCase()))
         }, () => {
             this.setupPagination();
             this.generateRows();

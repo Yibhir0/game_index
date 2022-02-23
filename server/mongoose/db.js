@@ -50,3 +50,10 @@ module.exports.getGames = async () => {
     return games
 }
 
+module.exports.getGamesByName = async (keyword) => {
+    let games = await Games.find({name:{'$regex' : keyword, '$options' : 'i'}})
+    console.log(games);
+    return games
+}
+
+
