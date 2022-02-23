@@ -65,13 +65,13 @@ module.exports.editUser = async (user,query) => {
 }
 
 module.exports.getLists = async (user) => {
-    let user = await User.findOne({ _id: user._id });
-    return user.lists;
+    let current_user = await User.findOne({ _id: user._id });
+    return current_user.lists;
 }
 
 module.exports.getList = async (user, list_id) => {
-    let user = await User.findOne({ _id: user._id });
-    for (let list in user.lists) {
+    let current_user = await User.findOne({ _id: user._id });
+    for (let list in current_user.lists) {
         if (list['id'] == list_id) {
             return list['id'];
         };
@@ -83,8 +83,8 @@ module.exports.createList = async (user, id, list_name, gameslist ) => {
 }
 
 module.exports.addToList = async (user, list_name, game_name) => {
-    let user = await User.findOne({ _id: user._id });
-    let lists = user.lists;
+    let current_user = await User.findOne({ _id: user._id });
+    let lists = current_user.lists;
 
     for (let list in lists) {
         if (list['list_name'] == list_name) {
@@ -97,12 +97,12 @@ module.exports.addToList = async (user, list_name, game_name) => {
 }
 
 module.exports.deleteFromList = async (user, list_name, game_name) => {
-    let user = await User.findOne({ _id: user._id });
-    let lists = user.lists;
+    let current_user = await User.findOne({ _id: user._id });
+    let lists = current_user.lists;
 
     for (let list in lists) {
         if (list['list_name'] == list_name) {
-            let index = list['games'].indexOf('game_name');
+            let index = list['games'].indexOf(game_name);
             array.splice(index, 1);
         }
     }
