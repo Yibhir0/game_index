@@ -1,6 +1,4 @@
 import { Component, useState } from "react";
-import Game from './game';
-import TopNav from "./topnav";
 import {
     TextInput,
     Table,

@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 const path = require('path');
 const FeedBack = require('../mongoose/models/feedbackSchema')
 const Games = require("../mongoose/models/gameSchema")
-require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+//.env file is set up under server folder
 
 module.exports.connectToDB = async () => {
     const dbURI = process.env.ATLAS_URI;
@@ -45,7 +46,7 @@ module.exports.getGame = async (id) => {
 
 module.exports.getGames = async () => {
     let games = await Games.find()
-    console.log(games)
+    console.log(games);
     return games
 }
 
