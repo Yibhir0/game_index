@@ -93,6 +93,8 @@ class Games extends Component {
                 <td>{game.platform}</td>
                 <td>{game.publisher}</td>
                 <td>{game.year}</td>
+                <td>{game.globalsales}</td>
+                <td>{game.criticscore}</td>
             </tr>
         ));
         this.setState({rows: rows.slice(((this.state.pageNumber-1)*10),this.state.pageNumber*10)});
@@ -147,6 +149,8 @@ class Games extends Component {
                             <th>Platform</th>
                             <th>Publisher</th>
                             <th>Year Released</th>
+                            <th>Global Sales</th>
+                            <th>Critic Score</th>
                         </tr>
                     </thead>
                     <tbody>
