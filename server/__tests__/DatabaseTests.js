@@ -49,7 +49,7 @@ test('Get all games from the DB', async () => {
 });
 
 test('Get a specific game from the DB', async () => {
-  const result = await db.getGame('Nintendogs')
+  const result = await db.getGame('620d6ef065ee1d5092d1c790')
   expect(result['globalsales']).toBe(24490000);
 });
 
