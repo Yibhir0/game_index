@@ -36,6 +36,40 @@ class Games extends Component {
             { value: 'sports', label: 'Sports' },
 
         ];
+
+        this.platforms = [
+            { value: '', label: 'All'},
+            { value: '3DS', label: 'Nintendo 3DS' },
+            { value: 'PS', label: 'PlayStation' },
+            { value: 'XOne', label: 'Xbox One' },
+            { value: 'GBA', label: 'Game Boy Advanced' },
+            { value: 'SAT', label: 'Sega Saturn' },
+            { value: 'N64', label: 'Nintendo 64' },
+            { value: 'PS2', label: 'PlayStation 2' },
+            { value: 'DS', label: 'Nintendo DS' },
+            { value: 'PS4', label: 'PlayStation 4' },
+            { value: 'PS3', label: 'PlayStation 3' },
+            { value: '2600', label: 'Atari 2600' },
+            { value: 'WiiU', label: 'Wii U' },
+            { value: 'GB', label: 'Game Boy' },
+            { value: 'GC', label: 'GameCube' },
+            { value: 'WS', label: 'WonderSwan' },
+            { value: 'PCFX', label: 'PC-FX' },
+            { value: 'XB', label: 'Xbox' },
+            { value: 'PSP', label: 'PlayStation Portable' },
+            { value: 'SNES', label: 'Super Nintendo Entertainment System' },
+            { value: 'GEN', label: 'Sega Genesis' },
+            { value: 'PSV', label: 'PlayStation Vita' },
+            { value: 'PC', label: 'Computer' },
+            { value: 'SCD', label: 'Sega CD' },
+            { value: 'Wii', label: 'Wii' },
+            { value: 'NG', label: 'Neo Geo' },
+            { value: 'NES', label: 'Nintendo Entertainment System' },
+            { value: 'X360', label: 'Xbox 360' },
+            { value: '3DO', label: '3DO Interactive Multiplayer' },
+            { value: 'DC', label: 'Dreamcast' },
+        ];
+
         this.state = {
             gamesL: [], //contains all the games for the current list, will be changed every time a new query is made
             pageNumber: 1, //current page
@@ -45,7 +79,8 @@ class Games extends Component {
                 keywords: '', //keywords for the search feature, can represent the name, genre, publisher, etc
                 year: '', //year the game has been released
                 publisher: '',//publisher of the video game
-                genre: '',
+                genre: '',//genre for the video game
+                platform: '',//platform for the video game
             },
 
         };
@@ -92,7 +127,8 @@ class Games extends Component {
             "keywords=" + this.state.filters.keywords +
             "&year=" + this.state.filters.year +
             "&publisher=" + this.state.filters.publisher +
-            "&genre=" + this.state.filters.genre;
+            "&genre=" + this.state.filters.genre +
+            "&platform=" + this.state.filters.platform;
         let response = await fetch(gameUrl);
         console.log(response);
         let games = await response.json();
@@ -182,6 +218,12 @@ class Games extends Component {
         filters.toggle = true;
         this.setState({ filters });
     }
+    updatePlatform(evt) {
+        const filters = { ...this.state.filters }
+        filters.platform = evt.target.value;
+        filters.toggle = true;
+        this.setState({ filters });
+    }
     
     changePage(evt) {
         //if statement to prevent users from clicking on the same page button
@@ -205,6 +247,8 @@ class Games extends Component {
         console.log("Keyword value: " + this.state.filters.keywords);
         console.log("Year value: " + this.state.filters.year);
         console.log("Publisher value: " + this.state.filters.publisher);
+        console.log("Genre value: " + this.state.filters.genre);
+        console.log("Platform value: " + this.state.filters.platform);
     }
     render() {
         
@@ -234,6 +278,15 @@ class Games extends Component {
                             label="Genre"
                             placeholder="Select a Genre"
                             description="Search by Genre"
+                        />
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                        <NativeSelect
+                            onChange={evt => this.updatePlatform(evt)}
+                            data={this.platforms}
+                            label="Platform"
+                            placeholder="Select a Platform"
+                            description="Search by Platform"
                         />
                     </Grid.Col>
                     
