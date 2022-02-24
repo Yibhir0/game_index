@@ -1,10 +1,13 @@
-import { Textarea, Button } from '@mantine/core';
+import { Textarea, Button, Grid } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
 import RatingBox from '../feedback/rating';
-
+import React, { useState } from "react";
 import "./styles.css";
 
 export default function FeedbackBox(props) {
+
+    const [rating, setRating] = useState(1);
+
     const form = useForm({
         initialValues: {
             comment: '',
@@ -14,24 +17,30 @@ export default function FeedbackBox(props) {
 
     const submitComment = (values) => {
         form.reset();
+        values.rating = rating;
         props.addComment(values)
 
     }
 
+    const getRating = (value) => {
+        setRating(value);
+    }
 
     return (
         <form onSubmit={form.onSubmit((values) => submitComment(values))}>
-            <div className="horizontal_flex">
-            <Textarea
-                required
-                label="comment"
-                placeholder="Your comment"
-                {...form.getInputProps('comment')}
-            />
-            <RatingBox rating={1}/>
-            </div>
-           
-            <Button type="submit">Submit</Button>
+
+            <Grid columns={19}>
+                <Grid.Col span={16}>
+                    <Textarea size="md"
+                        required
+                        placeholder="Your comment"
+                        {...form.getInputProps('comment')}
+                    /></Grid.Col>
+                <Grid.Col span={3} style={{ minHeight: 80 }}>
+                    <RatingBox rating={1} dis={false} getRating={getRating} />
+                    <Button type="submit">Comment/Rate</Button>
+                </Grid.Col>
+            </Grid>
         </form>
     );
 }

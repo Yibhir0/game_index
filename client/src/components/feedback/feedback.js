@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { Container } from '@mantine/core';
-
+import RatingBox from './rating';
 // import { Link } from 'react-router-dom';
 // import { Anchor } from "@mantine/core";
 
@@ -10,14 +10,15 @@ class Feedback extends Component {
     constructor(props) {
         super(props);
     }
-
     render() {
         return (
-            <Container size="xs" padding="xs">
-                {this.props.comment.comment}
-            </Container>
+            <div>
+                <Container size="xs" padding="xs">
+                    {this.props.comment.comment}
+                </Container>
+                <RatingBox rating={this.props.comment.rating} dis={true} />
 
-
+            </div>
         );
     }
 }

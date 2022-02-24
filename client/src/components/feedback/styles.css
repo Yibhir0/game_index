@@ -1,4 +1,9 @@
-.horizontal_flex{
+/* .horizontal_flex{
   display : flex;
   flex-direction: row ;
+  justify-content: space-between;
 }
+.vertical_flex{
+  display : flex;
+  flex-direction: column ;
+} */

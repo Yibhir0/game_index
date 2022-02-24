@@ -64,7 +64,7 @@ const GameView = () => {
             gameId: "222222222222",
             userId: "234",
             comment: comment,
-            rating: 3,
+            rating: values.rating,
         };
 
         const feedbackUrl = `/games/${id}/feedback`;
@@ -93,8 +93,8 @@ const GameView = () => {
     return (
         <div>
             <h1>{game.name}</h1>
-            < FeedbackBox addComment={addComment} />
-          
+            <FeedbackBox addComment={addComment} />
+
             <Allfeedback allFeedback={feedback} />
         </div>
     );
