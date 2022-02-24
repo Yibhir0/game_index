@@ -43,6 +43,8 @@ exports.getGamesByFilter = async (req, res) => {
             let filters = {
                 keywords: req.query.keywords,
                 year: req.query.year,
+                publisher: req.query.publisher,
+                genre: req.query.genre,
             };
 
             console.log(filters);
