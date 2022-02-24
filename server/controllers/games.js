@@ -34,12 +34,19 @@ exports.getGame = async (req, res) => {
     }
 };
 
-// Response for searching game name
-exports.getGamesByName = async (req, res) => {
+// Response for filtering games
+exports.getGamesByFilter = async (req, res) => {
     try {
         const readyState = await db.connectToDB();
         if (readyState === 1) {
-            const games = await db.getGamesByName(req.params.keyword)
+
+            let filters = {
+                keywords: req.query.keywords,
+                year: req.query.year,
+            };
+
+            console.log(filters);
+            const games = await db.getGamesByFilter(filters)
             res.send(games)
         }
         else {

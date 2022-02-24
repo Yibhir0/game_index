@@ -50,8 +50,24 @@ module.exports.getGames = async () => {
     return games
 }
 
-module.exports.getGamesByName = async (keyword) => {
-    let games = await Games.find({name:{'$regex' : keyword, '$options' : 'i'}})
+module.exports.getGamesByFilter = async (filters) => {
+    
+    let games = await Games
+        .aggregate([
+            {
+                $addFields:
+                {
+                    yearStr: { $toString: '$year' }
+                }
+            },
+            {
+                $match:
+                {
+                    name: {'$regex' : filters.keywords, '$options' : 'i'},
+                    yearStr: { $regex: filters.year }
+                }
+            }
+        ])
     console.log(games);
     return games
 }

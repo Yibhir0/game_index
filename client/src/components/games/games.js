@@ -1,5 +1,7 @@
 import { Component, useState } from "react";
 import {
+    Grid,
+    NumberInput,
     TextInput,
     Table,
     Anchor,
@@ -14,15 +16,21 @@ class Games extends Component {
         super(props);
         this.state = {
             gamesL: [], //contains all the games for the current list, will be changed every time a new query is made
-            keywords: '', //keywords for the search feature, can represent the name, genre, publisher, etc
             pageNumber: 1, //current page
             gamesPerPage: 10, //number of games to display per page
+            filters: {
+                toggle: false, //decides whether to do a filtered search or not
+                keywords: '', //keywords for the search feature, can represent the name, genre, publisher, etc
+                year: '', //year the game has been released
+            },
+
         };
         
-        this.searchKeyword = this.searchKeyword.bind(this);
+        this.search = this.search.bind(this);
         this.generateRows = this.generateRows.bind(this);
         this.changePage = this.changePage.bind(this);
         this.setupPagination = this.setupPagination.bind(this);
+        this.printFilters = this.printFilters.bind(this);
     }
 
     async componentDidMount() {
@@ -53,10 +61,12 @@ class Games extends Component {
         });
     }
 
-    async fetchGamesByKeyword() {
-        //fetch all games by keywords
-        console.log("game fetched by keyword");
-        let gameUrl = "/games/name/" + this.state.keywords;
+    async fetchGamesByFilter() {
+        //fetch all games by filters
+        console.log("game fetched by filters");
+        let gameUrl = "/games/filter?" +
+            "keywords=" + this.state.filters.keywords +
+            "&year=" + this.state.filters.year;
         let response = await fetch(gameUrl);
         console.log(response);
         let games = await response.json();
@@ -66,17 +76,26 @@ class Games extends Component {
     }
 
 
-    async searchKeyword() {
-        //fetches all the games  with their name containing the keywords the user has written
-        //if no keyword, then just retrieve all games
-        if (this.state.keywords === "" || this.state.keywords.trim().length === 0) {
-            await this.fetchGames();
+    async search() {
+        //verifies if the keywords are empty or not
+        if (this.state.filters.keywords === "" || this.state.filters.keywords.trim().length === 0) {
+            //if filter toggle is on, then it will do a filtered search with no keywords
+            //this means that the user has toggled a filtered search by inputting a year of release value
+            //or selecting a genre
+            if (this.state.filters.toggle === true) {
+                await this.fetchGamesByFilter();
+            } else {
+                await this.fetchGames();
+            }
+        //if not empty, then assumes the search bar has keywords, which will end up doing a filtered search
         } else {
-            await this.fetchGamesByKeyword();
+            await this.fetchGamesByFilter();
         }
+
         this.setState({
             pageNumber: 1,
         }, () => {
+            this.printFilters();
             this.setupPagination();
             this.generateRows();
         });
@@ -100,12 +119,24 @@ class Games extends Component {
         this.setState({rows: rows.slice(((this.state.pageNumber-1)*10),this.state.pageNumber*10)});
     }
 
+    //update current keyword value
     updateKeywords(evt) {
-        //updates keyword everytime a user writes in the search bar
-        const val = evt.target.value;
-        this.setState({
-            keywords: val
-        })
+        const filters = { ...this.state.filters }
+        filters.keywords = evt.target.value;
+        this.setState({filters})
+    }
+
+    //update current year value
+    updateYear(evt) {
+        const filters = { ...this.state.filters }
+        filters.toggle = true;
+        if (evt === undefined) {
+            filters.year = '';
+        } else {
+            filters.year = evt;
+        }
+        
+        this.setState({filters})
     }
     
     changePage(evt) {
@@ -124,20 +155,38 @@ class Games extends Component {
         
     }
 
+    //print the current state of the filter
+    printFilters() {
+        console.log("Filter toggle: " + this.state.filters.toggle);
+        console.log("Keyword value: " + this.state.filters.keywords);
+        console.log("Year value: " + this.state.filters.year);
+    }
     render() {
         
         return (
             <>
-                <TextInput
-                    onChange={evt => this.updateKeywords(evt)}
-                    placeholder="Keywords"
-                    label="Search:"
-                    description="Find a game by looking them up."
-                    variant="filled"
-                    radius="lg"
-                    size="md"
-                />
-                <Button onClick={this.searchKeyword}>
+                <Grid>
+                    <Grid.Col span={4}>
+                        <TextInput
+                            onChange={evt => this.updateKeywords(evt)}
+                            placeholder="Keywords"
+                            label="Search:"
+                            description="Find a game by looking them up."
+                            variant="filled"
+                            radius="lg"
+                            size="md"
+                        />
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                        <NumberInput
+                            onChange={evt => this.updateYear(evt)}
+                            placeholder="Year Released"
+                            label="Year Released"
+                            description="Filter by Year Released"
+                        />
+                    </Grid.Col>
+                </Grid>
+                <Button onClick={this.search}>
                     Search
                 </Button>
                 <Table verticalSpacing="md" striped highlightOnHover>
