@@ -124,11 +124,14 @@ module.exports.getGamesByFilter = async (filters) => {
                 $match:
                 {
                     name: {'$regex' : filters.keywords, '$options' : 'i'},
-                    yearStr: { $regex: filters.year }
+                    yearStr: { $regex: filters.year },
+                    publisher: { '$regex': filters.publisher, '$options': 'i' },
+                    genre: { '$regex': filters.genre, '$options': 'i' },
+                    platform: { '$regex': filters.platform, '$options': 'i' }
                 }
             }
         ])
-    console.log(games);
+    //console.log(games);
     return games
 }
 
