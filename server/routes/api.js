@@ -6,6 +6,8 @@ const feedback = require('../controllers/feedback');
 
 router.get('/games', games.getGames);
 
+router.get('/games/filter', games.getGamesByFilter);
+
 router.get('/games/:id', games.getGame);
 
 router.get('/', games.goHome);
