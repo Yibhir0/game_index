@@ -36,7 +36,7 @@ module.exports.getFeedbacks = async (gameId) => {
 }
 
 module.exports.addFeedback = async (feedback) => {
-    await FeedBack.insertOne(feedback)
+    await feedback.save()
 }
 
 module.exports.getGame = async (id) => {
