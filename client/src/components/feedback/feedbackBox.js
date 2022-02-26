@@ -1,12 +1,12 @@
-import { Textarea, Button, Grid } from '@mantine/core';
+import { Textarea, Button, Grid, Center } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
 import RatingBox from '../feedback/rating';
 import React, { useState } from "react";
-import "./styles.css";
-
 export default function FeedbackBox(props) {
 
     const [rating, setRating] = useState(1);
+    //let navigate = useNavigate();
+
 
     const form = useForm({
         initialValues: {
@@ -16,10 +16,11 @@ export default function FeedbackBox(props) {
     });
 
     const submitComment = (values) => {
+
         form.reset();
         values.rating = rating;
         props.addComment(values)
-
+        window.location.reload(false);
     }
 
     const getRating = (value) => {
@@ -27,20 +28,25 @@ export default function FeedbackBox(props) {
     }
 
     return (
-        <form onSubmit={form.onSubmit((values) => submitComment(values))}>
 
-            <Grid columns={19}>
-                <Grid.Col span={16}>
-                    <Textarea size="md"
-                        required
-                        placeholder="Your comment"
-                        {...form.getInputProps('comment')}
-                    /></Grid.Col>
-                <Grid.Col span={3} style={{ minHeight: 80 }}>
-                    <RatingBox rating={1} dis={false} getRating={getRating} />
-                    <Button type="submit">Comment/Rate</Button>
-                </Grid.Col>
-            </Grid>
-        </form>
+        <Center>
+            <form onSubmit={form.onSubmit((values) => submitComment(values))}>
+
+                <Grid justify="center" >
+                    <Grid.Col span={10} >
+                        <Textarea size="md"
+                            required
+                            placeholder="Your comment"
+                            {...form.getInputProps('comment')}
+                        /></Grid.Col>
+                    <Grid.Col style={{ minHeight: 80 }} span={2}>
+                        <RatingBox rating={1} dis={false} getRating={getRating} />
+                        <Button type="submit">Comment/Rate</Button>
+                    </Grid.Col>
+
+                </Grid>
+            </form>
+        </Center>
+
     );
 }

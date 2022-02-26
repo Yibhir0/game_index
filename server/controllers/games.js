@@ -45,7 +45,7 @@ exports.getGamesByFilter = async (req, res) => {
                 year: req.query.year,
             };
 
-            console.log(filters);
+            //console.log(filters);
             const games = await db.getGamesByFilter(filters)
             res.send(games)
         }
