@@ -25,7 +25,6 @@ const GameView = () => {
         try {
             const response = await fetch(url);
             const json = await response.json();
-            console.log(json);
             setGame(json);
 
         } catch (error) {
@@ -71,6 +70,10 @@ const GameView = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newComment)
             });
+
+
+            //
+            //await fetchFeedback();
 
         } catch (error) {
             console.log("error", error);

@@ -22,7 +22,8 @@ exports.addComment = async (req, res) => {
     try {
         const readyState = await db.connectToDB()
         if (readyState === 1) {
-            await db.addFeedback(req.body)
+            await db.addFeedback(req.body);
+            res.status(200);
 
         }
         else {

@@ -16,7 +16,7 @@ module.exports.closeDB = async () => {
 }
 
 module.exports.getFeedbacks = async (gameId) => {
-    let comments = await FeedBack.find({ gameID: gameId})
+    let comments = await FeedBack.find({ gameID: gameId })
     return comments
 }
 
@@ -43,17 +43,17 @@ module.exports.getFeedbacks = async (gameId) => {
 }
 
 module.exports.addFeedback = async (feedback) => {
-    const awesome_instance = new FeedBack(feedback);
 
+    const feed = new FeedBack(feedback);
     // Save the new model instance, passing a callback
-    await awesome_instance.save(function (err) {
+    await feed.save(function (err) {
         if (err) return handleError(err);
+        return feed;
     });
 
 }
 
 module.exports.getGame = async (id) => {
-
     return await Games.findById({ _id: id })
 }
 
@@ -72,8 +72,8 @@ module.exports.getList = async (user, list_id) => {
 }
 
 
-module.exports.createList = async (user, id, list_name, gameslist ) => {
-    await User.findOneAndUpdate({_id: user._id}, {lists : {id: id, name: list_name , games: gameslist}});
+module.exports.createList = async (user, id, list_name, gameslist) => {
+    await User.findOneAndUpdate({ _id: user._id }, { lists: { id: id, name: list_name, games: gameslist } });
 }
 
 module.exports.addToList = async (user, list_name, game_name) => {
@@ -102,12 +102,9 @@ module.exports.deleteFromList = async (user, list_name, game_name) => {
     }
 
     await User.findOneAndReplace({ _id: user_id }, user);
-    
+
 }
 
-module.exports.addFeedback = async (feedback) => {
-    await FeedBack.insertOne(feedback)
-}
 
 
 module.exports.getGamesByFilter = async (filters) => {

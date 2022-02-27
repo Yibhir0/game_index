@@ -16,11 +16,11 @@ export default function FeedbackBox(props) {
     });
 
     const submitComment = (values) => {
-
-        form.reset();
         values.rating = rating;
-        props.addComment(values)
+        props.addComment(values);
+        form.reset();
         window.location.reload(false);
+
     }
 
     const getRating = (value) => {
