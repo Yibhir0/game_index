@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TopNav from './topnav';
 import { Link } from 'react-router-dom';
 import { Anchor } from "@mantine/core";
+import GraphDash from './graphs/graphDash';
 
 
 /**
@@ -11,7 +12,15 @@ class Home extends Component {
     render() {
         return (
             <div className="App">
-                <h1>Home</h1>
+
+                <div className='home-banner'>
+                    <h1>Welcome to the most popular GAMING DATABASE</h1>
+                </div>
+
+                <div className='graph-container'>
+                    <GraphDash></GraphDash>
+                </div>
+
             </div>
         );
     }
