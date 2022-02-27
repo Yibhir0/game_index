@@ -29,37 +29,37 @@ module.exports.deleteAllFeedBack = async () => {
     await FeedBack.deleteMany();
 }
 
-module.exports.getGames = async () => {
-    let games = await Games.find();
-    return games;
+module.exports.editFeedback = async (feedback) => {
+    await FeedBack.updateOne({ _id: feedback._id }, feedback)
 }
 
 module.exports.getGame = async (id) => {
     return await Games.findById({ _id: id })
 }
 
-module.exports.getUsers = async () => {
-    let users = await User.find();
-    return users;
+module.exports.getFeedbacks = async (gameId) => {
+    let comments = await FeedBack.find({ gameID: gameId })
+    return comments
 }
 
-module.exports.getUser = async (userName) => {
-    let user = await User.findOne({ name: userName });
-    return user;
+module.exports.addFeedback = async (feedback) => {
+    const awesome_instance = new FeedBack(feedback);
+
+    // Save the new model instance, passing a callback
+    await awesome_instance.save(function (err) {
+        if (err) return handleError(err);
+    });
+
 }
 
-module.exports.deleteUser = async (user) => {
-    await User.deleteOne({ _id: user._id});
+module.exports.getGame = async (id) => {
+
+    return await Games.findById({ _id: id })
 }
 
-module.exports.editUser = async (user,query) => {
-    let editedUser = await User.findOneAndUpdate({ _id: user._id }, query, {new: true});
-    return editedUser;
-}
-
-module.exports.getLists = async (user) => {
-    let current_user = await User.findOne({ _id: user._id });
-    return current_user.lists;
+module.exports.getGames = async () => {
+    let games = await Games.find()
+    return games
 }
 
 module.exports.getList = async (user, list_id) => {
@@ -111,7 +111,7 @@ module.exports.addFeedback = async (feedback) => {
 
 
 module.exports.getGamesByFilter = async (filters) => {
-    
+
     let games = await Games
         .aggregate([
             {
@@ -123,11 +123,8 @@ module.exports.getGamesByFilter = async (filters) => {
             {
                 $match:
                 {
-                    name: {'$regex' : filters.keywords, '$options' : 'i'},
-                    yearStr: { $regex: filters.year },
-                    publisher: { '$regex': filters.publisher, '$options': 'i' },
-                    genre: { '$regex': filters.genre, '$options': 'i' },
-                    platform: { '$regex': filters.platform, '$options': 'i' }
+                    name: { '$regex': filters.keywords, '$options': 'i' },
+                    yearStr: { $regex: filters.year }
                 }
             }
         ])

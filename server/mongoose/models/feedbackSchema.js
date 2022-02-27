@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
 const Feedback = new mongoose.Schema({
-    gameID: Number,
+
+    gameID: mongoose.Schema.Types.ObjectId,
     userID: Number,
     comment: String,
     rating: Number
-})
+});
 
 const model = mongoose.model("FeedbackModels", Feedback);
 

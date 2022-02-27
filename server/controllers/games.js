@@ -48,7 +48,7 @@ exports.getGamesByFilter = async (req, res) => {
                 platform: req.query.platform
             };
 
-            console.log(filters);
+            //console.log(filters);
             const games = await db.getGamesByFilter(filters)
             res.send(games)
         }
