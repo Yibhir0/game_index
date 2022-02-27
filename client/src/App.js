@@ -17,6 +17,7 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/games" element={<Games />} />
         <Route path="/games/:id" element={<GameView />} />
+        {/* <Route path="/games/:id/feedback" element={<GameView />} /> */}
       </Routes>
     </>
 

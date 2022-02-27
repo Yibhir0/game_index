@@ -6,7 +6,7 @@ import { Anchor } from "@mantine/core";
 /**
  * This class renders the top navigation bar.
  */
-export default class TopNav extends Component {
+class TopNav extends Component {
     render() {
         return (
             <div>
@@ -33,3 +33,5 @@ export default class TopNav extends Component {
         );
     }
 }
+
+export default TopNav;
