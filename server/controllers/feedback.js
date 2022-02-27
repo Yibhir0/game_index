@@ -1,8 +1,5 @@
 const db = require("../mongoose/db");
 
-
-
-
 // Response for a specific game comments
 exports.getComments = async (req, res) => {
     try {
