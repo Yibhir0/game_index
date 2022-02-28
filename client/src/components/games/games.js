@@ -1,5 +1,6 @@
 import { Component, useState } from "react";
 import {
+    SimpleGrid,
     Radio,
     RadioGroup,
     Grid,
@@ -313,21 +314,23 @@ class Games extends Component {
         
         return (
             <>
-                <Grid>
-                    <Grid.Col span={4}>
-                        <NumberInput
-                            onChange={evt => this.updateYear(evt)}
-                            placeholder="Year Released"
-                            label="Year Released"
-                            description="Filter by Year Released"
-                        />
-                    </Grid.Col>
+                <SimpleGrid
+                    cols={4}
+                >
                     <Grid.Col span={4}>
                         <TextInput
                             onChange={evt => this.updatePublisher(evt)}
                             placeholder="Publisher name"
                             label="Publisher:"
                             description="Search for Publisher name."
+                        />
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                        <NumberInput
+                            onChange={evt => this.updateYear(evt)}
+                            placeholder="Year Released"
+                            label="Year Released"
+                            description="Filter by Year Released"
                         />
                     </Grid.Col>
                     <Grid.Col span={4}>
@@ -350,7 +353,7 @@ class Games extends Component {
                     </Grid.Col>
                     
                     
-                </Grid>
+                </SimpleGrid>
                 <Grid>
                     <Grid.Col span={4}>
                         <TextInput
