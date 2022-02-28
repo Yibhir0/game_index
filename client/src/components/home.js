@@ -1,25 +1,79 @@
 import React, { Component } from 'react';
 import TopNav from './topnav';
-import { Link } from 'react-router-dom';
-import { Anchor } from "@mantine/core";
+import {
+    Center, Grid, Text,
+    PasswordInput, TextInput, Loader,
+    Title, ThemeIcon, List, IssueClosedIcon, ListItem
+} from "@mantine/core";
 import GraphDash from './graphs/graphDash';
+import {XYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, FlexibleXYPlot, XAxis, YAxis, VerticalBarSeries} from 'react-vis';
+
 
 
 /**
  * This class renders the home page.
  */
 class Home extends Component {
+
+
     render() {
         return (
             <div className="App">
 
-                <div className='home-banner'>
-                    <h1>Welcome to the most popular GAMING DATABASE</h1>
-                </div>
+                <Center style={{ height: 200 }}>
+                    <Title order={1}>
+                        Welcome to the most popular <br></br> <Title align='center'>Gaming Database </Title>
+                    </Title>
+                </Center>
+                
+                <Grid justify="center" >
+                    <Grid.Col span={6} justify="center">
+                        <Text size='xl' align="center"> Everything you need for searching or analyzing games</Text>
+                            <List withPadding >
+                                <List.Item>Search Feature</List.Item>
+                                <List.Item>Filter/Sorting System</List.Item>
+                                <List.Item>Generated Graphs</List.Item>
+                                <List.Item>User Based Game Feeback</List.Item>
+                                <List.Item>Create your own Personalized List </List.Item>
+                            </List>
+                    </Grid.Col>
 
-                <div className='graph-container'>
-                    <GraphDash></GraphDash>
-                </div>
+                    <Grid.Col span={6} align="center">
+
+                        <TextInput
+                            label="Username"
+                            placeholder="Your username"
+                            rightSection={<Loader size="xs" />}
+                            style={{ maxWidth: 250 }} 
+                            />
+                        
+                        <PasswordInput
+                            label="Password"
+                            placeholder="Your password"
+                            style={{ maxWidth:250 }}
+                        />
+
+                    </Grid.Col>
+                </Grid>     
+
+                <Center style={{ height: 400, textAlign: 'center' }}>
+                    <FlexibleXYPlot xType = "ordinal">
+                            <VerticalBarSeries data={[
+                                    { x: 'Super Mario Land 2: 6 Golden Coins', y: 11180000 },
+                                    { x: 'New Super Mario Bros. Wii', y: 29150000 },
+                                    { x: 'Nintendogs', y: 24490000 },
+                                    { x: 'Super Mario Land', y: 18140000 },
+                                    { x: 'Super Mario 64', y: 11900000 },
+                                    { x: 'Super Mario Bros. 2', y: 7460000 },
+                                    { x: 'The Legend of Zelda: A Link to the Past', y: 4610000 },
+                                    { x: 'F-1 Race', y: 3410000 },
+                                    { x: 'Super Mario Maker', y: 3453333 },
+                                    { x: "Mike Tyson's Punch-Out!!", y: 3020000 }
+                                 ]} />
+                            <XAxis title = "Nintendo Game"/>
+                            <YAxis title = "Global sales"/>
+                    </FlexibleXYPlot>
+                </Center>
 
             </div>
         );

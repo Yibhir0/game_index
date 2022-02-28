@@ -1,5 +1,7 @@
-import { Button } from "@mantine/core";
+import { SegmentedControl } from "@mantine/core";
 import { Component, useState } from "react";
+import {XYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, VerticalBarSeries} from 'react-vis';
+import GraphController from "./graphController";
 
 class GraphDash extends Component{
 
@@ -8,12 +10,14 @@ class GraphDash extends Component{
 
         this.state = {
             games: [],
+            graphType: "Popular",
         };
     }
-
+    
     async componentDidMount() {
         await this.fetchGames();
     }
+
 
 /***
  * Fetches the games in the DB and adds them to the state.
@@ -25,6 +29,8 @@ class GraphDash extends Component{
         this.setState({
             games: fetchedGames
         });
+
+        console.log(this.state.games)
     }
 
     render() {
@@ -32,12 +38,19 @@ class GraphDash extends Component{
             <div>
                 <div className="centered-and-flexed" >
                     <div className="centered-and-flexed-controls">
-                        <Button> blah</Button>
-                        <Button> blah</Button>
-                        <Button> blah</Button>
+                    <SegmentedControl
+                        data={[
+                            { label: 'Most Popular', value: 'Popular' },
+                            { label: 'Highest Rating', value: 'Rating-High' },
+                            { label: 'Most Sold', value: 'Sale-Most' },
+                            ]}
+                            onChange={(value) => {
+                                this.setState({ graphType: value })
+                        }}    
+                        />
                     </div>
-
-
+                        
+                    <GraphController type="Popular" />
                 </div>
                 
 
