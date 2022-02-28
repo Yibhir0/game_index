@@ -374,7 +374,7 @@ class Games extends Component {
                             label="Sort by:"
                             description="Pick a field to sort the games"
                             >
-                            <Radio value="none">None</Radio>
+                            <Radio value="none">Default</Radio>
                             <Radio value="gs">Global Sales</Radio>
                             <Radio value="cs">Critic Score</Radio>
                         </RadioGroup>
