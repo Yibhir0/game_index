@@ -3,7 +3,7 @@ import TopNav from './topnav';
 import {
     Center, Grid, Text,
     PasswordInput, TextInput, Loader,
-    Title, ThemeIcon, List, IssueClosedIcon, ListItem
+    Title, List, Divider
 } from "@mantine/core";
 import GraphDash from './graphs/graphDash';
 import {XYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, FlexibleXYPlot, XAxis, YAxis, VerticalBarSeries} from 'react-vis';
@@ -56,24 +56,10 @@ class Home extends Component {
                     </Grid.Col>
                 </Grid>     
 
-                <Center style={{ height: 400, textAlign: 'center' }}>
-                    <FlexibleXYPlot xType = "ordinal">
-                            <VerticalBarSeries data={[
-                                    { x: 'Super Mario Land 2: 6 Golden Coins', y: 11180000 },
-                                    { x: 'New Super Mario Bros. Wii', y: 29150000 },
-                                    { x: 'Nintendogs', y: 24490000 },
-                                    { x: 'Super Mario Land', y: 18140000 },
-                                    { x: 'Super Mario 64', y: 11900000 },
-                                    { x: 'Super Mario Bros. 2', y: 7460000 },
-                                    { x: 'The Legend of Zelda: A Link to the Past', y: 4610000 },
-                                    { x: 'F-1 Race', y: 3410000 },
-                                    { x: 'Super Mario Maker', y: 3453333 },
-                                    { x: "Mike Tyson's Punch-Out!!", y: 3020000 }
-                                 ]} />
-                            <XAxis title = "Nintendo Game"/>
-                            <YAxis title = "Global sales"/>
-                    </FlexibleXYPlot>
-                </Center>
+                <Divider variant="dashed" />
+
+
+                <GraphDash type ="Popular"></GraphDash>
 
             </div>
         );
