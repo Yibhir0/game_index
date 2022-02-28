@@ -1,5 +1,7 @@
 import { Component, useState } from "react";
 import {
+    Radio,
+    RadioGroup,
     Grid,
     NumberInput,
     TextInput,
@@ -72,6 +74,7 @@ class Games extends Component {
 
         this.state = {
             gamesL: [], //contains all the games for the current list, will be changed every time a new query is made
+            previousL: [], //contains all the games for the previous list, used to revert sorting
             pageNumber: 1, //current page
             gamesPerPage: 10, //number of games to display per page
             filters: {
@@ -82,10 +85,13 @@ class Games extends Component {
                 genre: '',//genre for the video game
                 platform: '',//platform for the video game
             },
+            sort: "none",
+            ordering: [-1, 1],
 
         };
         
         this.search = this.search.bind(this);
+        this.sortGames = this.sortGames.bind(this);
         this.generateRows = this.generateRows.bind(this);
         this.changePage = this.changePage.bind(this);
         this.setupPagination = this.setupPagination.bind(this);
@@ -116,7 +122,8 @@ class Games extends Component {
         console.log(response);
         let games = await response.json();
         this.setState({
-            gamesL: games
+            gamesL: games,
+            previousL: games
         });
     }
 
@@ -133,7 +140,8 @@ class Games extends Component {
         console.log(response);
         let games = await response.json();
         this.setState({
-            gamesL: games
+            gamesL: games,
+            previousL: games
         });
     }
 
@@ -166,6 +174,39 @@ class Games extends Component {
             this.setupPagination();
             this.generateRows();
         });
+    }
+
+    sortGames() {
+
+        //sort by global sales
+        if (this.state.sort === "gs") {
+            const sortedGames = [].concat(this.state.gamesL)
+                .sort((a, b) => a.globalsales > b.globalsales ? this.state.ordering[0] : this.state.ordering[1]);
+            this.setState({
+                pageNumber: 1,
+                gamesL: sortedGames,
+            }, () => {
+                this.generateRows();
+            })
+        //sort by critic score
+        } else if (this.state.sort === "cs") {
+            const sortedGames = [].concat(this.state.gamesL)
+                .sort((a, b) => a.criticscore > b.criticscore ? this.state.ordering[0] : this.state.ordering[1]);
+            this.setState({
+                pageNumber: 1,
+                gamesL: sortedGames,
+            }, () => {
+                this.generateRows();
+            })
+        //remove sorting
+        } else {
+            this.setState({
+                pageNumber: 1,
+                gamesL: this.state.previousL,
+            }, () => {
+                this.generateRows();
+            })
+        }
     }
 
     //Generates rows for the games in the list
@@ -223,6 +264,24 @@ class Games extends Component {
         filters.platform = evt.target.value;
         filters.toggle = true;
         this.setState({ filters });
+    }
+    updateSort(evt) {
+        this.setState({
+            sort: evt
+        })
+    }
+
+    updateOrdering(evt) {
+        if (evt.target.value === 'desc') {
+            this.setState({
+                ordering: [-1, 1]
+            })
+        } else if(evt.target.value === 'asc'){
+            this.setState({
+                ordering: [1, -1]
+            })
+        }
+        
     }
     
     changePage(evt) {
@@ -290,19 +349,53 @@ class Games extends Component {
                         />
                     </Grid.Col>
                     
+                    
                 </Grid>
-                <TextInput
-                    onChange={evt => this.updateKeywords(evt)}
-                    placeholder="Keywords"
-                    label="Search:"
-                    description="Find a game by looking them up."
-                    variant="filled"
-                    radius="lg"
-                    size="md"
-                />
-                <Button onClick={this.search}>
-                    Search
-                </Button>
+                <Grid>
+                    <Grid.Col span={4}>
+                        <TextInput
+                        onChange={evt => this.updateKeywords(evt)}
+                        placeholder="Keywords"
+                        label="Search:"
+                        description="Find a game by looking them up."
+                        variant="filled"
+                        radius="lg"
+                        size="md"
+                        />
+                        <br></br>
+                        <Button onClick={this.search}>
+                            Search
+                        </Button>
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                        <RadioGroup
+                            onChange={evt => this.updateSort(evt)}
+                            defaultValue="none"
+                            label="Sort by:"
+                            description="Pick a field to sort the games"
+                            >
+                            <Radio value="none">Default</Radio>
+                            <Radio value="gs">Global Sales</Radio>
+                            <Radio value="cs">Critic Score</Radio>
+                        </RadioGroup>
+                        <NativeSelect
+                            onChange={evt => this.updateOrdering(evt)}
+                            defaultValue="desc"
+                            label="Order by:"
+                            placeholder="Select order"
+                            data={[
+                                { value: 'desc', label: 'Descending' },
+                                { value: 'asc', label: 'Ascending' },
+                            ]}
+                            />
+                        <br></br>
+                        <Button onClick={this.sortGames}>
+                            Sort
+                        </Button>
+                    </Grid.Col>
+                </Grid>
+
+                
                 <Table verticalSpacing="md" striped highlightOnHover>
                     <thead>
                         <tr>
