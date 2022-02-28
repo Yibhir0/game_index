@@ -3,7 +3,7 @@ const path = require('path');
 const FeedBack = require('../mongoose/models/feedbackSchema')
 const Games = require('../mongoose/models/gameSchema')
 const User = require('../mongoose/models/userSchema')
-require('dotenv').config({ path: path.resolve(__dirname, '../../.env') })
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 
 module.exports.connectToDB = async () => {
     const dbURI = process.env.ATLAS_URI;
