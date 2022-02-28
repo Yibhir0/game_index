@@ -13,7 +13,6 @@ const GameView = () => {
 
     useEffect(() => {
 
-        console.log("hookie");
         fetchGame();
         fetchFeedback();
 
