@@ -86,6 +86,7 @@ class Games extends Component {
                 platform: '',//platform for the video game
             },
             sort: "none",
+            ordering: [-1, 1],
 
         };
         
@@ -176,10 +177,11 @@ class Games extends Component {
     }
 
     sortGames() {
+
         //sort by global sales
         if (this.state.sort === "gs") {
             const sortedGames = [].concat(this.state.gamesL)
-                .sort((a, b) => a.globalsales > b.globalsales ? -1 : 1);
+                .sort((a, b) => a.globalsales > b.globalsales ? this.state.ordering[0] : this.state.ordering[1]);
             this.setState({
                 pageNumber: 1,
                 gamesL: sortedGames,
@@ -189,7 +191,7 @@ class Games extends Component {
         //sort by critic score
         } else if (this.state.sort === "cs") {
             const sortedGames = [].concat(this.state.gamesL)
-                .sort((a, b) => a.criticscore > b.criticscore ? -1 : 1);
+                .sort((a, b) => a.criticscore > b.criticscore ? this.state.ordering[0] : this.state.ordering[1]);
             this.setState({
                 pageNumber: 1,
                 gamesL: sortedGames,
@@ -267,6 +269,19 @@ class Games extends Component {
         this.setState({
             sort: evt
         })
+    }
+
+    updateOrdering(evt) {
+        if (evt.target.value === 'desc') {
+            this.setState({
+                ordering: [-1, 1]
+            })
+        } else if(evt.target.value === 'asc'){
+            this.setState({
+                ordering: [1, -1]
+            })
+        }
+        
     }
     
     changePage(evt) {
@@ -363,6 +378,16 @@ class Games extends Component {
                             <Radio value="gs">Global Sales</Radio>
                             <Radio value="cs">Critic Score</Radio>
                         </RadioGroup>
+                        <NativeSelect
+                            onChange={evt => this.updateOrdering(evt)}
+                            defaultValue="desc"
+                            label="Order by:"
+                            placeholder="Select order"
+                            data={[
+                                { value: 'desc', label: 'Descending' },
+                                { value: 'asc', label: 'Ascending' },
+                            ]}
+                            />
                         <br></br>
                         <Button onClick={this.sortGames}>
                             Sort
