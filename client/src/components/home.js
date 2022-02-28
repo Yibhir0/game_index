@@ -59,7 +59,7 @@ class Home extends Component {
                 <Divider variant="dashed" />
 
 
-                <GraphDash type ="Popular"></GraphDash>
+                <GraphDash></GraphDash>
 
             </div>
         );

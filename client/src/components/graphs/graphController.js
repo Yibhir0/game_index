@@ -6,38 +6,11 @@ import {
 
 class GraphController extends Component{
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            games: [],
-            graphType: props.type,
-        };
-    }
-    
-    async componentDidMount() {
-        await this.fetchGames();
-    }
-
-
-/***
- * Fetches the games in the DB and adds them to the state.
- */
-    async fetchGames() {
-        let fetchResponse = await fetch('/games');
-        let fetchedGames = await fetchResponse.json();
-
-        this.setState({
-            games: fetchedGames
-        });
-
-
-    }
 
     render() {
         let graph;
         let graph2;
-        if (this.state.graphType === 'Popular') {
+        if (this.props.states.graphType === 'Popular') {
             graph = <FlexibleXYPlot xType = "ordinal">
             <VerticalBarSeries data={[
                     { x: 'El Juegox', y: 11.2 },
@@ -53,36 +26,33 @@ class GraphController extends Component{
             <XAxis title = "Nintendo Game"/>
             <YAxis title = "Global sales"/>
             </FlexibleXYPlot>;
-    
-            graph2 =<FlexibleXYPlot style={{backgroundColor:"#F6BB42"}} >
-                <VerticalGridLines />
-                <HorizontalGridLines />
-                <LineSeries style={{ fill: 'none' }} color="Black" data={[
-                {x: 0, y: 8},
-                {x: 1, y: 5},
-                {x: 2, y: 4},
-                {x: 3, y: 9},
-                {x: 4, y: 1},
-                {x: 5, y: 7},
-                {x: 6, y: 6},
-                {x: 7, y: 3},
-                {x: 8, y: 2},
-                {x: 9, y: 0}
-                ]} />
-                <XAxis title="El Juego"/>
-                <YAxis title = "The big Number"/>
-              </FlexibleXYPlot>
 
         }
         else {
-            graph = <h1> Ya ok </h1>;
+            graph = <FlexibleXYPlot >
+            <VerticalGridLines />
+            <HorizontalGridLines />
+            <LineSeries style={{ fill: 'none' }} color="Black" data={[
+            {x: 0, y: 8},
+            {x: 1, y: 5},
+            {x: 2, y: 4},
+            {x: 3, y: 9},
+            {x: 4, y: 1},
+            {x: 5, y: 7},
+            {x: 6, y: 6},
+            {x: 7, y: 3},
+            {x: 8, y: 2},
+            {x: 9, y: 0}
+            ]} />
+            <XAxis title="El Juego"/>
+            <YAxis title = "The big Number"/>
+          </FlexibleXYPlot>
         }
         
         return (
             <div>
                 <Center style={{ height: 400, textAlign: 'center' }}>
                     {graph}
-                    {/* {graph2} */}
                 </Center>
             </div>
         )

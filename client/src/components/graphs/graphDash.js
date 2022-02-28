@@ -10,17 +10,35 @@ class GraphDash extends Component{
 
         this.state = {
             games: [],
-            graphType: props.type,
+            graphType: "Popular"
         };
+
+        this.changeGraph = this.changeGraph.bind(this);
+
     }
-    
-    componentDidUpdate(prevProps){
-        if(prevProps.graphType !== this.props.graphType){
-            this.setState({          
-                graphType: this.props.graphType
-            });
-            this.forceUpdate();
-        }
+
+        
+    async componentDidMount() {
+        await this.fetchGames();
+    }
+
+
+/***
+ * Fetches the games in the DB and adds them to the state.
+ */
+    async fetchGames() {
+        let fetchResponse = await fetch('/games');
+        let fetchedGames = await fetchResponse.json();
+
+        this.setState({
+            games: fetchedGames
+        });
+
+
+    }
+
+    changeGraph(value) {
+        this.setState({ graphType: value })
     }
 
     render() {
@@ -33,15 +51,13 @@ class GraphDash extends Component{
                             { label: 'Highest Rating', value: 'Rating-High' },
                             { label: 'Most Sold', value: 'Sale-Most' },
                             ]}
-                            onChange={(value) => {
-                                this.setState({ graphType: value })
-                        }}    
+                            onChange={(value) => this.changeGraph(value)}    
                     />
                     
                 </Grid.Col>
 
                 <Grid.Col>
-                    <GraphController type = {this.state.graphType} />
+                    <GraphController states = {this.state} />
                 </Grid.Col>
             </Grid>
         )
