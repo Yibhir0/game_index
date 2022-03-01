@@ -1,5 +1,6 @@
 import { Component, useState } from "react";
 import {
+    Loader,
     SimpleGrid,
     Radio,
     RadioGroup,
@@ -74,6 +75,7 @@ class Games extends Component {
         ];
 
         this.state = {
+            loading: true,
             gamesL: [], //contains all the games for the current list, will be changed every time a new query is made
             previousL: [], //contains all the games for the previous list, used to revert sorting
             pageNumber: 1, //current page
@@ -116,6 +118,9 @@ class Games extends Component {
     }
 
     async fetchGames() {
+        this.setState({
+            loading: true
+        });
         //fetch all games
         console.log("game fetched");
         let gameUrl = "/games";
@@ -129,6 +134,9 @@ class Games extends Component {
     }
 
     async fetchGamesByFilter() {
+        this.setState({
+            loading: true
+        });
         //fetch all games by filters
         console.log("game fetched by filters");
         let gameUrl = "/games/filter?" +
@@ -225,7 +233,10 @@ class Games extends Component {
                 <td>{game.criticscore}</td>
             </tr>
         ));
-        this.setState({rows: rows.slice(((this.state.pageNumber-1)*10),this.state.pageNumber*10)});
+        this.setState({
+            rows: rows.slice(((this.state.pageNumber - 1) * 10), this.state.pageNumber * 10),
+            loading: false
+        });
     }
 
     //update current keyword value
@@ -397,29 +408,32 @@ class Games extends Component {
                         </Button>
                     </Grid.Col>
                 </Grid>
-
                 
-                <Table verticalSpacing="md" striped highlightOnHover>
-                    <thead>
-                        <tr>
-                            <th>Index</th>
-                            <th>Name</th>
-                            <th>Genre</th>
-                            <th>Platform</th>
-                            <th>Publisher</th>
-                            <th>Year Released</th>
-                            <th>Global Sales</th>
-                            <th>Critic Score</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.state.rows}
-                    </tbody>
-                </Table>
-                <Pagination
-                    total={this.state.totalPages}
-                    page={this.state.pageNumber}
-                    onChange={evt => this.changePage(evt)} />
+                {this.state.loading ? <Loader size="xl" /> :
+                    <div>
+                        <Table verticalSpacing="md" striped highlightOnHover>
+                            <thead>
+                                <tr>
+                                    <th>Index</th>
+                                    <th>Name</th>
+                                    <th>Genre</th>
+                                    <th>Platform</th>
+                                    <th>Publisher</th>
+                                    <th>Year Released</th>
+                                    <th>Global Sales</th>
+                                    <th>Critic Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {this.state.rows}
+                            </tbody>
+                        </Table>
+                        <Pagination
+                            total={this.state.totalPages}
+                            page={this.state.pageNumber}
+                            onChange={evt => this.changePage(evt)} />
+                    </div>} 
             </>
         );
     }
