@@ -1,5 +1,6 @@
 import { Component, useState } from "react";
 import {
+    Modal,
     Text,
     Title,
     Accordion,
@@ -25,12 +26,24 @@ class Profile extends Component {
 
         this.state = {
             allList: [
-                [
-                    {name: 'Mario', genre: 'Platform', platform: 'DS', publisher: 'Nintendo', year: 123 },
-                    {name: 'Sonic', genre: 'Platform', platform: 'DS', publisher: 'SEGA', year: 123},
-                    {name: 'COD', genre: 'Shooter', platform: 'DS', publisher: 'IDK', year: 123},
-                ]
-            ]
+                {
+                    name: "Favorite Games 1",
+                    list: [
+                        {name: 'Mario', genre: 'Platform', platform: 'DS', publisher: 'Nintendo', year: 123 },
+                        {name: 'Sonic', genre: 'Platform', platform: 'DS', publisher: 'SEGA', year: 123},
+                        {name: 'COD', genre: 'Shooter', platform: 'DS', publisher: 'IDK', year: 123},
+                    ]
+                },
+                {
+                    name: "Favorite Games 2",
+                    list: [
+                        {name: 'Mario', genre: 'Platform', platform: 'DS', publisher: 'Nintendo', year: 123 },
+                        {name: 'Sonic', genre: 'Platform', platform: 'DS', publisher: 'SEGA', year: 123},
+                        {name: 'COD', genre: 'Shooter', platform: 'DS', publisher: 'IDK', year: 123},
+                    ]
+                }
+            ],
+            creatingList: false
         };
     }
 
@@ -41,6 +54,22 @@ class Profile extends Component {
         
         return (
             <>
+                <Modal
+                    opened={this.state.creatingList}
+                    onClose={() => this.setState({creatingList: false})}
+                    title="Create List"
+                >
+                    <TextInput
+                        placeholder="List name"
+                        label="Enter Game List name:"
+                        size="md"
+                        required
+                    />
+                    <br></br>
+                    <Button>
+                        Create
+                    </Button>
+                </Modal>
                 <Grid columns={24}>
                     <Grid.Col span={6}>
                         
@@ -67,7 +96,12 @@ class Profile extends Component {
                                 <Grid.Col span={4}>
                                 </Grid.Col>
                                 <Grid.Col span={4}>
-                                    <Button style={{marginRight: 'auto'}}>Create List</Button>
+                                    <Button
+                                        style={{ marginRight: 'auto' }}
+                                        onClick={() => this.setState({creatingList: true})}
+                                    >
+                                        Create List
+                                    </Button>
                                 </Grid.Col>
                             </SimpleGrid>
                             <Accordion iconPosition="right" >
