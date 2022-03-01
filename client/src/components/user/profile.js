@@ -57,9 +57,19 @@ class Profile extends Component {
                         </div>
                     </Grid.Col>
                     <Grid.Col span={18}>
-                        <div style={{margin: 'auto', padding: 50 }}>
-                            <Title order={2}>Game List</Title>
-                            <Button>Create List</Button>
+                        <div style={{ margin: 'auto', padding: 50 }}>
+                            <SimpleGrid cols={4}>
+                                <Grid.Col span={4}>
+                                    <Title order={2}>Game List</Title>
+                                </Grid.Col>
+                                <Grid.Col span={4}>
+                                </Grid.Col>
+                                <Grid.Col span={4}>
+                                </Grid.Col>
+                                <Grid.Col span={4}>
+                                    <Button style={{marginRight: 'auto'}}>Create List</Button>
+                                </Grid.Col>
+                            </SimpleGrid>
                             <Accordion iconPosition="right" >
                                 <Accordion.Item label="Favorite Games">
                                     <Table verticalSpacing={'xl'}>
