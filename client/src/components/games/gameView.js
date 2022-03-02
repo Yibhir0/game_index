@@ -47,7 +47,6 @@ const GameView = () => {
 
     const addComment = async (values) => {
 
-
         // // Get the value of the comment box
         // // and make sure it not some empty strings
         const comment = values.comment;
@@ -56,27 +55,38 @@ const GameView = () => {
         // const timestamp = Date.now();
         const newComment = {
             gameID: id,
-            userId: "234",
+            userId: 123,
             comment: comment,
             rating: values.rating,
         };
 
         const feedbackUrl = `/games/${id}/feedback`;
 
-        try {
-            await fetch(feedbackUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newComment)
-            });
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newComment)
+        };
 
+        fetch(feedbackUrl, requestOptions)
+            .then(response => response.json())
+            .then(data => fetchFeedback());
 
-            //
-            //await fetchFeedback();
+        // try {
+        //     const response = await fetch(feedbackUrl, {
+        //         method: 'POST',
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify(newComment)
+        //     });
 
-        } catch (error) {
-            console.log("error", error);
-        }
+        //     console.log("game " + response);
+        //
+        //await fetchFeedback();
+
+        // } catch (error) {
+        //     console.log("biggg problem")
+        //     console.log("error", error);
+        // }
     }
     return (
         <div className="v_flex">
