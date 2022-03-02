@@ -48,8 +48,10 @@ module.exports.addFeedback = async (feedback) => {
     // Save the new model instance, passing a callback
     await feed.save(function (err) {
         if (err) return handleError(err);
-        return feed;
+
     });
+
+    return feed;
 
 }
 
@@ -105,8 +107,6 @@ module.exports.deleteFromList = async (user, list_name, game_name) => {
 
 }
 
-
-
 module.exports.getGamesByFilter = async (filters) => {
 
     let games = await Games
@@ -120,7 +120,7 @@ module.exports.getGamesByFilter = async (filters) => {
             {
                 $match:
                 {
-                    name: {'$regex' : filters.keywords, '$options' : 'i'},
+                    name: { '$regex': filters.keywords, '$options': 'i' },
                     yearStr: { $regex: filters.year },
                     publisher: { '$regex': filters.publisher, '$options': 'i' },
                     genre: { '$regex': filters.genre, '$options': 'i' },
@@ -128,7 +128,6 @@ module.exports.getGamesByFilter = async (filters) => {
                 }
             }
         ])
-    //console.log(games);
     return games
 }
 

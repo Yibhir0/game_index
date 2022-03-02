@@ -12,7 +12,7 @@ class Feedback extends Component {
     }
     render() {
         return (
-            <div>
+            <div >
 
                 <Grid >
                     <Grid.Col span={2} >
