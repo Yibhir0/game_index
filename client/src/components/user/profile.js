@@ -15,7 +15,8 @@ import {
     Anchor,
     Pagination,
     Button,
-    NativeSelect
+    NativeSelect,
+    THEME_ICON_SIZES
 } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
@@ -43,30 +44,116 @@ class Profile extends Component {
                     ]
                 }
             ],
-            creatingList: false
+            creatingList: false,
+            createdListName: '',
         };
+
+        this.createList = this.createList.bind(this);
+        this.generateList = this.generateList.bind(this);
     }
 
     async componentDidMount() {
+        this.generateList();
     }
 
+    generateList() {
+        const lists = this.state.allList.map((gameList) => (
+            <Accordion.Item label={gameList.name}>
+                <Table verticalSpacing={'xl'}>
+                    <thead>
+                        <tr>
+                            <th>Cover</th>
+                            <th>Title</th>
+                            <th>Genre</th>
+                            <th>Publisher</th>
+                            <th>Year</th>
+                            <th>
+                                <Button color="green">
+                                    Add Game
+                                </Button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>{
+                        gameList.list.map((game) => (
+                            <tr key={game.name}>
+                                <td>
+                                    <Image
+                                        width={80}
+                                        height={80}
+                                        src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                                        alt="Random unsplash image"
+                                    />
+                                </td>
+                                <td>{game.name}</td>
+                                <td>{game.genre}</td>
+                                <td>{game.publisher}</td>
+                                <td>{game.year}</td>
+                                <td>
+                                    <Button color="red" size="xs">
+                                        X
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))
+                    }</tbody>
+                </Table>
+            </Accordion.Item>
+        ));
+
+        this.setState({
+            displayLists: lists
+        });
+    }
+
+    createList() {
+        if (this.state.createdListName.trim().length === 0) {
+            console.log("Cannot be empty");
+        } else {
+            console.log("List created: " + this.state.createdListName);
+            this.setState({
+                allList:
+                    [
+                        ...this.state.allList,
+                        {
+                            name: this.state.createdListName,
+                            list: [],
+                        }
+                    ]
+            }, () => {
+                console.log(this.state.allList);
+                this.generateList();
+            })
+            this.setState({
+                creatingList: false,
+                createdListName: '',
+            })
+            
+        }
+    }
     render() {
         
         return (
             <>
                 <Modal
                     opened={this.state.creatingList}
-                    onClose={() => this.setState({creatingList: false})}
+                    onClose={() => this.setState({
+                        creatingList: false,
+                        createdListName: '',
+                    })}
                     title="Create List"
                 >
                     <TextInput
+                        onChange={(evt) => this.setState({createdListName: evt.target.value})}
                         placeholder="List name"
                         label="Enter Game List name:"
                         size="md"
                         required
                     />
                     <br></br>
-                    <Button>
+                    <Button
+                        onClick={this.createList}
+                    >
                         Create
                     </Button>
                 </Modal>
@@ -105,89 +192,7 @@ class Profile extends Component {
                                 </Grid.Col>
                             </SimpleGrid>
                             <Accordion iconPosition="right" >
-                                <Accordion.Item label="Favorite Games">
-                                    <Table verticalSpacing={'xl'}>
-                                        <thead>
-                                            <tr>
-                                                <th>Cover</th>
-                                                <th>Title</th>
-                                                <th>Genre</th>
-                                                <th>Publisher</th>
-                                                <th>Year</th>
-                                                <th>
-                                                    <Button color="green">
-                                                        Add Game
-                                                    </Button>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>{
-                                            this.state.allList[0].map((game) => (
-                                                <tr key={game.name}>
-                                                    <td>
-                                                        <Image
-                                                            width={80}
-                                                            height={80}
-                                                            src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                                                            alt="Random unsplash image"
-                                                        />
-                                                    </td>
-                                                    <td>{game.name}</td>
-                                                    <td>{game.genre}</td>
-                                                    <td>{game.publisher}</td>
-                                                    <td>{game.year}</td>
-                                                    <td>
-                                                        <Button color="red" size="xs">
-                                                            X
-                                                        </Button>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        }</tbody>
-                                    </Table>
-                                </Accordion.Item>
-
-                                <Accordion.Item label="Play Later">
-                                    <Table verticalSpacing={'xl'}>
-                                        <thead>
-                                            <tr>
-                                                <th>Cover</th>
-                                                <th>Title</th>
-                                                <th>Genre</th>
-                                                <th>Publisher</th>
-                                                <th>Year</th>
-                                                <th>
-                                                    <Button color="green">
-                                                        Add Game
-                                                    </Button>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>{
-                                            this.state.allList[0].map((game) => (
-                                                <tr key={game.name}>
-                                                    <td>
-                                                        <Image
-                                                            width={80}
-                                                            height={80}
-                                                            src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                                                            alt="Random unsplash image"
-                                                        />
-                                                    </td>
-                                                    <td>{game.name}</td>
-                                                    <td>{game.genre}</td>
-                                                    <td>{game.publisher}</td>
-                                                    <td>{game.year}</td>
-                                                    <td>
-                                                        <Button color="red" size="xs">
-                                                            X
-                                                        </Button>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        }</tbody>
-                                    </Table>
-                                </Accordion.Item>
+                                {this.state.displayLists}
                             </Accordion>
                         </div>
                     </Grid.Col>
