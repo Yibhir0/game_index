@@ -1,5 +1,7 @@
 import { Component, useState } from "react";
 import {
+    Loader,
+    Autocomplete,
     Modal,
     Text,
     Title,
@@ -26,6 +28,8 @@ class Profile extends Component {
         super(props);
 
         this.state = {
+            isGamesLoaded: false,
+            gamesL: [],
             allList: [
                 {
                     name: "Favorite Games 1",
@@ -46,14 +50,50 @@ class Profile extends Component {
             ],
             creatingList: false,
             createdListName: '',
+            addingGame: false,
         };
 
         this.createList = this.createList.bind(this);
         this.generateList = this.generateList.bind(this);
+        this.fetchGames = this.fetchGames.bind(this);
+        this.convertStringList = this.convertStringList.bind(this);
     }
 
     async componentDidMount() {
         this.generateList();
+        await this.fetchGames();
+        
+    }
+
+    async fetchGames() {
+        this.setState({
+            loading: true
+        });
+        //fetch all games
+        console.log("game fetched");
+        let gameUrl = "/games";
+        let response = await fetch(gameUrl);
+        console.log(response);
+        let games = await response.json();
+        this.setState({
+            gamesL: games,
+        }, () => {
+            this.convertStringList();
+            // console.log(this.state.gamesL);
+            // console.log(this.state.isGamesLoaded);
+        });
+    }
+
+    convertStringList() {
+        let arr = this.state.gamesL.map((game) => (
+            { value: game.name + " (" + game.platform + ")" + " ("+game.year+")", id: game._id}
+        ));
+        this.setState({
+            gameStrings: arr,
+            isGamesLoaded: true,
+        }, () => {
+            console.log(this.state.gameStrings);
+        })
     }
 
     generateList() {
@@ -68,7 +108,10 @@ class Profile extends Component {
                             <th>Publisher</th>
                             <th>Year</th>
                             <th>
-                                <Button color="green">
+                                <Button
+                                    onClick={() => this.setState({addingGame: true})}
+                                    color="green"
+                                >
                                     Add Game
                                 </Button>
                             </th>
@@ -156,6 +199,28 @@ class Profile extends Component {
                     >
                         Create
                     </Button>
+                </Modal>
+                <Modal
+                    opened={this.state.addingGame}
+                    onClose={() => this.setState({
+                        addingGame: false,
+                    })}
+                    title="Add Game"
+                >
+                    {this.state.isGamesLoaded ?
+                        <>
+                            <Autocomplete
+                                label="Search game:"
+                                placeholder="Write keyword"
+                                data={this.state.gameStrings}
+                            />
+                            <Button>
+                                Add
+                            </Button>
+                        </>
+                        :
+                        <Loader size="xl" />
+                    }
                 </Modal>
                 <Grid columns={24}>
                     <Grid.Col span={6}>
