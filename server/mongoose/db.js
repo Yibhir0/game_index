@@ -104,7 +104,6 @@ module.exports.deleteFromList = async (user, list_name, game_name) => {
     }
 
     await User.findOneAndReplace({ _id: user_id }, user);
-
 }
 
 module.exports.getGamesByFilter = async (filters) => {
@@ -130,5 +129,4 @@ module.exports.getGamesByFilter = async (filters) => {
         ])
     return games
 }
-
 
