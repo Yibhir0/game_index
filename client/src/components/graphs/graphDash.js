@@ -1,27 +1,51 @@
 import { Center, Grid, SegmentedControl } from "@mantine/core";
 import { Component, useState } from "react";
-import {XYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, VerticalBarSeries} from 'react-vis';
+import { XYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, VerticalBarSeries } from 'react-vis';
 import GraphController from "./graphController";
 
-class GraphDash extends Component{
+class GraphDash extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
             games: [],
-            graphType: props.type,
+            graphType: "Popular",
         };
     }
-    
-    componentDidUpdate(prevProps){
-        if(prevProps.graphType !== this.props.graphType){
-            this.setState({          
-                graphType: this.props.graphType
-            });
-            this.forceUpdate();
-        }
+
+    async componentDidMount() {
+        await this.fetchGames();
     }
+
+
+    /***
+     * Fetches the games in the DB and adds them to the state.
+     */
+    async fetchGames() {
+        let fetchResponse = await fetch('/games');
+        let fetchedGames = await fetchResponse.json();
+
+
+        this.setState({
+            games: fetchedGames
+        });
+
+
+    }
+
+    changeState(value) {
+        this.setState({ graphType: value })
+    }
+
+    // componentDidUpdate(prevProps){
+    //     if(prevProps.graphType !== this.props.graphType){
+    //         this.setState({          
+    //             graphType: this.props.graphType
+    //         });
+    //         this.forceUpdate();
+    //     }
+    // }
 
     render() {
         return (
@@ -32,16 +56,17 @@ class GraphDash extends Component{
                             { label: 'Most Popular', value: 'Popular' },
                             { label: 'Highest Rating', value: 'Rating-High' },
                             { label: 'Most Sold', value: 'Sale-Most' },
-                            ]}
-                            onChange={(value) => {
-                                this.setState({ graphType: value })
-                        }}    
+                        ]}
+
+                        onChange={(value) => {
+                            this.changeState(value)
+                        }}
                     />
-                    
+
                 </Grid.Col>
 
                 <Grid.Col>
-                    <GraphController type = {this.state.graphType} />
+                    <GraphController graphData={this.state} />
                 </Grid.Col>
             </Grid>
         )
