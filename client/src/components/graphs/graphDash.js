@@ -10,18 +10,21 @@ class GraphDash extends Component{
 
         this.state = {
             games: [],
-            graphType: "Popular"
+            graphType: "Popular",
+            graphData : {
+                popularGames: [],
+                
+            }
         };
 
         this.changeGraph = this.changeGraph.bind(this);
-
     }
 
         
     async componentDidMount() {
         await this.fetchGames();
+        this.getGraphDatas();
     }
-
 
 /***
  * Fetches the games in the DB and adds them to the state.
@@ -34,11 +37,34 @@ class GraphDash extends Component{
             games: fetchedGames
         });
 
-
     }
 
+    /**
+     * Handler for the button graph selection.
+     * @param {*} value 
+     */
     changeGraph(value) {
         this.setState({ graphType: value })
+    }
+
+    getGraphDatas() {
+        let popularGames, ratingGames, salesGames = []
+
+        popularGames = [].concat(this.state.games)
+            .sort((a, b) => a.globalsales < b.globalsales).slice(0, 10);
+        
+        this.setState({graphData : {popularGames: this.getGraphDataFormat(popularGames)}})
+        
+    }
+
+    getGraphDataFormat(gamesArray) {
+        let dataArray = [];
+
+        for (let game of gamesArray) {
+            dataArray.push({ x : game.name, y : game.globalsales });
+        }
+        console.log(dataArray)
+        return dataArray;
     }
 
     render() {

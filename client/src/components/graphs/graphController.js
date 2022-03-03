@@ -1,5 +1,5 @@
 import { Component, useState } from "react";
-import {XYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, FlexibleXYPlot, XAxis, YAxis, VerticalBarSeries} from 'react-vis';
+import {ChartLabel, LineSeries, VerticalGridLines, HorizontalGridLines, FlexibleXYPlot, XAxis, YAxis, VerticalBarSeries} from 'react-vis';
 import {
     Center
 } from "@mantine/core";
@@ -9,23 +9,31 @@ class GraphController extends Component{
 
     render() {
         let graph;
-        let graph2;
         if (this.props.states.graphType === 'Popular') {
-            graph = <FlexibleXYPlot xType = "ordinal">
-            <VerticalBarSeries data={[
-                    { x: 'El Juegox', y: 11.2 },
-                    { x: 'New Super Mario', y: 29.2 },
-                    { x: 'Nintendogs', y: 25.0 },
-                    { x: 'Super Mario Land', y: 18.1 },
-                    { x: 'Super Mario 64', y: 11.9 },
-                    { x: 'Bears', y: 74.5 },
-                    { x: 'The Legend of Zelda', y: 46.1 },
-                    { x: 'F-1 Race', y: 34.1},
-                    { x: 'Super Mario Maker', y: 34.5 },
-                 ]} />
-            <XAxis title = "Nintendo Game"/>
-            <YAxis title = "Global sales"/>
-            </FlexibleXYPlot>;
+            graph = <FlexibleXYPlot margin={{top:25}} xType = "ordinal">
+                <VerticalBarSeries
+                    data={this.props.states.graphData.popularGames}
+                    onValueMouseOver={(datapoint, { event }) => {
+                        console.log(event.target); // Some SVG element
+                      }}
+                    />
+                            <XAxis style={{ line: { stroke:'black'}}} title = "Nintendo Game"/>
+                            <YAxis style={{ line: { stroke: 'black' } }}
+                                tickSize={1}
+                                tickPadding={2}
+                                tickFormat={v => v / 1000000}
+                            />
+                            <ChartLabel
+                                text="Global Sales (Millions)"
+                                className="alt-y-label"
+                                includeMargin={false}
+                                xPercent={0.09}
+                                yPercent={0.035}
+                                style={{
+                                textAnchor: 'end'
+                                    }}
+                                />
+                        </FlexibleXYPlot>;
 
         }
         else {
