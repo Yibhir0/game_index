@@ -5,6 +5,27 @@ const path = require("path");
 const PORT = process.env.PORT || 5000;
 const cors = require("cors");
 const bodyParser = require("body-parser");
+//Swagger
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
+
+const swaggerDefinition = {
+    openapi: '3.0.0',
+    info: {
+        title: 'Game Index Endpoints Swagger Documentation',
+        version: '1.0.0',
+    }, 
+};
+
+const options = {
+    swaggerDefinition,
+    // Paths to files containing OpenAPI definitions
+    apis: ['./routes/*.js']
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 app.use(express.json());
 
