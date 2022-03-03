@@ -22,9 +22,8 @@ exports.addComment = async (req, res) => {
     try {
         const readyState = await db.connectToDB()
         if (readyState === 1) {
-            await db.addFeedback(req.body);
-            res.status(200);
-
+            const r = await db.addFeedback(req.body);
+            res.json(r);
         }
         else {
             res.status(404).json({ message: "Could not connect to the database" })
