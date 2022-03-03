@@ -33,23 +33,16 @@ class Profile extends Component {
             allList: [
                 {
                     name: "Favorite Games 1",
-                    list: [
-                        {name: 'Mario', genre: 'Platform', platform: 'DS', publisher: 'Nintendo', year: 123 },
-                        {name: 'Sonic', genre: 'Platform', platform: 'DS', publisher: 'SEGA', year: 123},
-                        {name: 'COD', genre: 'Shooter', platform: 'DS', publisher: 'IDK', year: 123},
-                    ]
+                    list: []
                 },
                 {
                     name: "Favorite Games 2",
-                    list: [
-                        {name: 'Mario', genre: 'Platform', platform: 'DS', publisher: 'Nintendo', year: 123 },
-                        {name: 'Sonic', genre: 'Platform', platform: 'DS', publisher: 'SEGA', year: 123},
-                        {name: 'COD', genre: 'Shooter', platform: 'DS', publisher: 'IDK', year: 123},
-                    ]
+                    list: []
                 }
             ],
             creatingList: false,
             createdListName: '',
+            currentGameList: '',
             addingGame: false,
             gameToAdd: [],
         };
@@ -58,6 +51,7 @@ class Profile extends Component {
         this.generateList = this.generateList.bind(this);
         this.fetchGames = this.fetchGames.bind(this);
         this.convertStringList = this.convertStringList.bind(this);
+        this.addGameToList = this.addGameToList.bind(this);
     }
 
     async componentDidMount() {
@@ -104,18 +98,12 @@ class Profile extends Component {
             let gameToAdd = this.state.gamesL.filter((game) => game._id === gameID);
             this.setState({
                 gameToAdd: gameToAdd
-            }, () => {
-                console.log("Game to add:");
-                console.log(this.state.gameToAdd);
             });
             
         } else {
             this.setState({
                 gameToAdd: []
-            }, () => {
-                console.log("Game not found:");
-                console.log(this.state.gameToAdd);
-            });   
+            }); 
         }      
     }
     generateList() {
@@ -131,7 +119,10 @@ class Profile extends Component {
                             <th>Year</th>
                             <th>
                                 <Button
-                                    onClick={() => this.setState({addingGame: true})}
+                                    onClick={() => this.setState({
+                                        addingGame: true,
+                                        currentGameList: gameList.name
+                                    })}
                                     color="green"
                                 >
                                     Add Game
@@ -196,6 +187,26 @@ class Profile extends Component {
             
         }
     }
+    addGameToList() {
+        if (this.state.gameToAdd.length) {
+            console.log("Game to add:");
+            console.log(this.state.gameToAdd);
+
+            console.log(this.state.allList);
+
+            let listIndex = this.state.allList.findIndex(list => list.name === this.state.currentGameList);
+            const copyList = { ...this.state.allList };
+            copyList[listIndex].list.push(this.state.gameToAdd[0]);
+            
+            let allList = Object.values(copyList);
+            this.setState({ allList }, () => {
+                this.generateList();
+            })  
+        } else {
+            console.log("Game not found:");
+            console.log(this.state.gameToAdd);
+        }
+    }
     render() {
         
         return (
@@ -226,6 +237,7 @@ class Profile extends Component {
                     opened={this.state.addingGame}
                     onClose={() => this.setState({
                         addingGame: false,
+                        currentGameList: '',
                     })}
                     title="Add Game"
                 >
@@ -237,7 +249,9 @@ class Profile extends Component {
                                 placeholder="Write keyword"
                                 data={this.state.gameStrings}
                             />
-                            <Button>
+                            <Button
+                                onClick={this.addGameToList}
+                            >
                                 Add
                             </Button>
                         </>
