@@ -45,6 +45,8 @@ class Profile extends Component {
             currentGameList: '',
             addingGame: false,
             gameToAdd: [],
+            addGameErrorMsg: '',
+            createListErrorMsg: '',
         };
         
         this.createList = this.createList.bind(this);
@@ -52,6 +54,7 @@ class Profile extends Component {
         this.fetchGames = this.fetchGames.bind(this);
         this.convertStringList = this.convertStringList.bind(this);
         this.addGameToList = this.addGameToList.bind(this);
+        this.resetErrorMsg = this.resetErrorMsg.bind(this);
     }
 
     async componentDidMount() {
@@ -92,6 +95,7 @@ class Profile extends Component {
     }
 
     updateAddGame(evt) {
+        this.resetErrorMsg();
         let gameObject = this.state.gameStrings.filter((game) => game.value === evt);
         if (gameObject.length) {
             let gameID = gameObject[0].id;
@@ -164,6 +168,9 @@ class Profile extends Component {
 
     createList() {
         if (this.state.createdListName.trim().length === 0) {
+            this.setState({
+                createListErrorMsg: "List name cannot be empty."
+            })
             console.log("Cannot be empty");
         } else {
             console.log("List created: " + this.state.createdListName);
@@ -199,13 +206,29 @@ class Profile extends Component {
             copyList[listIndex].list.push(this.state.gameToAdd[0]);
             
             let allList = Object.values(copyList);
-            this.setState({ allList }, () => {
+            this.setState({
+                allList,
+                addingGame: false,
+                gameToAdd: []
+            }, () => {
                 this.generateList();
+                this.resetErrorMsg();
             })  
         } else {
             console.log("Game not found:");
             console.log(this.state.gameToAdd);
+
+            this.setState({
+                addGameErrorMsg: "Game cannot be found. Select a game from the results provided."
+            })
         }
+    }
+
+    resetErrorMsg() {
+        this.setState({
+            addGameErrorMsg: '',
+            createListErrorMsg: '',
+        })
     }
     render() {
         
@@ -220,10 +243,13 @@ class Profile extends Component {
                     title="Create List"
                 >
                     <TextInput
-                        onChange={(evt) => this.setState({createdListName: evt.target.value})}
+                        onChange={(evt) => this.setState({
+                            createdListName: evt.target.value
+                        }, () => this.resetErrorMsg())}
                         placeholder="List name"
                         label="Enter Game List name:"
                         size="md"
+                        error={this.state.createListErrorMsg}
                         required
                     />
                     <br></br>
@@ -238,6 +264,7 @@ class Profile extends Component {
                     onClose={() => this.setState({
                         addingGame: false,
                         currentGameList: '',
+                        gameToAdd: [],
                     })}
                     title="Add Game"
                 >
@@ -248,6 +275,7 @@ class Profile extends Component {
                                 label="Search game:"
                                 placeholder="Write keyword"
                                 data={this.state.gameStrings}
+                                error={this.state.addGameErrorMsg}
                             />
                             <Button
                                 onClick={this.addGameToList}
