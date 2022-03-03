@@ -51,8 +51,9 @@ class Profile extends Component {
             creatingList: false,
             createdListName: '',
             addingGame: false,
+            gameToAdd: [],
         };
-
+        
         this.createList = this.createList.bind(this);
         this.generateList = this.generateList.bind(this);
         this.fetchGames = this.fetchGames.bind(this);
@@ -96,6 +97,27 @@ class Profile extends Component {
         })
     }
 
+    updateAddGame(evt) {
+        let gameObject = this.state.gameStrings.filter((game) => game.value === evt);
+        if (gameObject.length) {
+            let gameID = gameObject[0].id;
+            let gameToAdd = this.state.gamesL.filter((game) => game._id === gameID);
+            this.setState({
+                gameToAdd: gameToAdd
+            }, () => {
+                console.log("Game to add:");
+                console.log(this.state.gameToAdd);
+            });
+            
+        } else {
+            this.setState({
+                gameToAdd: []
+            }, () => {
+                console.log("Game not found:");
+                console.log(this.state.gameToAdd);
+            });   
+        }      
+    }
     generateList() {
         const lists = this.state.allList.map((gameList) => (
             <Accordion.Item label={gameList.name}>
@@ -210,6 +232,7 @@ class Profile extends Component {
                     {this.state.isGamesLoaded ?
                         <>
                             <Autocomplete
+                                onChange={evt => this.updateAddGame(evt)}
                                 label="Search game:"
                                 placeholder="Write keyword"
                                 data={this.state.gameStrings}
