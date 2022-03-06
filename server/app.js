@@ -6,6 +6,11 @@ const PORT = process.env.PORT || 5000;
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
+const session = require('express-session');
+
+// Change salt periodically
+app.use(session({ secret: 'salty' }));
+
 app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));

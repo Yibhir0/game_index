@@ -132,3 +132,23 @@ module.exports.getGamesByFilter = async (filters) => {
 }
 
 
+
+module.exports.createUser = async (user) => {
+    
+    try {
+        let obj = {
+            name: user.name,
+            email: user.email,
+            picture: user.picture
+
+        }
+        let newUser = await User.findOneAndUpdate(user.email, obj, { upsert: true });
+        return newUser;
+    }
+    catch (error) {
+        console.log(error);
+    }
+
+}
+
+
