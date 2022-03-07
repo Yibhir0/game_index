@@ -21,6 +21,7 @@ exports.getComments = async (req, res) => {
 exports.addComment = async (req, res) => {
     try {
         const readyState = await db.connectToDB()
+
         if (readyState === 1) {
             const r = await db.addFeedback(req.body);
             res.json(r);
