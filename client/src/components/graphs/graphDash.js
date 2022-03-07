@@ -10,7 +10,7 @@ class GraphDash extends Component{
 
         this.state = {
             games: [],
-            graphType: "Popular",
+            graphType: "Sold-Most",
             graphData : {
                 popularGames: [],
                 
@@ -52,6 +52,8 @@ class GraphDash extends Component{
 
         popularGames = [].concat(this.state.games)
             .sort((a, b) => a.globalsales < b.globalsales).slice(0, 10);
+
+        
         
         this.setState({graphData : {popularGames: this.getGraphDataFormat(popularGames)}})
         
@@ -73,9 +75,9 @@ class GraphDash extends Component{
                 <Grid.Col span={12} justify="center" align="center">
                     <SegmentedControl
                         data={[
-                            { label: 'Most Popular', value: 'Popular' },
-                            { label: 'Highest Rating', value: 'Rating-High' },
-                            { label: 'Most Sold', value: 'Sale-Most' },
+                            { label: 'Most Sold', value: 'Sold-Most' },
+                            { label: 'Most Popular Category', value: 'Category-Most' },
+                            { label: 'Least Rated Publisher', value: 'Least-Rated' },
                             ]}
                             onChange={(value) => this.changeGraph(value)}    
                     />

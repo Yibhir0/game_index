@@ -1,39 +1,63 @@
 import { Component, useState } from "react";
-import {ChartLabel, LineSeries, VerticalGridLines, HorizontalGridLines, FlexibleXYPlot, XAxis, YAxis, VerticalBarSeries} from 'react-vis';
+import {ChartLabel, LineSeries, VerticalGridLines, HorizontalGridLines, FlexibleXYPlot, XAxis, YAxis, VerticalBarSeries, Hint} from 'react-vis';
 import {
     Center
 } from "@mantine/core";
 
 class GraphController extends Component{
 
+    constructor(props) {
+        super(props)
+            this.state = {
+                crossValue: []
+            }
+    }
 
     render() {
         let graph;
-        if (this.props.states.graphType === 'Popular') {
-            graph = <FlexibleXYPlot margin={{top:25}} xType = "ordinal">
-                <VerticalBarSeries
-                    data={this.props.states.graphData.popularGames}
-                    onValueMouseOver={(datapoint, { event }) => {
-                        console.log(event.target); // Some SVG element
-                      }}
+        if (this.props.states.graphType === 'Sold-Most') {
+            graph =
+                <FlexibleXYPlot margin={{ top: 25 }} xType="ordinal">
+                    <VerticalBarSeries
+                        data={this.props.states.graphData.popularGames}
+                        onValueMouseOver={(datapoint, { event }) => {
+                            this.setState({crossValue: datapoint})
+                        }}
+                        onValueMouseOut={this.setState({crossValue:[]})}
                     />
-                            <XAxis style={{ line: { stroke:'black'}}} title = "Nintendo Game"/>
-                            <YAxis style={{ line: { stroke: 'black' } }}
+                    <XAxis style={{ line: { stroke:'black'}}} />
+                    <YAxis style={{ line: { stroke: 'black' } }}
                                 tickSize={1}
                                 tickPadding={2}
                                 tickFormat={v => v / 1000000}
-                            />
-                            <ChartLabel
-                                text="Global Sales (Millions)"
-                                className="alt-y-label"
-                                includeMargin={false}
-                                xPercent={0.09}
-                                yPercent={0.035}
-                                style={{
-                                textAnchor: 'end'
-                                    }}
-                                />
-                        </FlexibleXYPlot>;
+                        />
+                    <ChartLabel
+                        text="Global Sales (Millions)"
+                        className="alt-y-label"
+                        includeMargin={false}
+                        xPercent={0.09}
+                        yPercent={0.035}
+                        style={{
+                        textAnchor: 'end'
+                        }}
+                    />
+                    <ChartLabel
+                        text="Game"
+                        className="alt-x-label"
+                        includeMargin={false}
+                        xPercent={1}
+                        yPercent={1.115}
+                        style={{
+                        textAnchor: 'end'
+                        }}
+                    />
+
+                    <Hint value={this.state.crossValue} align={{horizontal:Hint.ALIGN.AUTO, vertical:Hint.ALIGN.BOTTOM_EDGE}}>
+                        
+                            <p>{this.state.crossValue.x}</p>
+                            <p>{this.state.crossValue.y}</p>
+                    </Hint>
+                </FlexibleXYPlot>;
 
         }
         else {
