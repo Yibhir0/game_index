@@ -17,7 +17,12 @@ exports.postUser = async (req, res) => {
 
             const { name, email, picture } = ticket.getPayload();
 
-            const newUser = { "name": name, "email": email, "picture": picture };
+            const newUser = {
+                "name": name,
+                "email": email,
+                "picture": picture,
+                "bio": 'Welcome to my profile!',
+            };
 
             const user = await db.createUser(newUser);
 

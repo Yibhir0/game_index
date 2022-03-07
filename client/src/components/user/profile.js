@@ -61,6 +61,7 @@ class Profile extends Component {
     async componentDidMount() {
         this.generateList();
         await this.fetchGames();
+        console.log(JSON.parse(localStorage.getItem('userProfile')));
         
     }
 
