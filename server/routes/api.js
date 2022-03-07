@@ -220,7 +220,7 @@ router.get('/games/filter', games.getGamesByFilter);
  *               type: object
  *               properties:
  *                 _id:
- *                   type: string
+ *                   type: object
  *                   description: ObjectId created by MongoDB.
  *                   example: 620d6ef065ee1d5092d1c795
  *                 jpsales:
