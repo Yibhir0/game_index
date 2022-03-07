@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Anchor } from "@mantine/core";
 
+import SignIn from '../components/users/signin';
 
 /**
  * This class renders the top navigation bar.
  */
 class TopNav extends Component {
+  
+
+
     render() {
         return (
             <div>
@@ -25,9 +29,7 @@ class TopNav extends Component {
                     <Anchor component={Link} to={'/games'} >
                         Games
                     </Anchor>
-                    <Anchor component={Link} to={'/profile'} >
-                        Profile
-                    </Anchor>
+                    <SignIn />
                 </nav>
             </div>
         );

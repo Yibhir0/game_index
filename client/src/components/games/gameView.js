@@ -51,11 +51,15 @@ const GameView = () => {
         // // and make sure it not some empty strings
         const comment = values.comment;
 
+
+        const user = JSON.parse(localStorage.getItem("userProfile"));
+
+        const userid = user._id;
         // // Get the current time.
         // const timestamp = Date.now();
         const newComment = {
             gameID: id,
-            userId: 123,
+            userId: userid,
             comment: comment,
             rating: values.rating,
         };
@@ -72,30 +76,24 @@ const GameView = () => {
             .then(response => response.json())
             .then(data => fetchFeedback());
 
-        // try {
-        //     const response = await fetch(feedbackUrl, {
-        //         method: 'POST',
-        //         headers: { 'Content-Type': 'application/json' },
-        //         body: JSON.stringify(newComment)
-        //     });
-
-        //     console.log("game " + response);
-        //
-        //await fetchFeedback();
-
-        // } catch (error) {
-        //     console.log("biggg problem")
-        //     console.log("error", error);
-        // }
     }
+
+
+    if (localStorage.getItem("userProfile")) {
+        return (
+            <div className="v_flex">
+                <Game game={game} />
+                <Divider />
+
+                <FeedbackBox addComment={addComment} id= {id} />
+                <Divider />
+                <Allfeedback allFeedback={feedback} />
+            </div>
+        )
+    }
+
     return (
-        <div className="v_flex">
-            <Game game={game} />
-            <Divider />
-            <FeedbackBox addComment={addComment} id={id} />
-            <Divider />
-            <Allfeedback allFeedback={feedback} />
-        </div>
+        <Game game={game} />
     );
 };
 

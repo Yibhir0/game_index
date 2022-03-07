@@ -242,6 +242,7 @@ class Profile extends Component {
             return false;
         }
     }
+    
 
     resetErrorMsg() {
         this.setState({
