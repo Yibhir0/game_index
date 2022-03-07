@@ -55,6 +55,7 @@ class Profile extends Component {
         this.convertStringList = this.convertStringList.bind(this);
         this.addGameToList = this.addGameToList.bind(this);
         this.resetErrorMsg = this.resetErrorMsg.bind(this);
+        this.checkDuplicates = this.checkDuplicates.bind(this);
     }
 
     async componentDidMount() {
@@ -196,24 +197,34 @@ class Profile extends Component {
     }
     addGameToList() {
         if (this.state.gameToAdd.length) {
+            //print game to add info
             console.log("Game to add:");
             console.log(this.state.gameToAdd);
-
             console.log(this.state.allList);
 
+            //get index of the list where the game will be added to
             let listIndex = this.state.allList.findIndex(list => list.name === this.state.currentGameList);
-            const copyList = { ...this.state.allList };
-            copyList[listIndex].list.push(this.state.gameToAdd[0]);
-            
-            let allList = Object.values(copyList);
-            this.setState({
-                allList,
-                addingGame: false,
-                gameToAdd: []
-            }, () => {
-                this.generateList();
-                this.resetErrorMsg();
-            })  
+
+            //check if list contains duplicates before adding
+            if (!this.checkDuplicates(listIndex)) {
+                const copyList = { ...this.state.allList };
+                copyList[listIndex].list.push(this.state.gameToAdd[0]);
+                
+                let allList = Object.values(copyList);
+                this.setState({
+                    allList,
+                    addingGame: false,
+                    gameToAdd: []
+                }, () => {
+                    this.generateList();
+                    this.resetErrorMsg();
+                })   
+            } else {
+                this.setState({
+                    addGameErrorMsg: "Game already exist in list."
+                })
+            }
+              
         } else {
             console.log("Game not found:");
             console.log(this.state.gameToAdd);
@@ -221,6 +232,14 @@ class Profile extends Component {
             this.setState({
                 addGameErrorMsg: "Game cannot be found. Select a game from the results provided."
             })
+        }
+    }
+
+    checkDuplicates(index) {
+        if ((this.state.allList[index].list.filter((game) => game._id === this.state.gameToAdd[0]._id)).length >= 1) {
+            return true;
+        } else {
+            return false;
         }
     }
 
