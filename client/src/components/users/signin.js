@@ -45,12 +45,12 @@ export default function SignIn() {
     }
 
     const handleLogout = async response => {
-        const res = await fetch("/users/logout", {
-            method: "DELETE",
-        })
-        const data = await res.json()
-        console.log(data);
-        localStorage.setItem('userProfile', null);
+        // const res = await fetch("/users/logout", {
+        //     method: "DELETE",
+        // })
+        // const data = await res.json()
+        // console.log(data);
+        localStorage.clear();
         setUserAccount(null);
     }
 

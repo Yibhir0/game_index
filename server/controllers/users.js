@@ -4,7 +4,7 @@ const db = require("../mongoose/db");
 
 // Post user
 exports.postUser = async (req, res) => {
-    console.log("signIn")
+
     const { token } = req.body
     const ticket = await client.verifyIdToken({
         idToken: token,
@@ -20,9 +20,10 @@ exports.postUser = async (req, res) => {
             const newUser = { "name": name, "email": email, "picture": picture };
 
             const user = await db.createUser(newUser);
+
             console.log(user)
 
-            req.session.userId = user.id
+            //req.session.userId = user.id
             res.status(201)
             res.json(user)
         }
@@ -40,7 +41,7 @@ exports.logOutUser = async (req, res) => {
     await req.session.destroy()
     res.status(200)
     res.json({
-    message: "Logged out successfully"
-    }) 
+        message: "Logged out successfully"
+    })
 }
 

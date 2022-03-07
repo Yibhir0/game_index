@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const Feedback = new mongoose.Schema({
 
     gameID: mongoose.Schema.Types.ObjectId,
-    userID: Number,
+    userID: mongoose.Schema.Types.ObjectId,
+    userImage: String,
     comment: String,
     rating: Number
 });
