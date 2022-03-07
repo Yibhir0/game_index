@@ -1,4 +1,5 @@
 const db = require('../mongoose/db');
+const cache = require("memory-cache");
 
 // Response for endpoint /games
 exports.getGames = async (req, res) => {

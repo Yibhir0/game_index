@@ -1,4 +1,5 @@
 const db = require("../mongoose/db");
+const cache = require("memory-cache");
 
 // Response for a specific game comments
 exports.getComments = async (req, res) => {
