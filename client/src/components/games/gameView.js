@@ -13,7 +13,6 @@ const GameView = () => {
 
     useEffect(() => {
 
-        console.log("hookie");
         fetchGame();
         fetchFeedback();
 
@@ -48,45 +47,53 @@ const GameView = () => {
 
     const addComment = async (values) => {
 
-
         // // Get the value of the comment box
         // // and make sure it not some empty strings
         const comment = values.comment;
 
+
+        const user = JSON.parse(localStorage.getItem("userProfile"));
+
+        const userid = user._id;
         // // Get the current time.
         // const timestamp = Date.now();
         const newComment = {
             gameID: id,
-            userId: "234",
+            userId: userid,
             comment: comment,
             rating: values.rating,
         };
 
         const feedbackUrl = `/games/${id}/feedback`;
 
-        try {
-            await fetch(feedbackUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newComment)
-            });
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newComment)
+        };
 
+        fetch(feedbackUrl, requestOptions)
+            .then(response => response.json())
+            .then(data => fetchFeedback());
 
-            //
-            //await fetchFeedback();
-
-        } catch (error) {
-            console.log("error", error);
-        }
     }
+
+
+    if (localStorage.getItem("userProfile")) {
+        return (
+            <div className="v_flex">
+                <Game game={game} />
+                <Divider />
+
+                <FeedbackBox addComment={addComment} id= {id} />
+                <Divider />
+                <Allfeedback allFeedback={feedback} />
+            </div>
+        )
+    }
+
     return (
-        <div className="v_flex">
-            <Game game={game} />
-            <Divider />
-            <FeedbackBox addComment={addComment} id={id} />
-            <Divider />
-            <Allfeedback allFeedback={feedback} />
-        </div>
+        <Game game={game} />
     );
 };
 

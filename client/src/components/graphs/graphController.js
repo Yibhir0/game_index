@@ -4,7 +4,7 @@ import {
     Center
 } from "@mantine/core";
 
-class GraphController extends Component{
+class GraphController extends Component {
 
     constructor(props) {
         super(props)
@@ -83,7 +83,7 @@ class GraphController extends Component{
           <YAxis style={{ line: { stroke:'black'}}} />
         </FlexibleXYPlot>
         }
-        
+
         return (
             <div>
                 <Center style={{ height: 400, textAlign: 'center' }}>
@@ -97,4 +97,4 @@ class GraphController extends Component{
 
 export default GraphController;
 
-  
+

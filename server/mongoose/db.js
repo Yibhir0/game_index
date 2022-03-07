@@ -44,12 +44,15 @@ module.exports.getFeedbacks = async (gameId) => {
 
 module.exports.addFeedback = async (feedback) => {
 
+    console.log(feedback)
     const feed = new FeedBack(feedback);
     // Save the new model instance, passing a callback
     await feed.save(function (err) {
         if (err) return handleError(err);
-        return feed;
+
     });
+
+    return feed;
 
 }
 
@@ -102,10 +105,7 @@ module.exports.deleteFromList = async (user, list_name, game_name) => {
     }
 
     await User.findOneAndReplace({ _id: user_id }, user);
-
 }
-
-
 
 module.exports.getGamesByFilter = async (filters) => {
 
@@ -120,7 +120,7 @@ module.exports.getGamesByFilter = async (filters) => {
             {
                 $match:
                 {
-                    name: {'$regex' : filters.keywords, '$options' : 'i'},
+                    name: { '$regex': filters.keywords, '$options': 'i' },
                     yearStr: { $regex: filters.year },
                     publisher: { '$regex': filters.publisher, '$options': 'i' },
                     genre: { '$regex': filters.genre, '$options': 'i' },
@@ -128,8 +128,32 @@ module.exports.getGamesByFilter = async (filters) => {
                 }
             }
         ])
-    //console.log(games);
     return games
 }
 
+
+
+module.exports.createUser = async (user) => {
+
+    try {
+        let obj = {
+            name: user.name,
+            email: user.email,
+            picture: user.picture,
+            bio: user.bio,
+        }
+
+        let filter = { email: obj.email };
+        
+        let newUser = await User.findOneAndUpdate(filter, obj, {
+            new: true,
+            upsert: true
+        });
+        return newUser;
+    }
+    catch (error) {
+        console.log(error);
+    }
+
+}
 

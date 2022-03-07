@@ -1,9 +1,9 @@
 import { Center, Grid, SegmentedControl } from "@mantine/core";
 import { Component, useState } from "react";
-import {XYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, VerticalBarSeries} from 'react-vis';
+import { XYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, VerticalBarSeries } from 'react-vis';
 import GraphController from "./graphController";
 
-class GraphDash extends Component{
+class GraphDash extends Component {
 
     constructor(props) {
         super(props);
@@ -71,6 +71,11 @@ class GraphDash extends Component{
         return dataArray;
     }
 
+
+    changeState(value) {
+        this.setState({ graphType: value })
+    }
+
     render() {
         return (
             <Grid>
@@ -83,7 +88,7 @@ class GraphDash extends Component{
                             ]}
                             onChange={(value) => this.changeGraph(value)}    
                     />
-                    
+
                 </Grid.Col>
 
                 <Grid.Col>

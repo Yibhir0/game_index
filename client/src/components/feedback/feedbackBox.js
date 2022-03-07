@@ -17,10 +17,9 @@ export default function FeedbackBox(props) {
 
     const submitComment = (values) => {
         values.rating = rating;
+        setRating(1);
         props.addComment(values);
         form.reset();
-        window.location.reload(false);
-
     }
 
     const getRating = (value) => {
@@ -40,10 +39,9 @@ export default function FeedbackBox(props) {
                             {...form.getInputProps('comment')}
                         /></Grid.Col>
                     <Grid.Col style={{ minHeight: 80 }} span={2}>
-                        <RatingBox rating={1} dis={false} getRating={getRating} />
+                        <RatingBox rating={rating} dis={false} getRating={getRating} />
                         <Button type="submit">Comment/Rate</Button>
                     </Grid.Col>
-
                 </Grid>
             </form>
         </Center>
