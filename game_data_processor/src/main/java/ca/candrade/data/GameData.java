@@ -18,6 +18,7 @@ public class GameData {
     private final double JPSALES;
     private final double OTHERSALES;
     private final int YEAR;
+    private final String IMAGEURL;
 
     /**
      * A constructor for all the parameters for a game.
@@ -35,6 +36,7 @@ public class GameData {
      * @param JPSALES The Japanese sales of the game.
      * @param OTHERSALES The other sales of the game.
      * @param YEAR The release year of the game.
+     * @param IMAGEURL The URL of the game's image.
      */
     public GameData(String NAME,
             String GENRE,
@@ -48,7 +50,8 @@ public class GameData {
             String EUSALES,
             String JPSALES,
             String OTHERSALES,
-            String YEAR) {
+            String YEAR,
+            String IMAGEURL) {
         this.NAME = NAME;
         this.GENRE = GENRE;
         this.ESRBRATING = ESRBRATING;
@@ -64,6 +67,7 @@ public class GameData {
         this.JPSALES = normaliseNumber(JPSALES) * 1000000;
         this.OTHERSALES = normaliseNumber(OTHERSALES) * 1000000;
         this.YEAR = (int) normaliseNumber(YEAR);
+        this.IMAGEURL = IMAGEURL;
     }
     
     private double normaliseNumber(String value) {
@@ -71,58 +75,122 @@ public class GameData {
         return Double.parseDouble(value);
     }
 
+    /**
+     * Returns the game's name.
+     * @return
+     */
     public String getNAME() {
         return NAME;
     }
 
+    /**
+     * Returns the game's genre.
+     * @return
+     */
     public String getGENRE() {
         return GENRE;
     }
 
+    /**
+     * Returns the game's ESRB rating.
+     * @return
+     */
     public String getESRBRATING() {
         return ESRBRATING;
     }
 
+    /**
+     * Returns the game's platform.
+     * @return
+     */
     public String getPLATFORM() {
         return PLATFORM;
     }
 
+    /**
+     * Returns the game's publisher.
+     * @return the game's publisher.
+     */
     public String getPUBLISHER() {
         return PUBLISHER;
     }
 
+    /**
+     * Returns the game's critic score.
+     * @return the game's critic score.
+     */
     public double getCRITICSCORE() {
         return CRITICSCORE;
     }
 
+    /**
+     * Returns the game's total shipped.
+     * @return the game's total shipped.
+     */
     public double getTOTALSHIPPED() {
         return TOTALSHIPPED;
     }
 
+    /**
+     * Returns the game's global sales.
+     * @return the game's global sales.
+     */
     public double getGLOBALSALES() {
         return GLOBALSALES;
     }
 
+    /**
+     * Returns the game's North American sales.
+     * @return the game's North American sales.
+     */
     public double getNASALES() {
         return NASALES;
     }
 
+    /**
+     * Returns the game's European sales.
+     * @return the game's European sales.
+     */
     public double getEUSALES() {
         return EUSALES;
     }
 
+    /**
+     * Returns the game's Japanese sales.
+     * @return the game's Japanese sales.
+     */
     public double getJPSALES() {
         return JPSALES;
     }
 
+    /**
+     * Returns the game's other sales.
+     * @return the game's other sales.
+     */
     public double getOTHERSALES() {
         return OTHERSALES;
     }
 
+    /**
+     * Returns the game's release year.
+     * @return the game's release year.
+     */
     public int getYEAR() {
         return YEAR;
     }
+
+    /**
+     * Returns the game's image URL.
+     * @return the game's image URL.
+     */
+    public String getIMAGEURL() {
+        return IMAGEURL;
+    }
     
+    /**
+     * Returns the game's string representation.
+     * @return the game's string representation.
+     */
     @Override
     public String toString() {
         return "Name: " + NAME + "\n" +

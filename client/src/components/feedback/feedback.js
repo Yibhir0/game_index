@@ -9,6 +9,13 @@ class Feedback extends Component {
     // eslint-disable-next-line no-useless-constructor
     constructor(props) {
         super(props);
+        this.state = {
+            comment : this.props.comment
+        }
+    }
+
+    componentWillUpdate(){
+        
     }
     render() {
         return (

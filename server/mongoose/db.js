@@ -44,6 +44,7 @@ module.exports.getFeedbacks = async (gameId) => {
 
 module.exports.addFeedback = async (feedback) => {
 
+    console.log(feedback)
     const feed = new FeedBack(feedback);
     // Save the new model instance, passing a callback
     await feed.save(function (err) {
@@ -128,5 +129,25 @@ module.exports.getGamesByFilter = async (filters) => {
             }
         ])
     return games
+}
+
+
+
+module.exports.createUser = async (user) => {
+
+    try {
+        let obj = {
+            name: user.name,
+            email: user.email,
+            picture: user.picture
+
+        }
+        let newUser = await User.findOneAndUpdate(user.email, obj, { upsert: true });
+        return newUser;
+    }
+    catch (error) {
+        console.log(error);
+    }
+
 }
 

@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const games = require('../controllers/games');
-
+const dotenv = require('dotenv');
+dotenv.config();
 const feedback = require('../controllers/feedback');
+const users = require('../controllers/users');
 
 /**
  * @swagger 
@@ -397,6 +399,10 @@ router.get('/games/:id/feedback', feedback.getComments);
  *                   example: 3.8
  */
 router.post('/games/:id/feedback', feedback.addComment);
+
+router.post("/users/login", users.postUser);
+
+router.delete("/users/logout", users.logOutUser);
 
 // Parser middleware will parse the json payload
 router.use(express.json());

@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * A class used for transforming the data from two previously created json files
- * into one single dataset
+ * into one single dataset.
  * @author Christian Andrade
  */
 public class DataTransformer {
@@ -72,19 +72,21 @@ public class DataTransformer {
         if (totalShipped != 0 
                 && totalRegionSpecific != 0 
                 && globalSales != 0) 
-            return (totalShipped + totalRegionSpecific + globalSales)/3;
+            return Math.round(
+                    (totalShipped + totalRegionSpecific + globalSales)/3
+            );
         else if (totalShipped == 0 
                 && totalRegionSpecific != 0 
                 && globalSales != 0)
-            return (totalRegionSpecific+globalSales)/2;
+            return Math.round((totalRegionSpecific+globalSales)/2);
         else if (totalShipped != 0 
                 && totalRegionSpecific == 0 
                 && globalSales != 0)
-            return (totalShipped+globalSales)/2;
+            return Math.round((totalShipped+globalSales)/2);
         else if (totalShipped != 0 
                 && totalRegionSpecific != 0 
                 && globalSales == 0)
-            return (totalShipped+totalRegionSpecific)/2;
+            return Math.round((totalShipped+totalRegionSpecific)/2);
         else if (totalShipped == 0 
                 && totalRegionSpecific == 0 
                 && globalSales != 0)
@@ -104,7 +106,7 @@ public class DataTransformer {
     private double correctDoubleValues(double dataOne,
             double dataTwo) {
         if (dataOne != 0 && dataTwo != 0) 
-            return (dataOne + dataTwo)/2;
+            return Math.round((dataOne + dataTwo)/2);
         else if (dataOne != 0 && dataTwo == 0) return dataOne;
         else if (dataOne == 0 && dataTwo != 0) return dataTwo;
         else return 0;

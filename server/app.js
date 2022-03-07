@@ -27,6 +27,11 @@ const swaggerSpec = swaggerJSDoc(options);
 
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
+// const session = require('express-session');
+
+// // Change salt periodically
+// app.use(session({ secret: 'salty' }));
+
 app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));

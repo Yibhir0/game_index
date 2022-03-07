@@ -42,7 +42,6 @@ export default function FeedbackBox(props) {
                         <RatingBox rating={rating} dis={false} getRating={getRating} />
                         <Button type="submit">Comment/Rate</Button>
                     </Grid.Col>
-
                 </Grid>
             </form>
         </Center>
