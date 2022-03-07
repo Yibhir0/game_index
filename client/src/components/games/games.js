@@ -1,5 +1,6 @@
 import { Component, useState } from "react";
 import {
+    Title,
     Loader,
     SimpleGrid,
     Radio,
@@ -409,7 +410,12 @@ class Games extends Component {
                     </Grid.Col>
                 </Grid>
                 
-                {this.state.loading ? <Loader size="xl" /> :
+                {this.state.loading ?
+                    <div style={{ margin: 'auto', padding: 50 }}>
+                        <Title order={3}>Fetching All Games</Title>
+                        <Loader size="xl" />
+                    </div>
+                    :
                     <div>
                         <Table verticalSpacing="md" striped highlightOnHover>
                             <thead>
