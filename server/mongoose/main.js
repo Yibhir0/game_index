@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 const Games = require('./models/gameSchema')
 
 
-(async () => {
-    let mng = await mongoose.connect(dbUri)
-        .then(() => { console.log("Connected to MongoDB") })
+    (async () => {
+        let mng = await mongoose.connect(dbUri)
+            .then(() => { console.log("Connected to MongoDB") })
 
-    console.log(typeof (mongoose.connection.readyState))
-})()
+        console.log(typeof (mongoose.connection.readyState))
+    })()
