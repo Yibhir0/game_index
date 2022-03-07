@@ -11,6 +11,3 @@ const Games = require('./models/gameSchema')
 
         console.log(typeof (mongoose.connection.readyState))
     })()
-
-
-
