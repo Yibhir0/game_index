@@ -13,6 +13,7 @@ class GraphDash extends Component{
             graphType: "Sold-Most",
             graphData : {
                 popularGames: [],
+                ratingSalesGames:[]
                 
             }
         };
@@ -48,14 +49,16 @@ class GraphDash extends Component{
     }
 
     getGraphDatas() {
-        let popularGames, ratingGames, salesGames = []
+        let popularGames, ratingSalesGames, salesGames = []
 
         popularGames = [].concat(this.state.games)
             .sort((a, b) => a.globalsales < b.globalsales).slice(0, 10);
-
+        
+        ratingSalesGames = [].concat(this.state.games)
+            .map(x => {return({criticscore: x.criticscore, globalsales: x.globalsales})}).slice(0,100);
         
         
-        this.setState({graphData : {popularGames: this.getGraphDataFormat(popularGames)}})
+        this.setState({ graphData: { popularGames: this.getGraphDataFormat(popularGames), ratingSalesGames: ratingSalesGames } })
         
     }
 
@@ -65,7 +68,6 @@ class GraphDash extends Component{
         for (let game of gamesArray) {
             dataArray.push({ x : game.name, y : game.globalsales });
         }
-        console.log(dataArray)
         return dataArray;
     }
 

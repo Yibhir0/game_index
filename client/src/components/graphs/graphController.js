@@ -1,5 +1,5 @@
 import { Component, useState } from "react";
-import {ChartLabel, LineSeries, VerticalGridLines, HorizontalGridLines, FlexibleXYPlot, XAxis, YAxis, VerticalBarSeries, Hint} from 'react-vis';
+import {ChartLabel,XYPlot, Borders , ContourSeries, FlexibleXYPlot, XAxis, YAxis, VerticalBarSeries, Hint, MarkSeries} from 'react-vis';
 import {
     Center
 } from "@mantine/core";
@@ -23,7 +23,7 @@ class GraphController extends Component{
                         onValueMouseOver={(datapoint, { event }) => {
                             this.setState({crossValue: datapoint})
                         }}
-                        onValueMouseOut={this.setState({crossValue:[]})}
+                        // onValueMouseOut={this.setState({crossValue:[]})} This causes the graph to not render, idk why yet?
                     />
                     <XAxis style={{ line: { stroke:'black'}}} />
                     <YAxis style={{ line: { stroke: 'black' } }}
@@ -61,24 +61,27 @@ class GraphController extends Component{
 
         }
         else {
-            graph = <FlexibleXYPlot >
-            <VerticalGridLines />
-            <HorizontalGridLines />
-            <LineSeries style={{ fill: 'none' }} color="Black" data={[
-            {x: 0, y: 8},
-            {x: 1, y: 5},
-            {x: 2, y: 4},
-            {x: 3, y: 9},
-            {x: 4, y: 1},
-            {x: 5, y: 7},
-            {x: 6, y: 6},
-            {x: 7, y: 3},
-            {x: 8, y: 2},
-            {x: 9, y: 0}
-            ]} />
-            <XAxis title="El Juego"/>
-            <YAxis title = "The big Number"/>
-          </FlexibleXYPlot>
+            graph =
+                    <FlexibleXYPlot
+          xDomain={[0, 30000000]}
+          getX={d => d.globalsales}
+          getY={d => d.criticscore}
+        >
+          <ContourSeries
+            animation
+            className="contour-series-example"
+            style={{
+              stroke: '#125C77',
+              strokeLinejoin: 'round'
+            }}
+            colorRange={['#79C7E3', '#FF9833']}
+            data={this.props.states.graphData.ratingSalesGames}
+          />
+          <MarkSeries animation data={this.props.states.graphData.ratingSalesGames} size={1} color={'#125C77'} />
+          <Borders style={{all: {fill: '#fff'}}} />
+          <XAxis style={{ line: { stroke:'black'}}} />
+          <YAxis style={{ line: { stroke:'black'}}} />
+        </FlexibleXYPlot>
         }
         
         return (
