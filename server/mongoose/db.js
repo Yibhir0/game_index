@@ -139,10 +139,16 @@ module.exports.createUser = async (user) => {
         let obj = {
             name: user.name,
             email: user.email,
-            picture: user.picture
-
+            picture: user.picture,
+            bio: user.bio,
         }
-        let newUser = await User.findOneAndUpdate(user.email, obj, { upsert: true });
+
+        let filter = { email: obj.email };
+        
+        let newUser = await User.findOneAndUpdate(filter, obj, {
+            new: true,
+            upsert: true
+        });
         return newUser;
     }
     catch (error) {
