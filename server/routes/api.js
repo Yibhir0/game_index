@@ -202,7 +202,7 @@ router.get('/games/filter', games.getGamesByFilter);
 
 /**
  * @swagger 
- * /games/{id}
+ * /games/{id}:
  *   get:
  *     summary: One specific game
  *     description: Retrieve one specific game from the database by its id.
