@@ -104,7 +104,7 @@ router.get('/games', games.getGames);
 
 /**
  * @swagger 
- * /games:
+ * /games/filter:
  *   get:  
  *     summary: Retrieve a list of games
  *     description: Retrieve a list of games from our gamedata collection from mongoDB that match the filter that the user entered. WARNING, DO NOT EXECUTE QUERY HERE!
