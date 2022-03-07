@@ -56,6 +56,7 @@ class Profile extends Component {
         this.addGameToList = this.addGameToList.bind(this);
         this.resetErrorMsg = this.resetErrorMsg.bind(this);
         this.checkDuplicates = this.checkDuplicates.bind(this);
+        this.removeGameFromList = this.removeGameFromList.bind(this);
     }
 
     async componentDidMount() {
@@ -152,7 +153,14 @@ class Profile extends Component {
                                 <td>{game.publisher}</td>
                                 <td>{game.year}</td>
                                 <td>
-                                    <Button color="red" size="xs">
+                                    <Button
+                                        color="red"
+                                        size="xs"
+                                        onClick={() => this.setState({
+                                            gameToBeDeleted: game,
+                                            currentGameList: gameList.name
+                                        }, () => this.removeGameFromList())}
+                                    >
                                         X
                                     </Button>
                                 </td>
@@ -243,6 +251,20 @@ class Profile extends Component {
             return false;
         }
     }
+
+    removeGameFromList(){
+        //get index of the list where the game will be removed from
+        let listIndex = this.state.allList.findIndex(list => list.name === this.state.currentGameList);
+        let copyList = { ...this.state.allList };
+        copyList[listIndex].list.splice(copyList[listIndex].list.indexOf(this.state.gameToBeDeleted), 1);
+        let allList = Object.values(copyList);
+        // console.log(allList);
+        this.setState({
+            allList
+        }, () => {
+            this.generateList();
+        })
+    }
     
 
     resetErrorMsg() {
@@ -260,7 +282,7 @@ class Profile extends Component {
                     onClose={() => this.setState({
                         creatingList: false,
                         createdListName: '',
-                    })}
+                    }, () => this.resetErrorMsg())}
                     title="Create List"
                 >
                     <TextInput
@@ -286,7 +308,7 @@ class Profile extends Component {
                         addingGame: false,
                         currentGameList: '',
                         gameToAdd: [],
-                    })}
+                    }, () => this.resetErrorMsg())}
                     title="Add Game"
                 >
                     {this.state.isGamesLoaded ?
