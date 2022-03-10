@@ -26,8 +26,6 @@ class Feedback extends Component {
 
         let user = await response.json();
 
-        console.log(user.picture)
-
         this.setState({ user: user })
 
     }

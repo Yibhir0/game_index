@@ -7,8 +7,7 @@ import {
 import Home from './components/home';
 import Games from './components/games/games';
 import GameView from './components/games/gameView';
-import SignIn from './components/users/signin';
-import TopNav from './components/topnav';
+import TopNav from './components/navbar/topnav';
 import Profile from './components/user/profile'
 
 export default function App() {
@@ -16,6 +15,8 @@ export default function App() {
     <>
       <TopNav />
       <Routes>
+
+        <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/games" element={<Games />} />
         <Route path="/games/:id" element={<GameView />} />

@@ -4,6 +4,7 @@ import GoogleLogin, { GoogleLogout } from 'react-google-login';
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import { Anchor } from "@mantine/core";
+import './styles.css'
 export default function SignIn() {
 
     const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('userProfile')));
@@ -33,8 +34,8 @@ export default function SignIn() {
 
             setUserAccount(data);
 
-
-
+            alert("You are successfully logged in ")
+            window.location.reload(false);
             //Logged in
         }
         catch (err) {
@@ -52,6 +53,9 @@ export default function SignIn() {
         // console.log(data);
         localStorage.clear();
         setUserAccount(null);
+
+        alert("You are successfully logged out ")
+        window.location.reload(false);
     }
 
 
@@ -62,7 +66,7 @@ export default function SignIn() {
                 <Anchor component={Link} to={'/profile'} >
                     {userAccount.name}
                 </Anchor>
-                <GoogleLogout
+                <GoogleLogout className='linkbtn'
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                     buttonText="Logout"
                     onLogoutSuccess={handleLogout}
@@ -76,7 +80,7 @@ export default function SignIn() {
         return (
 
             <div>
-                <GoogleLogin
+                <GoogleLogin className='linkbtn'
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                     buttonText="Log in with Google"
                     onSuccess={handleLogin}

@@ -26,7 +26,7 @@ userrating: { type: Number }`;
 
 function AccordionLabel({ label, description }) {
     return (
-        <Group noWrap>
+        <Group Wrap>
             <Avatar src={require("./index.png")} radius="xl" />
             <div>
                 <Text>{label}</Text>
@@ -38,22 +38,25 @@ function AccordionLabel({ label, description }) {
     );
 }
 
+// function gameDetail(game){
+
+// }
+
 function Game(props) {
+
+
+    console.log(props.game)
     return (
         <Accordion initialItem={-1} iconPosition="right">
             <Accordion.Item label={<AccordionLabel label={props.game.name} description={props.game.year} />}>
                 <Grid columns={12}>
                     <Grid.Col span={2}>
-                        <Image src={require("./index.png")} width={200} alt={props.game.name} />
+                        <Image src={require("./index.png")} width={200} alt={l} />
                     </Grid.Col>
                     <Grid.Col span={10} >
                         <Text size="sm">{l}</Text>
                     </Grid.Col>
                 </Grid>
-
-
-
-
             </Accordion.Item>
             {/* ... other items */}
         </Accordion>

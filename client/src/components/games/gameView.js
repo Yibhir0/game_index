@@ -31,8 +31,6 @@ const GameView = () => {
         }
     };
 
-
-
     const fetchFeedback = async () => {
         const feedbackUrl = `/games/${id}/feedback`;
         try {
@@ -50,7 +48,6 @@ const GameView = () => {
         // // Get the value of the comment box
         // // and make sure it not some empty strings
         const comment = values.comment;
-
 
         const user = JSON.parse(localStorage.getItem("userProfile"));
 
@@ -79,6 +76,7 @@ const GameView = () => {
     }
 
 
+
     if (localStorage.getItem("userProfile")) {
         return (
             <div className="v_flex">
@@ -96,5 +94,6 @@ const GameView = () => {
         <Game game={game} />
     );
 };
+
 
 export default GameView;
