@@ -17,7 +17,12 @@ exports.postUser = async (req, res) => {
 
             const { name, email, picture } = ticket.getPayload();
 
-            const newUser = { "name": name, "email": email, "picture": picture };
+            const newUser = {
+                "name": name,
+                "email": email,
+                "picture": picture,
+                "bio": 'Welcome to my profile!',
+            };
 
             const user = await db.createUser(newUser);
 
@@ -43,5 +48,23 @@ exports.logOutUser = async (req, res) => {
     res.json({
         message: "Logged out successfully"
     })
+}
+
+
+// get user
+exports.getUser = async (req, res) => {
+    try {
+        const readyState = await db.connectToDB();
+        if (readyState === 1) {
+            const user = await db.getUser(req.params.id)
+            res.send(user)
+        }
+        else {
+            res.status(404).json({ message: "Could not connect to the database" })
+        }
+    }
+    catch (error) {
+        res.status(404).json({ message: error.message })
+    }
 }
 

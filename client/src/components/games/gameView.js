@@ -59,7 +59,7 @@ const GameView = () => {
         // const timestamp = Date.now();
         const newComment = {
             gameID: id,
-            userId: userid,
+            userID: userid,
             comment: comment,
             rating: values.rating,
         };
@@ -85,7 +85,7 @@ const GameView = () => {
                 <Game game={game} />
                 <Divider />
 
-                <FeedbackBox addComment={addComment} id= {id} />
+                <FeedbackBox addComment={addComment} id={id} />
                 <Divider />
                 <Allfeedback allFeedback={feedback} />
             </div>
