@@ -1,6 +1,8 @@
 import { Component } from "react";
 import { Container, Grid, Avatar } from '@mantine/core';
 import RatingBox from './rating';
+import { Link } from 'react-router-dom';
+import { Anchor } from "@mantine/core";
 // import { Link } from 'react-router-dom';
 // import { Anchor } from "@mantine/core";
 
@@ -8,22 +10,38 @@ class Feedback extends Component {
 
     // eslint-disable-next-line no-useless-constructor
     constructor(props) {
+
         super(props);
+
         this.state = {
-            comment : this.props.comment
+            comment: this.props.comment,
+            user: {}
         }
     }
 
-    componentWillUpdate(){
-        
+    async componentDidMount() {
+        let url = `/users/${this.state.comment.userID}`;
+
+        let response = await fetch(url);
+
+        let user = await response.json();
+
+        console.log(user.picture)
+
+        this.setState({ user: user })
+
     }
     render() {
         return (
             <div >
 
                 <Grid >
+
                     <Grid.Col span={2} >
-                        <Avatar radius="xl" /></Grid.Col>
+                        <Anchor component={Link} to={'/profile'} >
+                            <Avatar src={this.state.user.picture} />
+                        </Anchor>
+                    </Grid.Col>
                     <Grid.Col span={8}>
                         {this.props.comment.comment}
                     </Grid.Col>
@@ -39,4 +57,4 @@ class Feedback extends Component {
     }
 }
 
-export default Feedback;
+export default Feedback

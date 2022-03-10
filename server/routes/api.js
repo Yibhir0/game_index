@@ -404,6 +404,8 @@ router.post("/users/login", users.postUser);
 
 router.delete("/users/logout", users.logOutUser);
 
+router.get("/users/:id", users.getUser);
+
 // Parser middleware will parse the json payload
 router.use(express.json());
 

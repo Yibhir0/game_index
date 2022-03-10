@@ -144,7 +144,7 @@ module.exports.createUser = async (user) => {
         }
 
         let filter = { email: obj.email };
-        
+
         let newUser = await User.findOneAndUpdate(filter, obj, {
             new: true,
             upsert: true
@@ -155,5 +155,9 @@ module.exports.createUser = async (user) => {
         console.log(error);
     }
 
+}
+
+module.exports.getUser = async (id) => {
+    return await User.findById({ _id: id })
 }
 
