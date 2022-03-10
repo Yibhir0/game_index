@@ -5,8 +5,10 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import { Anchor } from "@mantine/core";
 export default function SignIn() {
-
+    
     const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('userProfile')));
+    //variable will change later for deployment
+    const profileUrl = "/profile";
 
     /**
  * Handle login with google. This function sends
@@ -32,9 +34,11 @@ export default function SignIn() {
             localStorage.setItem('userProfile', JSON.stringify(data));
 
             setUserAccount(data);
-            window.location.reload(true);
 
-
+            if (window.location.pathname.includes(profileUrl)) {
+                window.location.reload(true);
+            }
+            
             //Logged in
         }
         catch (err) {
@@ -52,7 +56,10 @@ export default function SignIn() {
         // console.log(data);
         localStorage.clear();
         setUserAccount(null);
-        window.location.reload(true);
+   
+        if (window.location.pathname.includes(profileUrl)) {
+            window.location.reload(true);
+        }
     }
 
 
