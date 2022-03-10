@@ -66,10 +66,10 @@ class Profile extends Component {
         this.setUser = this.setUser.bind(this);
     }
 
-    async componentDidMount() {
+    async componentDidMount() { 
+        await this.setUser();
         this.generateList();
         await this.fetchGames();
-        await this.setUser();
     }
 
     async setUser() {
@@ -92,9 +92,7 @@ class Profile extends Component {
     }
 
     async fetchGames() {
-        this.setState({
-            loading: true
-        });
+
         //fetch all games
         console.log("game fetched");
         let gameUrl = "/games";
