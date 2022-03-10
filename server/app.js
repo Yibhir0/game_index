@@ -34,6 +34,11 @@ app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 app.use(express.json());
 
+app.use(function (req, res, next) {
+    res.set("Cache-control", "public, max-age=31536000");
+    next();
+});
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const api = require('./routes/api.js');
