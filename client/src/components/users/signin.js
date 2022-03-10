@@ -32,7 +32,7 @@ export default function SignIn() {
             localStorage.setItem('userProfile', JSON.stringify(data));
 
             setUserAccount(data);
-
+            window.location.reload(true);
 
 
             //Logged in
@@ -52,6 +52,7 @@ export default function SignIn() {
         // console.log(data);
         localStorage.clear();
         setUserAccount(null);
+        window.location.reload(true);
     }
 
 

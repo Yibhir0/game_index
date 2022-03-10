@@ -50,10 +50,12 @@ class Profile extends Component {
             createListErrorMsg: '',
             currentUser: {},
             loading: true,
+            loggedIn: true,
 
         };
         
         this.createList = this.createList.bind(this);
+        this.addListToDb = this.addListToDb.bind(this);
         this.generateList = this.generateList.bind(this);
         this.fetchGames = this.fetchGames.bind(this);
         this.convertStringList = this.convertStringList.bind(this);
@@ -71,13 +73,22 @@ class Profile extends Component {
     }
 
     async setUser() {
-        this.setState({
-            currentUser: JSON.parse(localStorage.getItem('userProfile')),
-        }, () => {
+        if (localStorage.getItem('userProfile')) {
             this.setState({
-                loading: false
+                loggedIn: true,
+                currentUser: JSON.parse(localStorage.getItem('userProfile')),
+            }, () => {
+                console.log(this.state.currentUser);
+                this.setState({
+                    loading: false
+                })
+            });    
+        } else {
+            this.setState({
+                loggedIn: false
             })
-        });
+        }
+        
     }
 
     async fetchGames() {
@@ -190,7 +201,7 @@ class Profile extends Component {
         });
     }
 
-    createList() {
+    async createList() {
         if (this.state.createdListName.trim().length === 0) {
             this.setState({
                 createListErrorMsg: "List name cannot be empty."
@@ -198,25 +209,46 @@ class Profile extends Component {
             console.log("Cannot be empty");
         } else {
             console.log("List created: " + this.state.createdListName);
-            this.setState({
-                allList:
-                    [
-                        ...this.state.allList,
-                        {
-                            name: this.state.createdListName,
-                            list: [],
-                        }
-                    ]
-            }, () => {
-                console.log(this.state.allList);
-                this.generateList();
-            })
+
+            await this.addListToDb();
+
+            // this.setState({
+            //     allList:
+            //         [
+            //             ...this.state.allList,
+            //             {
+            //                 name: this.state.createdListName,
+            //                 list: [],
+            //             }
+            //         ]
+            // }, () => {
+            //     console.log(this.state.allList);
+            //     this.generateList();
+            // })
+
             this.setState({
                 creatingList: false,
                 createdListName: '',
             })
             
         }
+    }
+    async addListToDb() {
+
+        console.log("creating list in db for user: " + this.state.currentUser.name);
+        console.log("list name: " + this.state.createdListName);
+        
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        }
+
+        let listUrl = "/users/"+this.state.currentUser._id+"/list?name="+this.state.createdListName;
+        let response = await fetch(listUrl, requestOptions);
+        console.log(response);
     }
     addGameToList() {
         if (this.state.gameToAdd.length) {
@@ -291,107 +323,116 @@ class Profile extends Component {
         
         return (
             <>
-                {this.state.loading ?
-                    <div style={{ margin: 'auto', padding: 50 }}>
-                        <Title order={3}>Loading profile page</Title>
-                        <Loader size="xl" />
+                {this.state.loggedIn ?
+                    <div>
+                    {this.state.loading ?
+                            <div style={{ margin: 'auto', padding: 50 }}>
+                                <Title order={3}>Loading profile page</Title>
+                                <Loader size="xl" />
+                            </div>
+                            :
+                            <>
+                                <Modal
+                                    opened={this.state.creatingList}
+                                    onClose={() => this.setState({
+                                        creatingList: false,
+                                        createdListName: '',
+                                    }, () => this.resetErrorMsg())}
+                                    title="Create List"
+                                >
+                                    <TextInput
+                                        onChange={(evt) => this.setState({
+                                            createdListName: evt.target.value
+                                        }, () => this.resetErrorMsg())}
+                                        placeholder="List name"
+                                        label="Enter Game List name:"
+                                        size="md"
+                                        error={this.state.createListErrorMsg}
+                                        required
+                                    />
+                                    <br></br>
+                                    <Button
+                                        onClick={this.createList}
+                                    >
+                                        Create
+                                    </Button>
+                                </Modal>
+                                <Modal
+                                    opened={this.state.addingGame}
+                                    onClose={() => this.setState({
+                                        addingGame: false,
+                                        currentGameList: '',
+                                        gameToAdd: [],
+                                    }, () => this.resetErrorMsg())}
+                                    title="Add Game"
+                                >
+                                    {this.state.isGamesLoaded ?
+                                        <>
+                                            <Autocomplete
+                                                onChange={evt => this.updateAddGame(evt)}
+                                                label="Search game:"
+                                                placeholder="Write keyword"
+                                                data={this.state.gameStrings}
+                                                error={this.state.addGameErrorMsg}
+                                            />
+                                            <Button
+                                                onClick={this.addGameToList}
+                                            >
+                                                Add
+                                            </Button>
+                                        </>
+                                        :
+                                        <Loader size="xl" />
+                                    }
+                                </Modal>
+                                <Grid columns={24}>
+                                    <Grid.Col span={6}>
+                                    
+                                        <div style={{ margin: 'auto', padding: 50 }}>
+                                            <Title order={2}>{this.state.currentUser.name}'s Profile</Title>
+                                            <Image
+                                                radius="md"
+                                                src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                                                alt="Random unsplash image"
+                                            />
+                                            <Text>
+                                                Bio: {this.state.currentUser.bio}
+                                            </Text>
+                                        </div>
+                                    </Grid.Col>
+                                    <Grid.Col span={18}>
+                                        <div style={{ margin: 'auto', padding: 50 }}>
+                                            <SimpleGrid cols={4}>
+                                                <Grid.Col span={4}>
+                                                    <Title order={2}>Game List</Title>
+                                                </Grid.Col>
+                                                <Grid.Col span={4}>
+                                                </Grid.Col>
+                                                <Grid.Col span={4}>
+                                                </Grid.Col>
+                                                <Grid.Col span={4}>
+                                                    <Button
+                                                        style={{ marginRight: 'auto' }}
+                                                        onClick={() => this.setState({ creatingList: true })}
+                                                    >
+                                                        Create List
+                                                    </Button>
+                                                </Grid.Col>
+                                            </SimpleGrid>
+                                            <Accordion iconPosition="right" >
+                                                {this.state.displayLists}
+                                            </Accordion>
+                                        </div>
+                                    </Grid.Col>
+                                </Grid>
+                            </>
+                        }
                     </div>
                     :
-                    <>
-                        <Modal
-                            opened={this.state.creatingList}
-                            onClose={() => this.setState({
-                                creatingList: false,
-                                createdListName: '',
-                            }, () => this.resetErrorMsg())}
-                            title="Create List"
-                        >
-                            <TextInput
-                                onChange={(evt) => this.setState({
-                                    createdListName: evt.target.value
-                                }, () => this.resetErrorMsg())}
-                                placeholder="List name"
-                                label="Enter Game List name:"
-                                size="md"
-                                error={this.state.createListErrorMsg}
-                                required
-                            />
-                            <br></br>
-                            <Button
-                                onClick={this.createList}
-                            >
-                                Create
-                            </Button>
-                        </Modal>
-                        <Modal
-                            opened={this.state.addingGame}
-                            onClose={() => this.setState({
-                                addingGame: false,
-                                currentGameList: '',
-                                gameToAdd: [],
-                            }, () => this.resetErrorMsg())}
-                            title="Add Game"
-                        >
-                            {this.state.isGamesLoaded ?
-                                <>
-                                    <Autocomplete
-                                        onChange={evt => this.updateAddGame(evt)}
-                                        label="Search game:"
-                                        placeholder="Write keyword"
-                                        data={this.state.gameStrings}
-                                        error={this.state.addGameErrorMsg}
-                                    />
-                                    <Button
-                                        onClick={this.addGameToList}
-                                    >
-                                        Add
-                                    </Button>
-                                </>
-                                :
-                                <Loader size="xl" />
-                            }
-                        </Modal>
-                        <Grid columns={24}>
-                            <Grid.Col span={6}>
-                                
-                                <div style={{ margin: 'auto', padding: 50 }}>
-                                    <Title order={2}>{this.state.currentUser.name}'s Profile</Title>
-                                    <Image
-                                        radius="md"
-                                        src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                                        alt="Random unsplash image"
-                                    />
-                                    <Text>
-                                        Bio: {this.state.currentUser.bio}
-                                    </Text>
-                                </div>
-                            </Grid.Col>
-                            <Grid.Col span={18}>
-                                <div style={{ margin: 'auto', padding: 50 }}>
-                                    <SimpleGrid cols={4}>
-                                        <Grid.Col span={4}>
-                                            <Title order={2}>Game List</Title>
-                                        </Grid.Col>
-                                        <Grid.Col span={4}>
-                                        </Grid.Col>
-                                        <Grid.Col span={4}>
-                                        </Grid.Col>
-                                        <Grid.Col span={4}>
-                                            <Button
-                                                style={{ marginRight: 'auto' }}
-                                                onClick={() => this.setState({ creatingList: true })}
-                                            >
-                                                Create List
-                                            </Button>
-                                        </Grid.Col>
-                                    </SimpleGrid>
-                                    <Accordion iconPosition="right" >
-                                        {this.state.displayLists}
-                                    </Accordion>
-                                </div>
-                            </Grid.Col>
-                        </Grid>
-                    </>}
+                    <div>
+                        <Title order={3}>Not logged in. Log in to view your profile.</Title>
+                    </div>
+                }
             </>
         );
     }

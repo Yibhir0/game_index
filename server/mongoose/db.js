@@ -75,9 +75,9 @@ module.exports.getList = async (user, list_id) => {
 }
 
 
-module.exports.createList = async (user, id, list_name, gameslist) => {
-    await User.findOneAndUpdate({ _id: user._id }, { lists: { id: id, name: list_name, games: gameslist } });
-}
+// module.exports.createList = async (user, id, list_name, gameslist) => {
+//     await User.findOneAndUpdate({ _id: user._id }, { lists: { id: id, name: list_name, games: gameslist } });
+// }
 
 module.exports.addToList = async (user, list_name, game_name) => {
     let current_user = await User.findOne({ _id: user._id });
@@ -150,6 +150,25 @@ module.exports.createUser = async (user) => {
             upsert: true
         });
         return newUser;
+    }
+    catch (error) {
+        console.log(error);
+    }
+
+}
+
+module.exports.createList = async (list, userId) => {
+
+    try {
+        let obj = {
+            name: list.name,
+            games: [],
+        }
+        let newList = await User.findOneAndUpdate(
+            { _id: userId},
+            { $push: {lists: obj} }, 
+        );
+        return newList;
     }
     catch (error) {
         console.log(error);
