@@ -137,7 +137,7 @@ class Profile extends Component {
         }      
     }
     generateList() {
-        const lists = this.state.allList.map((gameList) => (
+        const lists = this.state.currentUser.lists.map((gameList) => (
             <Accordion.Item label={gameList.name}>
                 <Table verticalSpacing={'xl'}>
                     <thead>
@@ -161,7 +161,7 @@ class Profile extends Component {
                         </tr>
                     </thead>
                     <tbody>{
-                        gameList.list.map((game) => (
+                        gameList.games.map((game) => (
                             <tr key={game.name}>
                                 <td>
                                     <Image
