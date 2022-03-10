@@ -23,7 +23,7 @@ class TopNav extends Component {
                     }}
                 >
 
-                    <Anchor component={Link} to={'/home'} >
+                    <Anchor component={Link} to={'/'} >
                         Home
                     </Anchor>
                     <Anchor component={Link} to={'/games'} >
