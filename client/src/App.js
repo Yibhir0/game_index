@@ -16,7 +16,7 @@ export default function App() {
     <>
       <TopNav />
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/games" element={<Games />} />
         <Route path="/games/:id" element={<GameView />} />
         <Route path="/Profile" element={<Profile />} />
