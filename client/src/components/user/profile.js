@@ -76,6 +76,7 @@ class Profile extends Component {
             })
         }
     }
+
     async updateUser() {
         if (this.state.loggedIn) {
             
@@ -240,24 +241,40 @@ class Profile extends Component {
         let response = await fetch(listUrl, requestOptions);
         console.log(response);
     }
-    addGameToList() {
+    async addGameToList() {
         if (this.state.gameToAdd.length) {
             //print game to add info
             console.log("Game to add:");
             console.log(this.state.gameToAdd);
-            console.log(this.state.allList);
 
             //get index of the list where the game will be added to
-            let listIndex = this.state.allList.findIndex(list => list.name === this.state.currentGameList);
+            let listIndex = this.state.currentUser.lists.findIndex(list => list.name === this.state.currentGameList);
 
             //check if list contains duplicates before adding
             if (!this.checkDuplicates(listIndex)) {
-                const copyList = { ...this.state.allList };
-                copyList[listIndex].list.push(this.state.gameToAdd[0]);
+
+                // client side for adding game
+                // const copyList = { ...this.state.allList };
+                // copyList[listIndex].list.push(this.state.gameToAdd[0]);
                 
-                let allList = Object.values(copyList);
+                // let allList = Object.values(copyList);
+                
+                // server side for adding game
+                console.log("adding game");
+
+                const requestOptions = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                }
+                let url = "/users/" + this.state.currentUser._id + "/list/addGame?gameId=" + this.state.gameToAdd[0]._id + "&index=" + listIndex;
+                let response = await fetch(url, requestOptions);
+                console.log(response);
+
+                await this.updateUser();
                 this.setState({
-                    allList,
                     addingGame: false,
                     gameToAdd: []
                 }, () => {
@@ -281,7 +298,7 @@ class Profile extends Component {
     }
 
     checkDuplicates(index) {
-        if ((this.state.allList[index].list.filter((game) => game._id === this.state.gameToAdd[0]._id)).length >= 1) {
+        if ((this.state.currentUser.lists[index].games.filter((game) => game._id === this.state.gameToAdd[0]._id)).length >= 1) {
             return true;
         } else {
             return false;

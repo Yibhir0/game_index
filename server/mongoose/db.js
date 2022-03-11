@@ -165,7 +165,7 @@ module.exports.createList = async (list, userId) => {
             games: [],
         }
         let newList = await User.findOneAndUpdate(
-            { _id: userId},
+            { _id: userId },
             { $push: {lists: obj} }, 
         );
         return newList;
@@ -174,6 +174,22 @@ module.exports.createList = async (list, userId) => {
         console.log(error);
     }
 
+}
+
+module.exports.addGameToList = async (userId, listIndex, gameId) => {
+    try {
+        let game = await Games.findById({ _id: gameId });
+        let addGame = await User.findOneAndUpdate(
+            {
+                _id: userId,
+            },
+            { $push: {[`lists.${listIndex}.games`]: game}}
+        );
+        return addGame;
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 
 module.exports.getUser = async (id) => {
