@@ -38,7 +38,7 @@ class Profile extends Component {
             gameToBeDeleted: [],
             addGameErrorMsg: '',
             createListErrorMsg: '',
-            userId: (JSON.parse(localStorage.getItem('userProfile')))._id,
+            userId: '',
             currentUser: {},
             loading: true,
             loggedIn: true,
@@ -58,14 +58,27 @@ class Profile extends Component {
     }
 
     async componentDidMount() { 
+        await this.initId();
         await this.updateUser();
         this.generateList();
         await this.fetchGames();
     }
 
-    async updateUser() {
+    async initId() {
         if (localStorage.getItem('userProfile')) {
-
+            this.setState({
+                loggedIn: true,
+                userId: (JSON.parse(localStorage.getItem('userProfile')))._id
+            });
+        } else {
+            this.setState({
+                loggedIn: false
+            })
+        }
+    }
+    async updateUser() {
+        if (this.state.loggedIn) {
+            
             console.log("updating user");
             let userUrl = "/users/" + this.state.userId
             let response = await fetch(userUrl);
@@ -73,19 +86,13 @@ class Profile extends Component {
             let currentUser = await response.json();
             this.setState({
                 currentUser,
-                loggedIn: true
             }, () => {
                 console.log(this.state.currentUser);
                 this.setState({
                     loading: false
                 })
             });  
-        } else {
-            this.setState({
-                loggedIn: false
-            })
-        }
-        
+        }      
     }
 
     async fetchGames() {
