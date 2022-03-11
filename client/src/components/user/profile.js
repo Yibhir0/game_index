@@ -215,19 +215,6 @@ class Profile extends Component {
             await this.addListToDb();
             await this.updateUser();
             this.generateList();
-            // this.setState({
-            //     allList:
-            //         [
-            //             ...this.state.allList,
-            //             {
-            //                 name: this.state.createdListName,
-            //                 list: [],
-            //             }
-            //         ]
-            // }, () => {
-            //     console.log(this.state.allList);
-            //     this.generateList();
-            // })
 
             this.setState({
                 creatingList: false,
