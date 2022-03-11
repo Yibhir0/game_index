@@ -30,16 +30,6 @@ class Profile extends Component {
         this.state = {
             isGamesLoaded: false,
             gamesL: [],
-            allList: [
-                {
-                    name: "Favorite Games 1",
-                    list: []
-                },
-                {
-                    name: "Favorite Games 2",
-                    list: []
-                }
-            ],
             creatingList: false,
             createdListName: '',
             currentGameList: '',
@@ -48,6 +38,7 @@ class Profile extends Component {
             gameToBeDeleted: [],
             addGameErrorMsg: '',
             createListErrorMsg: '',
+            userId: (JSON.parse(localStorage.getItem('userProfile')))._id,
             currentUser: {},
             loading: true,
             loggedIn: true,
@@ -63,26 +54,32 @@ class Profile extends Component {
         this.resetErrorMsg = this.resetErrorMsg.bind(this);
         this.checkDuplicates = this.checkDuplicates.bind(this);
         this.removeGameFromList = this.removeGameFromList.bind(this);
-        this.setUser = this.setUser.bind(this);
+        this.updateUser = this.updateUser.bind(this);
     }
 
     async componentDidMount() { 
-        await this.setUser();
+        await this.updateUser();
         this.generateList();
         await this.fetchGames();
     }
 
-    async setUser() {
+    async updateUser() {
         if (localStorage.getItem('userProfile')) {
+
+            console.log("updating user");
+            let userUrl = "/users/" + this.state.userId
+            let response = await fetch(userUrl);
+            console.log(response);
+            let currentUser = await response.json();
             this.setState({
-                loggedIn: true,
-                currentUser: JSON.parse(localStorage.getItem('userProfile')),
+                currentUser,
+                loggedIn: true
             }, () => {
                 console.log(this.state.currentUser);
                 this.setState({
                     loading: false
                 })
-            });    
+            });  
         } else {
             this.setState({
                 loggedIn: false
@@ -209,7 +206,8 @@ class Profile extends Component {
             console.log("List created: " + this.state.createdListName);
 
             await this.addListToDb();
-
+            await this.updateUser();
+            this.generateList();
             // this.setState({
             //     allList:
             //         [
