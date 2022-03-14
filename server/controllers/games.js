@@ -1,15 +1,20 @@
 const db = require('../mongoose/db');
+const cache = require("memory-cache");
 
 // Response for endpoint /games
 exports.getGames = async (req, res) => {
     try {
-        const readyState = await db.connectToDB();
-        if (readyState === 1) {
-            const games = await db.getGames();
-            res.send(games);
-        }
-        else {
-            res.status(404).json({ message: "Could not connect to the database" })
+        let response = cache.get("allGames")
+        if (!response) {
+            const readyState = await db.connectToDB();
+            if (readyState === 1) {
+                const games = await db.getGames();
+                cache.put("allGames", games)
+                res.send(games);
+            }
+            else {
+                res.status(404).json({ message: "Could not connect to the database" })
+            }
         }
     }
     catch (error) {
@@ -20,13 +25,18 @@ exports.getGames = async (req, res) => {
 // Response for a specific page
 exports.getGame = async (req, res) => {
     try {
-        const readyState = await db.connectToDB();
-        if (readyState === 1) {
-            const game = await db.getGame(req.params.id)
-            res.send(game)
-        }
-        else {
-            res.status(404).json({ message: "Could not connect to the database" })
+        let query = "game" + req.params.id
+        let response = cache.get(query)
+        if (!response) {
+            const readyState = await db.connectToDB();
+            if (readyState === 1) {
+                const game = await db.getGame(req.params.id)
+                cache.put(query, game)
+                res.send(game)
+            }
+            else {
+                res.status(404).json({ message: "Could not connect to the database" })
+            }
         }
     }
     catch (error) {
@@ -37,20 +47,25 @@ exports.getGame = async (req, res) => {
 // Response for filtering games
 exports.getGamesByFilter = async (req, res) => {
     try {
-        const readyState = await db.connectToDB();
-        if (readyState === 1) {
+        let query = "games" + req.query.keywords + req.query.year + req.query.publisher + req.query.genre + req.query.platform
+        let response = cache.get(query)
+        if (!response) {
+            const readyState = await db.connectToDB();
+            if (readyState === 1) {
 
-            let filters = {
-                keywords: req.query.keywords,
-                year: req.query.year,
-                publisher: req.query.publisher,
-                genre: req.query.genre,
-                platform: req.query.platform
-            };
+                let filters = {
+                    keywords: req.query.keywords,
+                    year: req.query.year,
+                    publisher: req.query.publisher,
+                    genre: req.query.genre,
+                    platform: req.query.platform
+                };
 
-            //console.log(filters);
-            const games = await db.getGamesByFilter(filters)
-            res.send(games)
+                //console.log(filters);
+                const games = await db.getGamesByFilter(filters)
+                cache.put(query, games)
+                res.send(games)
+            }
         }
         else {
             res.status(404).json({ message: "Could not connect to the database" })
