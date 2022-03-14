@@ -38,7 +38,6 @@ const GameView = () => {
         try {
             const response = await fetch(feedbackUrl);
             const json = await response.json();
-            fetchGame();
             setFeedBack(json);
         } catch (error) {
             console.log("error", error);

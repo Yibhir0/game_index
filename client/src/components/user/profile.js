@@ -47,6 +47,7 @@ class Profile extends Component {
             gameToAdd: [],
             addGameErrorMsg: '',
             createListErrorMsg: '',
+            user: {}
         };
 
         this.createList = this.createList.bind(this);
@@ -58,12 +59,21 @@ class Profile extends Component {
         this.checkDuplicates = this.checkDuplicates.bind(this);
     }
 
+    async fetchUser() {
+
+        let url = `/users/${this.props.id}`;
+
+        let response = await fetch(url);
+
+        let user = await response.json();
+
+        this.setState({ user: user })
+    }
+
     async componentDidMount() {
 
-        // user id 
-        let id = this.props.id;
-        console.log(id);
         this.generateList();
+        await this.fetchUser()
         await this.fetchGames();
 
 
@@ -316,7 +326,7 @@ class Profile extends Component {
                     <Grid.Col span={6}>
 
                         <div style={{ margin: 'auto', padding: 50 }}>
-                            <Title order={2}>Username's Profile</Title>
+                            <Title order={2}>{this.state.user.name}</Title>
                             <Image
                                 radius="md"
                                 src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"

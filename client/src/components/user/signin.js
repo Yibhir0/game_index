@@ -5,10 +5,11 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import { Anchor } from "@mantine/core";
 import './styles.css'
+import { useNavigate } from "react-router-dom";
 export default function SignIn() {
 
     const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('userProfile')));
-
+    let navigate = useNavigate();
     /**
  * Handle login with google. This function sends
  * a post request to the server with google tokenId
@@ -33,7 +34,9 @@ export default function SignIn() {
             localStorage.setItem('userProfile', JSON.stringify(data));
             console.log(data);
             setUserAccount(data);
-            //window.location.reload(false);
+
+            navigate(`/profile/${data._id}`, { replace: true });
+
             alert("You are successfully logged in ")
 
             //Logged in
@@ -53,8 +56,8 @@ export default function SignIn() {
 
         localStorage.clear();
         setUserAccount(null);
-        //window.location.reload(false);
         alert("You are successfully logged out ")
+        navigate("/home", { replace: true });
 
     }
 
