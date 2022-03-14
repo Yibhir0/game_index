@@ -33,9 +33,9 @@ export default function SignIn() {
             localStorage.setItem('userProfile', JSON.stringify(data));
             console.log(data);
             setUserAccount(data);
-
+            //window.location.reload(false);
             alert("You are successfully logged in ")
-            window.location.reload(false);
+
             //Logged in
         }
         catch (err) {
@@ -53,9 +53,9 @@ export default function SignIn() {
 
         localStorage.clear();
         setUserAccount(null);
-
+        //window.location.reload(false);
         alert("You are successfully logged out ")
-        window.location.reload(false);
+
     }
 
 

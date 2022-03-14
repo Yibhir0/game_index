@@ -5,7 +5,7 @@ import { Group, Avatar, Text, Accordion, Image } from '@mantine/core';
 
 /**
  * This class renders the props.game details.
- */
+*/
 
 const Game = (props) => {
     const imageURL = "https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/" + props.game.image_URL;
@@ -27,27 +27,8 @@ const Game = (props) => {
         );
     }
 
-    // const fetchgame = async () => {
-    //     console.log(props.props.gameId)
-
-    //     const url = `/props.games/${props.props.gameId}`;
-    //     try {
-    //         const response = await fetch(url);
-    //         const json = await response.json();
-    //         set.game(json);
-
-    //     } catch (error) {
-    //         console.log("error", error);
-    //     }
-    // };
-
-
-
-
-
-
     const gameDetails = () => {
-        console.log("whyy")
+
         let cScore;
         if (props.game.criticscore === 0) {
             cScore = "Not Rated"
@@ -89,9 +70,5 @@ const Game = (props) => {
         </Accordion>
     );
 }
-
-
-//function props.game(props) {
-
 
 export default Game;

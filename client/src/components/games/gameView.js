@@ -77,7 +77,6 @@ const GameView = () => {
     }
 
 
-
     if (localStorage.getItem("userProfile")) {
         return (
             <div className="v_flex">

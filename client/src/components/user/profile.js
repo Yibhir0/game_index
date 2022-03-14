@@ -60,11 +60,12 @@ class Profile extends Component {
 
     async componentDidMount() {
 
+        // user id 
         let id = this.props.id;
         console.log(id);
         this.generateList();
         await this.fetchGames();
-        console.log(JSON.parse(localStorage.getItem('userProfile')));
+
 
     }
 
