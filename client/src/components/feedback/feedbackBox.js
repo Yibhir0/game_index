@@ -1,8 +1,28 @@
 import { Textarea, Button, Grid, Center } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
 import RatingBox from '../feedback/rating';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 export default function FeedbackBox(props) {
+
+
+    useEffect(() => {
+
+        //fetchFeedback();
+
+    }, []);
+
+
+    // const fetchGame = async () => {
+    //     const url = `/games/${id}`;
+    //     try {
+    //         const response = await fetch(url);
+    //         const json = await response.json();
+    //         setGame(json);
+
+    //     } catch (error) {
+    //         console.log("error", error);
+    //     }
+    // };
 
     const [rating, setRating] = useState(1);
     //let navigate = useNavigate();
@@ -26,6 +46,8 @@ export default function FeedbackBox(props) {
         setRating(value);
     }
 
+
+
     return (
 
         <Center>
@@ -36,6 +58,7 @@ export default function FeedbackBox(props) {
                         <Textarea size="md"
                             required
                             placeholder="Your comment"
+                            maxlength="75"
                             {...form.getInputProps('comment')}
                         /></Grid.Col>
                     <Grid.Col style={{ minHeight: 80 }} span={2}>

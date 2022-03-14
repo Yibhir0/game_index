@@ -36,7 +36,7 @@ class Feedback extends Component {
                 <Grid >
 
                     <Grid.Col span={2} >
-                        <Anchor component={Link} to={'/profile'} >
+                        <Anchor component={Link} to={`/profile/${this.state.comment.userID}`} >
                             <Avatar src={this.state.user.picture} />
                         </Anchor>
                     </Grid.Col>

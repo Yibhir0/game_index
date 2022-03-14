@@ -42,9 +42,9 @@ export default function SignIn() {
             // Not login 
         }
 
-        // store returned user somehow
-    }
 
+    }
+    
     const handleLogout = async response => {
         // const res = await fetch("/users/logout", {
         //     method: "DELETE",
@@ -66,7 +66,7 @@ export default function SignIn() {
                 <Anchor component={Link} to={'/profile'} >
                     {userAccount.name}
                 </Anchor>
-                <GoogleLogout className='linkbtn'
+                <GoogleLogout
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                     buttonText="Logout"
                     onLogoutSuccess={handleLogout}

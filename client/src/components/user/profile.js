@@ -48,7 +48,7 @@ class Profile extends Component {
             addGameErrorMsg: '',
             createListErrorMsg: '',
         };
-        
+
         this.createList = this.createList.bind(this);
         this.generateList = this.generateList.bind(this);
         this.fetchGames = this.fetchGames.bind(this);
@@ -59,10 +59,12 @@ class Profile extends Component {
     }
 
     async componentDidMount() {
+        let { id } = this.props.match.params;
+        console.log(id);
         this.generateList();
         await this.fetchGames();
         console.log(JSON.parse(localStorage.getItem('userProfile')));
-        
+
     }
 
     async fetchGames() {
@@ -86,7 +88,7 @@ class Profile extends Component {
 
     convertStringList() {
         let arr = this.state.gamesL.map((game) => (
-            { value: game.name + " (" + game.platform + ")" + " ("+game.year+")", id: game._id}
+            { value: game.name + " (" + game.platform + ")" + " (" + game.year + ")", id: game._id }
         ));
         this.setState({
             gameStrings: arr,
@@ -105,12 +107,12 @@ class Profile extends Component {
             this.setState({
                 gameToAdd: gameToAdd
             });
-            
+
         } else {
             this.setState({
                 gameToAdd: []
-            }); 
-        }      
+            });
+        }
     }
     generateList() {
         const lists = this.state.allList.map((gameList) => (
@@ -193,7 +195,7 @@ class Profile extends Component {
                 creatingList: false,
                 createdListName: '',
             })
-            
+
         }
     }
     addGameToList() {
@@ -210,7 +212,7 @@ class Profile extends Component {
             if (!this.checkDuplicates(listIndex)) {
                 const copyList = { ...this.state.allList };
                 copyList[listIndex].list.push(this.state.gameToAdd[0]);
-                
+
                 let allList = Object.values(copyList);
                 this.setState({
                     allList,
@@ -219,13 +221,13 @@ class Profile extends Component {
                 }, () => {
                     this.generateList();
                     this.resetErrorMsg();
-                })   
+                })
             } else {
                 this.setState({
                     addGameErrorMsg: "Game already exist in list."
                 })
             }
-              
+
         } else {
             console.log("Game not found:");
             console.log(this.state.gameToAdd);
@@ -243,7 +245,7 @@ class Profile extends Component {
             return false;
         }
     }
-    
+
 
     resetErrorMsg() {
         this.setState({
@@ -252,7 +254,7 @@ class Profile extends Component {
         })
     }
     render() {
-        
+
         return (
             <>
                 <Modal
@@ -310,8 +312,8 @@ class Profile extends Component {
                 </Modal>
                 <Grid columns={24}>
                     <Grid.Col span={6}>
-                        
-                        <div style={{margin: 'auto', padding: 50 }}>
+
+                        <div style={{ margin: 'auto', padding: 50 }}>
                             <Title order={2}>Username's Profile</Title>
                             <Image
                                 radius="md"
@@ -336,7 +338,7 @@ class Profile extends Component {
                                 <Grid.Col span={4}>
                                     <Button
                                         style={{ marginRight: 'auto' }}
-                                        onClick={() => this.setState({creatingList: true})}
+                                        onClick={() => this.setState({ creatingList: true })}
                                     >
                                         Create List
                                     </Button>

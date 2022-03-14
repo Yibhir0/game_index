@@ -36,7 +36,7 @@ const GameView = () => {
         try {
             const response = await fetch(feedbackUrl);
             const json = await response.json();
-            console.log(json)
+            fetchGame();
             setFeedBack(json);
         } catch (error) {
             console.log("error", error);
@@ -46,7 +46,6 @@ const GameView = () => {
     const addComment = async (values) => {
 
         // // Get the value of the comment box
-        // // and make sure it not some empty strings
         const comment = values.comment;
 
         const user = JSON.parse(localStorage.getItem("userProfile"));
@@ -83,7 +82,7 @@ const GameView = () => {
                 <Game game={game} />
                 <Divider />
 
-                <FeedbackBox addComment={addComment} id={id} />
+                <FeedbackBox addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />
                 <Divider />
                 <Allfeedback allFeedback={feedback} />
             </div>
