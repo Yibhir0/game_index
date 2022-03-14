@@ -59,7 +59,8 @@ class Profile extends Component {
     }
 
     async componentDidMount() {
-        let { id } = this.props.match.params;
+
+        let id = this.props.id;
         console.log(id);
         this.generateList();
         await this.fetchGames();

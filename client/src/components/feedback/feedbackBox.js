@@ -46,8 +46,6 @@ export default function FeedbackBox(props) {
         setRating(value);
     }
 
-
-
     return (
 
         <Center>
@@ -58,7 +56,7 @@ export default function FeedbackBox(props) {
                         <Textarea size="md"
                             required
                             placeholder="Your comment"
-                            maxlength="75"
+                            maxLength="75"
                             {...form.getInputProps('comment')}
                         /></Grid.Col>
                     <Grid.Col style={{ minHeight: 80 }} span={2}>

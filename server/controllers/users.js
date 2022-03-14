@@ -1,6 +1,7 @@
 const { OAuth2Client } = require('google-auth-library')
 const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID)
 const db = require("../mongoose/db");
+const cache = require("memory-cache");
 
 // Post user
 exports.postUser = async (req, res) => {
@@ -28,7 +29,7 @@ exports.postUser = async (req, res) => {
 
             console.log(user)
 
-            //req.session.userId = user.id
+            req.session.userId = user.id
             res.status(201)
             res.json(user)
         }

@@ -31,7 +31,7 @@ export default function SignIn() {
             const data = await res.json()
 
             localStorage.setItem('userProfile', JSON.stringify(data));
-
+            console.log(data);
             setUserAccount(data);
 
             alert("You are successfully logged in ")
@@ -39,18 +39,18 @@ export default function SignIn() {
             //Logged in
         }
         catch (err) {
-            // Not login 
+            alert("You are not logged in.. Try again ")
         }
 
 
     }
-    
+
     const handleLogout = async response => {
-        // const res = await fetch("/users/logout", {
-        //     method: "DELETE",
-        // })
-        // const data = await res.json()
-        // console.log(data);
+        const res = await fetch("/users/logout", {
+            method: "DELETE",
+        })
+        const data = await res.json()
+
         localStorage.clear();
         setUserAccount(null);
 
@@ -63,7 +63,7 @@ export default function SignIn() {
 
         return (
             <div>
-                <Anchor component={Link} to={'/profile'} >
+                <Anchor component={Link} to={`/profile/${userAccount._id}`} >
                     {userAccount.name}
                 </Anchor>
                 <GoogleLogout

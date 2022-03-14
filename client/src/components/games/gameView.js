@@ -20,11 +20,13 @@ const GameView = () => {
 
 
     const fetchGame = async () => {
+        console.log(id)
         const url = `/games/${id}`;
         try {
             const response = await fetch(url);
             const json = await response.json();
             setGame(json);
+
 
         } catch (error) {
             console.log("error", error);
