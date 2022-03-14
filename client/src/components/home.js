@@ -21,8 +21,8 @@ class Home extends Component {
             <div className="App">
 
                 <Center style={{ height: 200 }}>
-                    <Title order={1}>
-                        Welcome to the most popular <br></br> <Title align='center'>Gaming Database </Title>
+                    <Title align='center' order={1}>
+                        Welcome to the most popular <br></br> Gaming Database
                     </Title>
                 </Center>
 
