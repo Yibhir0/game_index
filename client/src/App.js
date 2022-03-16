@@ -7,19 +7,21 @@ import {
 import Home from './components/home';
 import Games from './components/games/games';
 import GameView from './components/games/gameView';
-import SignIn from './components/users/signin';
-import TopNav from './components/topnav';
-import Profile from './components/user/profile'
+import TopNav from './components/navbar/topnav';
+import UserProfile from './components/user/userProfile'
 
 export default function App() {
   return (
     <>
       <TopNav />
       <Routes>
+
+
+        <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/games" element={<Games />} />
         <Route path="/games/:id" element={<GameView />} />
-        <Route path="/Profile" element={<Profile />} />
+        <Route path="/Profile/:id" element={<UserProfile />} />
         {/* <Route path="/users/login" element={<SignIn />} /> */}
       </Routes>
     </>

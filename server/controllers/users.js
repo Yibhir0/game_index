@@ -1,6 +1,7 @@
 const { OAuth2Client } = require('google-auth-library')
 const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID)
 const db = require("../mongoose/db");
+const cache = require("memory-cache");
 
 // Post user
 exports.postUser = async (req, res) => {
@@ -28,7 +29,7 @@ exports.postUser = async (req, res) => {
 
             console.log(user)
 
-            //req.session.userId = user.id
+            req.session.userId = user.id
             res.status(201)
             res.json(user)
         }
@@ -54,13 +55,18 @@ exports.logOutUser = async (req, res) => {
 // get user
 exports.getUser = async (req, res) => {
     try {
-        const readyState = await db.connectToDB();
-        if (readyState === 1) {
-            const user = await db.getUser(req.params.id)
-            res.send(user)
-        }
-        else {
-            res.status(404).json({ message: "Could not connect to the database" })
+        let query = "user" + req.params.id
+        let response = cache.get(query)
+        if (!response) {
+            const readyState = await db.connectToDB();
+            if (readyState === 1) {
+                const user = await db.getUser(req.params.id)
+                cache.put(query, user)
+                res.send(user)
+            }
+            else {
+                res.status(404).json({ message: "Could not connect to the database" })
+            }
         }
     }
     catch (error) {

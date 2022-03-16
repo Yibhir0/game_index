@@ -4,12 +4,18 @@ import GoogleLogin, { GoogleLogout } from 'react-google-login';
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import { Anchor } from "@mantine/core";
+import './styles.css'
+import { useNavigate } from "react-router-dom";
 export default function SignIn() {
     
     const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('userProfile')));
+<<<<<<< HEAD:client/src/components/users/signin.js
     //variable will change later for deployment
     const profileUrl = "/profile";
 
+=======
+    let navigate = useNavigate();
+>>>>>>> cc832747bd0c3f252cc88454b4652df4c40f8edb:client/src/components/user/signin.js
     /**
  * Handle login with google. This function sends
  * a post request to the server with google tokenId
@@ -32,34 +38,47 @@ export default function SignIn() {
             const data = await res.json()
 
             localStorage.setItem('userProfile', JSON.stringify(data));
-
+            console.log(data);
             setUserAccount(data);
 
+<<<<<<< HEAD:client/src/components/users/signin.js
             if (window.location.pathname.includes(profileUrl)) {
                 window.location.reload(true);
             }
             
+=======
+            navigate(`/profile/${data._id}`, { replace: true });
+
+            alert("You are successfully logged in ")
+
+>>>>>>> cc832747bd0c3f252cc88454b4652df4c40f8edb:client/src/components/user/signin.js
             //Logged in
         }
         catch (err) {
-            // Not login 
+            alert("You are not logged in.. Try again ")
         }
 
-        // store returned user somehow
+
     }
 
     const handleLogout = async response => {
-        // const res = await fetch("/users/logout", {
-        //     method: "DELETE",
-        // })
-        // const data = await res.json()
-        // console.log(data);
+        const res = await fetch("/users/logout", {
+            method: "DELETE",
+        })
+        const data = await res.json()
+
         localStorage.clear();
         setUserAccount(null);
+<<<<<<< HEAD:client/src/components/users/signin.js
    
         if (window.location.pathname.includes(profileUrl)) {
             window.location.reload(true);
         }
+=======
+        alert("You are successfully logged out ")
+        navigate("/home", { replace: true });
+
+>>>>>>> cc832747bd0c3f252cc88454b4652df4c40f8edb:client/src/components/user/signin.js
     }
 
 
@@ -67,7 +86,7 @@ export default function SignIn() {
 
         return (
             <div>
-                <Anchor component={Link} to={'/profile'} >
+                <Anchor component={Link} to={`/profile/${userAccount._id}`} >
                     {userAccount.name}
                 </Anchor>
                 <GoogleLogout
@@ -84,7 +103,7 @@ export default function SignIn() {
         return (
 
             <div>
-                <GoogleLogin
+                <GoogleLogin className='linkbtn'
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                     buttonText="Log in with Google"
                     onSuccess={handleLogin}

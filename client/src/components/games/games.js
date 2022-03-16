@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom';
 class Games extends Component {
 
     constructor(props) {
+       
         super(props);
         this.genres = [
             { value: '', label: 'All' },

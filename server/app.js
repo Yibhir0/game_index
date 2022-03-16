@@ -8,13 +8,14 @@ const bodyParser = require("body-parser");
 //Swagger
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
+const compression = require('compression')
 
 const swaggerDefinition = {
     openapi: '3.0.0',
     info: {
         title: 'Game Index Endpoints Swagger Documentation',
         version: '1.0.0',
-    }, 
+    },
 };
 
 const options = {
@@ -27,12 +28,19 @@ const swaggerSpec = swaggerJSDoc(options);
 
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
-// const session = require('express-session');
+const session = require('express-session');
 
-// // Change salt periodically
-// app.use(session({ secret: 'salty' }));
+// Change salt periodically
+app.use(session({ secret: 'salty' }));
 
 app.use(express.json());
+
+app.use(compression());
+
+app.use(function (req, res, next) {
+    res.set("Cache-control", "public, max-age=31536000");
+    next();
+});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 

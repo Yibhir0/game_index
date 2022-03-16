@@ -26,16 +26,16 @@ class GraphController extends Component {
                     <VerticalBarSeries
                         data={this.props.states.graphData.popularGames}
                         onValueMouseOver={(datapoint, { event }) => {
-                            this.setState({crossValue: datapoint})
+                            this.setState({ crossValue: datapoint })
                         }}
-                        // onValueMouseOut={this.setState({crossValue:[]})} This causes the graph to not render, idk why yet?
+                    // onValueMouseOut={this.setState({crossValue:[]})} This causes the graph to not render, idk why yet?
                     />
-                    <XAxis style={{ line: { stroke:'black'}}} />
+                    <XAxis style={{ line: { stroke: 'black' } }} />
                     <YAxis style={{ line: { stroke: 'black' } }}
-                                tickSize={1}
-                                tickPadding={2}
-                                tickFormat={v => v / 1000000}
-                        />
+                        tickSize={1}
+                        tickPadding={2}
+                        tickFormat={v => v / 1000000}
+                    />
                     <ChartLabel
                         text="Global Sales (Millions)"
                         className="alt-y-label"
@@ -43,7 +43,7 @@ class GraphController extends Component {
                         xPercent={0.09}
                         yPercent={0.035}
                         style={{
-                        textAnchor: 'end'
+                            textAnchor: 'end'
                         }}
                     />
                     <ChartLabel
@@ -53,15 +53,15 @@ class GraphController extends Component {
                         xPercent={1}
                         yPercent={1.115}
                         style={{
-                        textAnchor: 'end'
+                            textAnchor: 'end'
                         }}
                     />
-
-                    <Hint value={this.state.crossValue} align={{horizontal:Hint.ALIGN.AUTO, vertical:Hint.ALIGN.BOTTOM_EDGE}}>
-                        
-                            <p>{this.state.crossValue.x}</p>
-                            <p>{this.state.crossValue.y}</p>
+                    {this.state.crossValue.length > 0 &&
+                        < Hint value={this.state.crossValue} align={{ horizontal: Hint.ALIGN.AUTO, vertical: Hint.ALIGN.BOTTOM_EDGE }}>
+                    <p>{this.state.crossValue.x}</p>
+                    <p>{this.state.crossValue.y}</p>
                     </Hint>
+        }
                 </FlexibleXYPlot>;
 
         }
