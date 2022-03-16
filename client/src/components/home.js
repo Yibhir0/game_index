@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TopNav from './topnav';
+import TopNav from './navbar/topnav';
 import {
     Center, Grid, Text,
     PasswordInput, TextInput, Loader,

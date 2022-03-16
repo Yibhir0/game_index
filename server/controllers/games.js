@@ -8,14 +8,15 @@ exports.getGames = async (req, res) => {
         if (!response) {
             const readyState = await db.connectToDB();
             if (readyState === 1) {
-                const games = await db.getGames();
-                cache.put("allGames", games)
-                res.send(games);
+                response = await db.getGames();
+                cache.put("allGames", response)
+
             }
             else {
                 res.status(404).json({ message: "Could not connect to the database" })
             }
         }
+        res.send(response);
     }
     catch (error) {
         res.status(404).json({ message: error.message })
@@ -27,17 +28,24 @@ exports.getGame = async (req, res) => {
     try {
         let query = "game" + req.params.id
         let response = cache.get(query)
+       
         if (!response) {
+
             const readyState = await db.connectToDB();
+
             if (readyState === 1) {
-                const game = await db.getGame(req.params.id)
-                cache.put(query, game)
-                res.send(game)
+
+                response = await db.getGame(req.params.id)
+
+                cache.put(query, response)
+
             }
             else {
                 res.status(404).json({ message: "Could not connect to the database" })
             }
         }
+
+        res.send(response)
     }
     catch (error) {
         res.status(404).json({ message: error.message })
@@ -62,14 +70,16 @@ exports.getGamesByFilter = async (req, res) => {
                 };
 
                 //console.log(filters);
-                const games = await db.getGamesByFilter(filters)
+                response = await db.getGamesByFilter(filters)
                 cache.put(query, games)
-                res.send(games)
+
             }
         }
         else {
             res.status(404).json({ message: "Could not connect to the database" })
         }
+
+        res.send(response)
     }
     catch (error) {
         res.status(404).json({ message: error.message })

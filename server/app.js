@@ -15,7 +15,7 @@ const swaggerDefinition = {
     info: {
         title: 'Game Index Endpoints Swagger Documentation',
         version: '1.0.0',
-    }, 
+    },
 };
 
 const options = {
@@ -28,10 +28,10 @@ const swaggerSpec = swaggerJSDoc(options);
 
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
-// const session = require('express-session');
+const session = require('express-session');
 
-// // Change salt periodically
-// app.use(session({ secret: 'salty' }));
+// Change salt periodically
+app.use(session({ secret: 'salty' }));
 
 app.use(express.json());
 

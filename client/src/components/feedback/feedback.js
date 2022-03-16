@@ -26,8 +26,6 @@ class Feedback extends Component {
 
         let user = await response.json();
 
-        console.log(user.picture)
-
         this.setState({ user: user })
 
     }
@@ -38,7 +36,7 @@ class Feedback extends Component {
                 <Grid >
 
                     <Grid.Col span={2} >
-                        <Anchor component={Link} to={'/profile'} >
+                        <Anchor component={Link} to={`/profile/${this.state.comment.userID}`} >
                             <Avatar src={this.state.user.picture} />
                         </Anchor>
                     </Grid.Col>
