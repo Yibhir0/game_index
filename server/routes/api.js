@@ -403,7 +403,9 @@ router.post('/games/:id/feedback', feedback.addComment);
 
 router.post('/users/:id/list', user.createList);
 
-router.post('/users/:id/list/:index', user.addGameToList)
+router.post('/users/:id/list/delGame', user.removeGameFromList);
+
+router.post('/users/:id/list/addGame', user.addGameToList);
 
 router.post("/users/login", users.postUser);
 

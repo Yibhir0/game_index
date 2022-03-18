@@ -184,7 +184,7 @@ class Profile extends Component {
                                         alt="Random unsplash image"
                                     />
                                 </td>
-                                <td>{game.name}</td>
+                                <td><Anchor component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
                                 <td>{game.genre}</td>
                                 <td>{game.publisher}</td>
                                 <td>{game.year}</td>
@@ -312,18 +312,28 @@ class Profile extends Component {
         }
     }
 
-    removeGameFromList(){
+    async removeGameFromList() {
+        
         //get index of the list where the game will be removed from
-        let listIndex = this.state.allList.findIndex(list => list.name === this.state.currentGameList);
-        let copyList = { ...this.state.allList };
-        copyList[listIndex].list.splice(copyList[listIndex].list.indexOf(this.state.gameToBeDeleted), 1);
-        let allList = Object.values(copyList);
-        // console.log(allList);
-        this.setState({
-            allList
-        }, () => {
-            this.generateList();
-        })
+        let listIndex = this.state.currentUser.lists.findIndex(list => list.name === this.state.currentGameList);
+
+        // server side for deleting game
+        console.log("deleting game");
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        }
+
+        let url = "/users/" + this.state.currentUser._id + "/list/delGame?gameId=" + this.state.gameToBeDeleted._id + "&index=" + listIndex;
+        let response = await fetch(url, requestOptions);
+        console.log(response);
+        
+        await this.fetchUser();
+        this.generateList();
     }
     
 
