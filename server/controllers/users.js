@@ -27,8 +27,6 @@ exports.postUser = async (req, res) => {
 
             const user = await db.createUser(newUser);
 
-            console.log(user)
-
             req.session.userId = user.id
             res.status(201)
             res.json(user)
@@ -42,7 +40,7 @@ exports.postUser = async (req, res) => {
     }
 };
 
-// Post user
+// log out user
 exports.logOutUser = async (req, res) => {
     await req.session.destroy()
     res.status(200)
@@ -60,14 +58,16 @@ exports.getUser = async (req, res) => {
         if (!response) {
             const readyState = await db.connectToDB();
             if (readyState === 1) {
-                const user = await db.getUser(req.params.id)
-                cache.put(query, user)
-                res.send(user)
+                response = await db.getUser(req.params.id)
+                cache.put(query, response)
+
             }
             else {
                 res.status(404).json({ message: "Could not connect to the database" })
             }
         }
+
+        res.send(response)
     }
     catch (error) {
         res.status(404).json({ message: error.message })
