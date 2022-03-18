@@ -21,6 +21,7 @@ import {
     THEME_ICON_SIZES
 } from '@mantine/core';
 import { Link } from 'react-router-dom';
+import { off } from "process";
 
 class Profile extends Component {
 
@@ -42,7 +43,7 @@ class Profile extends Component {
             currentUser: {},
             loading: true,
             loggedIn: true,
-
+            editPerms: false,
         };
 
         this.createList = this.createList.bind(this);
@@ -54,7 +55,31 @@ class Profile extends Component {
         this.resetErrorMsg = this.resetErrorMsg.bind(this);
         this.checkDuplicates = this.checkDuplicates.bind(this);
         this.removeGameFromList = this.removeGameFromList.bind(this);
+        this.checkPerms = this.checkPerms.bind(this);
         // this.updateUser = this.updateUser.bind(this);
+    }
+
+    
+
+    async componentDidMount() {
+        this.checkPerms();
+        await this.fetchUser()
+        this.generateList();
+        await this.fetchGames();
+    }
+
+    checkPerms() {
+        if (localStorage.getItem('userProfile') != null) {
+            if ((JSON.parse(localStorage.getItem('userProfile')))._id === this.props.id) {
+                this.setState({ editPerms: true }, () => {
+                    console.log(this.state.editPerms);
+                })
+            } else {
+                this.setState({ editPerms: false }, () => {
+                    console.log(this.state.editPerms);
+                })
+            }
+        } 
     }
 
     async fetchUser() {
@@ -74,44 +99,6 @@ class Profile extends Component {
             console.log(this.state.currentUser);
         })
     }
-
-    async componentDidMount() {
-        await this.fetchUser()
-        this.generateList();
-        await this.fetchGames();
-    }
-
-    // async initId() {
-    //     if (localStorage.getItem('userProfile')) {
-    //         this.setState({
-    //             loggedIn: true,
-    //             userId: (JSON.parse(localStorage.getItem('userProfile')))._id
-    //         });
-    //     } else {
-    //         this.setState({
-    //             loggedIn: false
-    //         })
-    //     }
-    // }
-
-    // async updateUser() {
-    //     if (this.state.loggedIn) {
-            
-    //         console.log("updating user");
-    //         let userUrl = "/users/" + this.state.userId
-    //         let response = await fetch(userUrl);
-    //         console.log(response);
-    //         let currentUser = await response.json();
-    //         this.setState({
-    //             currentUser,
-    //         }, () => {
-    //             console.log(this.state.currentUser);
-    //             this.setState({
-    //                 loading: false
-    //             })
-    //         });  
-    //     }      
-    // }
 
     async fetchGames() {
 
@@ -170,15 +157,19 @@ class Profile extends Component {
                             <th>Publisher</th>
                             <th>Year</th>
                             <th>
-                                <Button
-                                    onClick={() => this.setState({
-                                        addingGame: true,
-                                        currentGameList: gameList.name
-                                    })}
-                                    color="green"
-                                >
-                                    Add Game
-                                </Button>
+                                {this.state.editPerms ?
+                                    <Button
+                                        onClick={() => this.setState({
+                                            addingGame: true,
+                                            currentGameList: gameList.name
+                                        })}
+                                        color="green"
+                                    >
+                                        Add Game
+                                    </Button>
+                                    :
+                                    <></>
+                                }
                             </th>
                         </tr>
                     </thead>
@@ -189,7 +180,7 @@ class Profile extends Component {
                                     <Image
                                         width={80}
                                         height={80}
-                                        src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                                        src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL}`}
                                         alt="Random unsplash image"
                                     />
                                 </td>
@@ -198,16 +189,20 @@ class Profile extends Component {
                                 <td>{game.publisher}</td>
                                 <td>{game.year}</td>
                                 <td>
-                                    <Button
-                                        color="red"
-                                        size="xs"
-                                        onClick={() => this.setState({
-                                            gameToBeDeleted: game,
-                                            currentGameList: gameList.name
-                                        }, () => this.removeGameFromList())}
-                                    >
-                                        X
-                                    </Button>
+                                    {this.state.editPerms ?
+                                        <Button
+                                            color="red"
+                                            size="xs"
+                                            onClick={() => this.setState({
+                                                gameToBeDeleted: game,
+                                                currentGameList: gameList.name
+                                            }, () => this.removeGameFromList())}
+                                        >
+                                            X
+                                        </Button>
+                                        :
+                                        <></>
+                                    }
                                 </td>
                             </tr>
                         ))
@@ -231,7 +226,7 @@ class Profile extends Component {
             console.log("List created: " + this.state.createdListName);
 
             await this.addListToDb();
-            await this.updateUser();
+            await this.fetchUser();
             this.generateList();
 
             this.setState({
@@ -270,12 +265,6 @@ class Profile extends Component {
             //check if list contains duplicates before adding
             if (!this.checkDuplicates(listIndex)) {
 
-                // client side for adding game
-                // const copyList = { ...this.state.allList };
-                // copyList[listIndex].list.push(this.state.gameToAdd[0]);
-                
-                // let allList = Object.values(copyList);
-                
                 // server side for adding game
                 console.log("adding game");
 
@@ -286,11 +275,12 @@ class Profile extends Component {
                         'Accept': 'application/json'
                     },
                 }
+
                 let url = "/users/" + this.state.currentUser._id + "/list/addGame?gameId=" + this.state.gameToAdd[0]._id + "&index=" + listIndex;
                 let response = await fetch(url, requestOptions);
                 console.log(response);
 
-                // await this.updateUser();
+                await this.fetchUser();
                 this.setState({
                     addingGame: false,
                     gameToAdd: []
@@ -415,8 +405,10 @@ class Profile extends Component {
                                         <div style={{ margin: 'auto', padding: 50 }}>
                                             <Title order={2}>{this.state.currentUser.name}'s Profile</Title>
                                             <Image
+                                                width="15em"
+                                                height="15em"
                                                 radius="md"
-                                                src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                                                src={this.state.currentUser.picture}
                                                 alt="Random unsplash image"
                                             />
                                             <Text>
@@ -435,12 +427,16 @@ class Profile extends Component {
                                                 <Grid.Col span={4}>
                                                 </Grid.Col>
                                                 <Grid.Col span={4}>
-                                                    <Button
-                                                        style={{ marginRight: 'auto' }}
-                                                        onClick={() => this.setState({ creatingList: true })}
-                                                    >
-                                                        Create List
-                                                    </Button>
+                                                    {this.state.editPerms ?
+                                                        <Button
+                                                            style={{ marginRight: 'auto' }}
+                                                            onClick={() => this.setState({ creatingList: true })}
+                                                        >
+                                                            Create List
+                                                        </Button>
+                                                        :
+                                                        <></>
+                                                    }
                                                 </Grid.Col>
                                             </SimpleGrid>
                                             <Accordion iconPosition="right" >
