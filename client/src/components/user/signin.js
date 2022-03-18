@@ -9,13 +9,9 @@ import { useNavigate } from "react-router-dom";
 export default function SignIn() {
     
     const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('userProfile')));
-<<<<<<< HEAD:client/src/components/users/signin.js
     //variable will change later for deployment
-    const profileUrl = "/profile";
-
-=======
+    // const profileUrl = "/profile";
     let navigate = useNavigate();
->>>>>>> cc832747bd0c3f252cc88454b4652df4c40f8edb:client/src/components/user/signin.js
     /**
  * Handle login with google. This function sends
  * a post request to the server with google tokenId
@@ -41,17 +37,14 @@ export default function SignIn() {
             console.log(data);
             setUserAccount(data);
 
-<<<<<<< HEAD:client/src/components/users/signin.js
-            if (window.location.pathname.includes(profileUrl)) {
-                window.location.reload(true);
-            }
+            // if (window.location.pathname.includes(profileUrl)) {
+            //     window.location.reload(true);
+            // }
             
-=======
             navigate(`/profile/${data._id}`, { replace: true });
 
             alert("You are successfully logged in ")
 
->>>>>>> cc832747bd0c3f252cc88454b4652df4c40f8edb:client/src/components/user/signin.js
             //Logged in
         }
         catch (err) {
@@ -69,16 +62,14 @@ export default function SignIn() {
 
         localStorage.clear();
         setUserAccount(null);
-<<<<<<< HEAD:client/src/components/users/signin.js
    
-        if (window.location.pathname.includes(profileUrl)) {
-            window.location.reload(true);
-        }
-=======
+        // if (window.location.pathname.includes(profileUrl)) {
+        //     window.location.reload(true);
+        // }
+
         alert("You are successfully logged out ")
         navigate("/home", { replace: true });
 
->>>>>>> cc832747bd0c3f252cc88454b4652df4c40f8edb:client/src/components/user/signin.js
     }
 
 

@@ -55,18 +55,13 @@ exports.logOutUser = async (req, res) => {
 // get user
 exports.getUser = async (req, res) => {
     try {
-        let query = "user" + req.params.id
-        let response = cache.get(query)
-        if (!response) {
-            const readyState = await db.connectToDB();
-            if (readyState === 1) {
-                const user = await db.getUser(req.params.id)
-                cache.put(query, user)
-                res.send(user)
-            }
-            else {
-                res.status(404).json({ message: "Could not connect to the database" })
-            }
+        const readyState = await db.connectToDB();
+        if (readyState === 1) {
+            const user = await db.getUser(req.params.id)
+            res.send(user)
+        }
+        else {
+            res.status(404).json({ message: "Could not connect to the database" })
         }
     }
     catch (error) {

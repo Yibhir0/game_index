@@ -38,15 +38,11 @@ class Profile extends Component {
             gameToBeDeleted: [],
             addGameErrorMsg: '',
             createListErrorMsg: '',
-<<<<<<< HEAD
             userId: '',
             currentUser: {},
             loading: true,
             loggedIn: true,
 
-=======
-            user: {}
->>>>>>> cc832747bd0c3f252cc88454b4652df4c40f8edb
         };
 
         this.createList = this.createList.bind(this);
@@ -58,15 +54,12 @@ class Profile extends Component {
         this.resetErrorMsg = this.resetErrorMsg.bind(this);
         this.checkDuplicates = this.checkDuplicates.bind(this);
         this.removeGameFromList = this.removeGameFromList.bind(this);
-        this.updateUser = this.updateUser.bind(this);
+        // this.updateUser = this.updateUser.bind(this);
     }
 
-<<<<<<< HEAD
-    async componentDidMount() { 
-        await this.initId();
-        await this.updateUser();
-=======
     async fetchUser() {
+
+        console.log(this.props.id);
 
         let url = `/users/${this.props.id}`;
 
@@ -74,53 +67,51 @@ class Profile extends Component {
 
         let user = await response.json();
 
-        this.setState({ user: user })
+        this.setState({
+            currentUser: user,
+            loading: false,
+        }, () => {
+            console.log(this.state.currentUser);
+        })
     }
 
     async componentDidMount() {
-
->>>>>>> cc832747bd0c3f252cc88454b4652df4c40f8edb
-        this.generateList();
         await this.fetchUser()
+        this.generateList();
         await this.fetchGames();
-<<<<<<< HEAD
     }
 
-    async initId() {
-        if (localStorage.getItem('userProfile')) {
-            this.setState({
-                loggedIn: true,
-                userId: (JSON.parse(localStorage.getItem('userProfile')))._id
-            });
-        } else {
-            this.setState({
-                loggedIn: false
-            })
-        }
-    }
+    // async initId() {
+    //     if (localStorage.getItem('userProfile')) {
+    //         this.setState({
+    //             loggedIn: true,
+    //             userId: (JSON.parse(localStorage.getItem('userProfile')))._id
+    //         });
+    //     } else {
+    //         this.setState({
+    //             loggedIn: false
+    //         })
+    //     }
+    // }
 
-    async updateUser() {
-        if (this.state.loggedIn) {
+    // async updateUser() {
+    //     if (this.state.loggedIn) {
             
-            console.log("updating user");
-            let userUrl = "/users/" + this.state.userId
-            let response = await fetch(userUrl);
-            console.log(response);
-            let currentUser = await response.json();
-            this.setState({
-                currentUser,
-            }, () => {
-                console.log(this.state.currentUser);
-                this.setState({
-                    loading: false
-                })
-            });  
-        }      
-=======
-
-
->>>>>>> cc832747bd0c3f252cc88454b4652df4c40f8edb
-    }
+    //         console.log("updating user");
+    //         let userUrl = "/users/" + this.state.userId
+    //         let response = await fetch(userUrl);
+    //         console.log(response);
+    //         let currentUser = await response.json();
+    //         this.setState({
+    //             currentUser,
+    //         }, () => {
+    //             console.log(this.state.currentUser);
+    //             this.setState({
+    //                 loading: false
+    //             })
+    //         });  
+    //     }      
+    // }
 
     async fetchGames() {
 
@@ -278,7 +269,6 @@ class Profile extends Component {
 
             //check if list contains duplicates before adding
             if (!this.checkDuplicates(listIndex)) {
-<<<<<<< HEAD
 
                 // client side for adding game
                 // const copyList = { ...this.state.allList };
@@ -300,13 +290,7 @@ class Profile extends Component {
                 let response = await fetch(url, requestOptions);
                 console.log(response);
 
-                await this.updateUser();
-=======
-                const copyList = { ...this.state.allList };
-                copyList[listIndex].list.push(this.state.gameToAdd[0]);
-
-                let allList = Object.values(copyList);
->>>>>>> cc832747bd0c3f252cc88454b4652df4c40f8edb
+                // await this.updateUser();
                 this.setState({
                     addingGame: false,
                     gameToAdd: []
@@ -338,7 +322,6 @@ class Profile extends Component {
         }
     }
 
-<<<<<<< HEAD
     removeGameFromList(){
         //get index of the list where the game will be removed from
         let listIndex = this.state.allList.findIndex(list => list.name === this.state.currentGameList);
@@ -353,8 +336,6 @@ class Profile extends Component {
         })
     }
     
-=======
->>>>>>> cc832747bd0c3f252cc88454b4652df4c40f8edb
 
     resetErrorMsg() {
         this.setState({
@@ -366,7 +347,6 @@ class Profile extends Component {
 
         return (
             <>
-<<<<<<< HEAD
                 {this.state.loggedIn ?
                     <div>
                     {this.state.loading ?
@@ -397,90 +377,6 @@ class Profile extends Component {
                                     <br></br>
                                     <Button
                                         onClick={this.createList}
-=======
-                <Modal
-                    opened={this.state.creatingList}
-                    onClose={() => this.setState({
-                        creatingList: false,
-                        createdListName: '',
-                    })}
-                    title="Create List"
-                >
-                    <TextInput
-                        onChange={(evt) => this.setState({
-                            createdListName: evt.target.value
-                        }, () => this.resetErrorMsg())}
-                        placeholder="List name"
-                        label="Enter Game List name:"
-                        size="md"
-                        error={this.state.createListErrorMsg}
-                        required
-                    />
-                    <br></br>
-                    <Button
-                        onClick={this.createList}
-                    >
-                        Create
-                    </Button>
-                </Modal>
-                <Modal
-                    opened={this.state.addingGame}
-                    onClose={() => this.setState({
-                        addingGame: false,
-                        currentGameList: '',
-                        gameToAdd: [],
-                    })}
-                    title="Add Game"
-                >
-                    {this.state.isGamesLoaded ?
-                        <>
-                            <Autocomplete
-                                onChange={evt => this.updateAddGame(evt)}
-                                label="Search game:"
-                                placeholder="Write keyword"
-                                data={this.state.gameStrings}
-                                error={this.state.addGameErrorMsg}
-                            />
-                            <Button
-                                onClick={this.addGameToList}
-                            >
-                                Add
-                            </Button>
-                        </>
-                        :
-                        <Loader size="xl" />
-                    }
-                </Modal>
-                <Grid columns={24}>
-                    <Grid.Col span={6}>
-
-                        <div style={{ margin: 'auto', padding: 50 }}>
-                            <Title order={2}>{this.state.user.name}</Title>
-                            <Image
-                                radius="md"
-                                src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                                alt="Random unsplash image"
-                            />
-                            <Text>
-                                Bio: Hello my name is username and I love video games! Look at my games list to look at the most trending games.
-                            </Text>
-                        </div>
-                    </Grid.Col>
-                    <Grid.Col span={18}>
-                        <div style={{ margin: 'auto', padding: 50 }}>
-                            <SimpleGrid cols={4}>
-                                <Grid.Col span={4}>
-                                    <Title order={2}>Game List</Title>
-                                </Grid.Col>
-                                <Grid.Col span={4}>
-                                </Grid.Col>
-                                <Grid.Col span={4}>
-                                </Grid.Col>
-                                <Grid.Col span={4}>
-                                    <Button
-                                        style={{ marginRight: 'auto' }}
-                                        onClick={() => this.setState({ creatingList: true })}
->>>>>>> cc832747bd0c3f252cc88454b4652df4c40f8edb
                                     >
                                         Create
                                     </Button>
