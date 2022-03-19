@@ -35,6 +35,7 @@ class Profile extends Component {
             createdListName: '',
             currentGameList: '',
             addingGame: false,
+            deletingList: false,
             gameToAdd: [],
             gameToBeDeleted: [],
             addGameErrorMsg: '',
@@ -48,6 +49,7 @@ class Profile extends Component {
 
         this.createList = this.createList.bind(this);
         this.addListToDb = this.addListToDb.bind(this);
+        this.deleteList = this.deleteList.bind(this);
         this.generateList = this.generateList.bind(this);
         this.fetchGames = this.fetchGames.bind(this);
         this.convertStringList = this.convertStringList.bind(this);
@@ -148,7 +150,44 @@ class Profile extends Component {
     generateList() {
         const lists = this.state.currentUser.lists.map((gameList) => (
             <Accordion.Item label={gameList.name}>
-                <Table verticalSpacing={'xl'}>
+                {this.state.editPerms ?
+                    <div style={{
+                        padding: 10
+                    }}>
+                        <SimpleGrid cols={10}>
+                            <div>
+                                <Button
+                                    onClick={() => this.setState({
+                                        addingGame: true,
+                                        currentGameList: gameList.name
+                                    })}
+                                    color="green"
+                                >
+                                    Add Game
+                                </Button>
+                            </div>
+                            <div>
+                                <Button
+                                    onClick={() => this.setState({
+                                        deletingList: true,
+                                        currentGameList: gameList.name
+                                    })}
+                                    color="orange"
+                                >
+                                    Delete List
+                                </Button>
+                            </div> 
+                        </SimpleGrid>
+                        
+                    </div>
+                    :
+                    <></>
+                }
+                <Table
+                    striped highlightOnHover
+                    verticalSpacing={'xl'}
+                    horizontalSpacing={'xs'}
+                >
                     <thead>
                         <tr>
                             <th>Cover</th>
@@ -156,21 +195,6 @@ class Profile extends Component {
                             <th>Genre</th>
                             <th>Publisher</th>
                             <th>Year</th>
-                            <th>
-                                {this.state.editPerms ?
-                                    <Button
-                                        onClick={() => this.setState({
-                                            addingGame: true,
-                                            currentGameList: gameList.name
-                                        })}
-                                        color="green"
-                                    >
-                                        Add Game
-                                    </Button>
-                                    :
-                                    <></>
-                                }
-                            </th>
                         </tr>
                     </thead>
                     <tbody>{
@@ -236,6 +260,7 @@ class Profile extends Component {
 
         }
     }
+
     async addListToDb() {
 
         console.log("creating list in db for user: " + this.state.currentUser.name);
@@ -253,6 +278,30 @@ class Profile extends Component {
         let response = await fetch(listUrl, requestOptions);
         console.log(response);
     }
+
+    async deleteList() {
+        console.log("deleting list");
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        }
+
+        let listUrl = "/users/"+this.state.currentUser._id+"/delList?name="+this.state.currentGameList;
+        let response = await fetch(listUrl, requestOptions);
+        console.log(response);
+
+        await this.fetchUser();
+        this.generateList();
+        
+        this.setState({
+            currentGameList: '',
+        })
+    }
+
     async addGameToList() {
         if (this.state.gameToAdd.length) {
             //print game to add info
@@ -355,7 +404,10 @@ class Profile extends Component {
                                 <Loader size="xl" />
                             </div>
                             :
+                            
                             <>
+                                {/* All modals */}
+                                {/* Creating List */}
                                 <Modal
                                     opened={this.state.creatingList}
                                     onClose={() => this.setState({
@@ -381,6 +433,8 @@ class Profile extends Component {
                                         Create
                                     </Button>
                                 </Modal>
+
+                                {/* Adding Game */}
                                 <Modal
                                     opened={this.state.addingGame}
                                     onClose={() => this.setState({
@@ -409,6 +463,48 @@ class Profile extends Component {
                                         <Loader size="xl" />
                                     }
                                 </Modal>
+
+                                {/* Deleting List */}
+
+                                <Modal
+                                    opened={this.state.deletingList}
+                                    onClose={() => this.setState({
+                                        deletingList: false,
+                                        currentGameList: '',
+                                    }, () => this.resetErrorMsg())}
+                                    title="Delete List"
+                                >
+                                    <Title order={4}>Are you sure you want to delete this list?</Title>
+                                    <br></br>
+                                    <Text>Deleting the list will remove all games added. <br></br>This action cannot be undone.</Text>
+                                    <br></br>
+                                    <SimpleGrid cols={5}>
+                                        <div>
+                                            <Button
+                                                color="green"
+                                                onClick={() => this.setState({
+                                                    deletingList: false
+                                                }, () => this.deleteList())}
+                                            >
+                                                Yes
+                                            </Button>
+                                        </div>
+                                        <div>
+                                            <Button
+                                                color="red"
+                                                onClick={() => this.setState({
+                                                    deletingList: false,
+                                                    currentGameList: '',
+                                                })}
+                                            >
+                                                No
+                                            </Button>
+                                        </div>
+                                    </SimpleGrid>
+                                </Modal>
+
+                                {/* End of all modals*/}
+
                                 <Grid columns={24}>
                                     <Grid.Col span={6}>
                                     

@@ -31,6 +31,32 @@ exports.createList = async (req, res) => {
     }
 };
 
+// Delete list from user
+exports.deleteList = async (req, res) => {
+
+    try {
+        const readyState = await db.connectToDB();
+        if (readyState === 1) {
+
+            let userId = req.params.id;
+            let listName = req.query.name;
+
+            const listDeleted = await db.deleteList(userId, listName);
+
+            console.log(listDeleted)
+
+            res.status(201)
+            res.end("List successfully deleted.");
+        }
+        else {
+            res.status(404).json({ message: "Could not connect to the database" })
+        }
+    }
+    catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+};
+
 // Add game to list
 exports.addGameToList = async (req, res) => {
 

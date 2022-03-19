@@ -176,6 +176,24 @@ module.exports.createList = async (list, userId) => {
 
 }
 
+module.exports.deleteList = async (userId, listName) => {
+
+    try {
+
+        let delList = await User.findOneAndUpdate(
+            {
+                _id: userId,
+            },
+            { $pull: { lists: { name: listName }}}
+        );
+        return delList;
+    }
+    catch (error) {
+        console.log(error);
+    }
+
+}
+
 module.exports.addGameToList = async (userId, listIndex, gameId) => {
     try {
         let game = await Games.findById({ _id: gameId });

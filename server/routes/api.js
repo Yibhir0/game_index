@@ -401,6 +401,8 @@ router.get('/games/:id/feedback', feedback.getComments);
  */
 router.post('/games/:id/feedback', feedback.addComment);
 
+router.post('/users/:id/delList', user.deleteList);
+
 router.post('/users/:id/list', user.createList);
 
 router.post('/users/:id/list/delGame', user.removeGameFromList);
