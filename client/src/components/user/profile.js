@@ -67,6 +67,8 @@ class Profile extends Component {
 
         let user = await response.json();
 
+        console.log(user);
+
         this.setState({ user: user })
     }
 
