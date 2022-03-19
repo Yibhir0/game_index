@@ -1,4 +1,19 @@
-.v_flex{
+/* .v_flex{
     display: flex;
     flex-direction: column ;
+} */
+/* .commentBox{
+    border: 1px solid grey;
+    
+
+ 
+} */
+.commentText{
+    word-wrap: break-word;
+    hyphens: auto;
+    border: none;
+    padding: 10px;
+    border-radius: 40px 10px;
+    color: #2C2E33;
+    background:  #fff0f6;
 }

@@ -48,24 +48,25 @@ export default function FeedbackBox(props) {
 
     return (
 
-        <Center>
-            <form onSubmit={form.onSubmit((values) => submitComment(values))}>
 
-                <Grid justify="center" >
-                    <Grid.Col span={10} >
-                        <Textarea size="md"
-                            required
-                            placeholder="Your comment"
-                            maxLength="75"
-                            {...form.getInputProps('comment')}
-                        /></Grid.Col>
-                    <Grid.Col style={{ minHeight: 80 }} span={2}>
-                        <RatingBox rating={rating} dis={false} getRating={getRating} />
-                        <Button type="submit">Comment/Rate</Button>
-                    </Grid.Col>
-                </Grid>
-            </form>
-        </Center>
+        <form onSubmit={form.onSubmit((values) => submitComment(values))}>
+
+            <Grid justify="space-between" >
+                <Grid.Col span={10} >
+                    <Textarea size="xl"
+                        required
+                        placeholder="Your comment"
+
+                        {...form.getInputProps('comment')}
+                    /></Grid.Col>
+                <Grid.Col style={{ minHeight: 80 }} span={2}>
+                    <RatingBox rating={rating} dis={false} getRating={getRating} />
+                    <Button type="submit">Comment/Rate</Button>
+                </Grid.Col>
+
+            </Grid>
+        </form>
+
 
     );
 }

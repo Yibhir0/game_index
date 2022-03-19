@@ -4,6 +4,7 @@ import Allfeedback from '../feedback/allFeedback';
 import FeedbackBox from '../feedback/feedbackBox';
 import { Divider } from "@mantine/core";
 import Game from './game';
+import '../feedback/styles.css'
 
 const GameView = () => {
 
@@ -18,6 +19,12 @@ const GameView = () => {
 
     }, []);
 
+
+    const hasCommented = () => {
+
+        let isCommented = feedback.find(item => item.userID === JSON.parse(localStorage.getItem("userProfile"))._id);
+        return isCommented ? true : false;
+    }
 
     const fetchGame = async () => {
         console.log(id)
@@ -76,21 +83,27 @@ const GameView = () => {
     }
 
 
-    if (localStorage.getItem("userProfile")) {
+    if (localStorage.getItem("userProfile") && !hasCommented()) {
         return (
             <div className="v_flex">
                 <Game game={game} />
-                <Divider />
+
+                <br />
 
                 <FeedbackBox addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />
-                <Divider />
+                <br />
                 <Allfeedback allFeedback={feedback} />
+
             </div>
         )
     }
 
     return (
-        <Game game={game} />
+        <div className="v_flex">
+            <Game game={game} />
+            <br />
+            <Allfeedback allFeedback={feedback} />
+        </div>
     );
 };
 
