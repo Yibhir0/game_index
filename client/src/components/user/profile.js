@@ -247,16 +247,21 @@ class Profile extends Component {
             })
             console.log("Cannot be empty");
         } else {
-            console.log("List created: " + this.state.createdListName);
+            if (!this.checkListDuplicates()) {
+                console.log("List created: " + this.state.createdListName);
+                await this.addListToDb();
+                await this.fetchUser();
+                this.generateList();
 
-            await this.addListToDb();
-            await this.fetchUser();
-            this.generateList();
-
-            this.setState({
-                creatingList: false,
-                createdListName: '',
-            })
+                this.setState({
+                    creatingList: false,
+                    createdListName: '',
+                })
+            } else {
+                this.setState({
+                    createListErrorMsg: "List name already exist"
+                })
+            }
 
         }
     }
@@ -355,6 +360,14 @@ class Profile extends Component {
 
     checkDuplicates(index) {
         if ((this.state.currentUser.lists[index].games.filter((game) => game._id === this.state.gameToAdd[0]._id)).length >= 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    checkListDuplicates() {
+        if ((this.state.currentUser.lists.filter((list) => list.name.trim() === this.state.createdListName.trim())).length >= 1) {
             return true;
         } else {
             return false;
