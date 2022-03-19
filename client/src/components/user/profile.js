@@ -86,14 +86,7 @@ class Profile extends Component {
 
     async fetchUser() {
 
-<<<<<<< HEAD
         console.log(this.props.id);
-=======
-        console.log(user);
-
-        this.setState({ user: user })
-    }
->>>>>>> c00bf4473302173929d8dbdd167b38f58df5d602
 
         let url = `/users/${this.props.id}`;
 
