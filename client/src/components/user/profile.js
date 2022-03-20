@@ -591,7 +591,8 @@ class Profile extends Component {
                                                 height="15em"
                                                 radius="md"
                                                 src={this.state.currentUser.picture}
-                                                alt="Random unsplash image"
+                                                alt="Image failed to load"
+                                                withPlaceholder
                                             />
                                             <br></br>
                                             <SimpleGrid cols={7}>
