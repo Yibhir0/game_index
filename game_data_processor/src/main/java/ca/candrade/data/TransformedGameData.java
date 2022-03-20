@@ -15,14 +15,14 @@ public class TransformedGameData {
     private final String ESRBRATING;
     private final List<String> PLATFORM;
     private final String PUBLISHER;
-    private final double CRITICSCORE;
-    private final double GLOBALSALES;
-    private final double NASALES;
-    private final double EUSALES;
-    private final double JPSALES;
-    private final double OTHERSALES;
+    private double criticScore;
+    private double globalSales;
+    private double naSales;
+    private double euSales;
+    private double jpSales;
+    private double otherSales;
     private final int YEAR;
-    private final String IMAGE_URL;
+    private final List<String> IMAGE_URL;
 
     /**
      * A constructor for all the required parameters for a game.
@@ -32,12 +32,12 @@ public class TransformedGameData {
      * @param ESRBRATING The ESRTB rating of the game.
      * @param PLATFORM The platform for the game.
      * @param PUBLISHER The publisher of the game.
-     * @param CRITICSCORE The Critic's score of the game.
-     * @param GLOBALSALES The Global Sales of the game.
-     * @param NASALES The North American sales of the game.
-     * @param EUSALES The European sales of the game.
-     * @param JPSALES The Japanese sales of the game.
-     * @param OTHERSALES The other sales of the game.
+     * @param criticScore The Critic's score of the game.
+     * @param globalSales The Global Sales of the game.
+     * @param naSales The North American sales of the game.
+     * @param euSales The European sales of the game.
+     * @param jpSales The Japanese sales of the game.
+     * @param otherSales The other sales of the game.
      * @param YEAR The release year of the game.
      */
     public TransformedGameData(String NAME,
@@ -45,36 +45,75 @@ public class TransformedGameData {
             String ESRBRATING,
             String PLATFORM,
             String PUBLISHER,
-            double CRITICSCORE,
-            double GLOBALSALES,
-            double NASALES,
-            double EUSALES,
-            double JPSALES,
-            double OTHERSALES,
+            double criticScore,
+            double globalSales,
+            double naSales,
+            double euSales,
+            double jpSales,
+            double otherSales,
             int YEAR) {
         this.NAME = NAME;
         this.GENRE = GENRE;
         this.ESRBRATING = ESRBRATING;
         this.PLATFORM = new ArrayList<String>();
+        this.PLATFORM.add(PLATFORM);
         this.PUBLISHER = PUBLISHER;
-        this.CRITICSCORE = CRITICSCORE;
-        this.GLOBALSALES = GLOBALSALES;
-        this.NASALES = NASALES;
-        this.EUSALES = EUSALES;
-        this.JPSALES = JPSALES;
-        this.OTHERSALES = OTHERSALES;
+        this.criticScore = Math.floor(criticScore*10)/10;
+        this.globalSales = Math.floor(globalSales);
+        this.naSales = Math.floor(naSales);
+        this.euSales = Math.floor(euSales);
+        this.jpSales = Math.floor(jpSales);
+        this.otherSales = Math.floor(otherSales);
         this.YEAR = YEAR;
-        IMAGE_URL = normaliseString(NAME) +
+        IMAGE_URL = new ArrayList<String>();
+        addImageToList(PLATFORM);
+    }
+    
+    private void addImageToList(String platform) {
+        IMAGE_URL.add(normaliseString(NAME) +
                 "_" +
-                normaliseString(PLATFORM) +
-                ".jpg";
+                normaliseString(platform) +
+                ".jpg");
+    }
+    
+    public void updateCriticScore(double score) {
+        if (score != 0 && criticScore != 0) {
+            criticScore = Math.floor(((criticScore + score)*10)/2)/10;
+        } else if (criticScore == 0 && score != 0) {
+            criticScore = score;
+        }
+    }
+    
+    public void addToPlatformList(String name) {
+        PLATFORM.add(name);
+        addImageToList(name);
+    }
+    
+    public void addToNASales(double value) {
+        naSales+=Math.floor(value);
+    }
+    
+    public void addToEUSales(double value) {
+        euSales+=Math.floor(value);
+    }
+    
+    public void addToJPSales(double value) {
+        jpSales+=Math.floor(value);
+    }
+    
+    public void addToOtherSales(double value) {
+        otherSales+=Math.floor(value);
+    }
+    
+    public void addToGlobalSales(double value) {
+        globalSales+=Math.floor(value);
     }
 
     /**
      * Returns the game's image URL.
      * @return the game's image URL.
      */
-    public String getIMAGE_URL() {
+    public List<String> getIMAGE_URL() {
         return IMAGE_URL;
     }
     
@@ -128,48 +167,48 @@ public class TransformedGameData {
      * Returns the game's critic score.
      * @return the game's critic score.
      */
-    public double getCRITICSCORE() {
-        return CRITICSCORE;
+    public double getCriticScore() {
+        return criticScore;
     }
 
     /**
      * Returns the game's global sales.
      * @return the game's global sales.
      */
-    public double getGLOBALSALES() {
-        return GLOBALSALES;
+    public double getGlobalSales() {
+        return globalSales;
     }
 
     /**
      * Returns the game's North American sales.
      * @return the game's North American sales.
      */
-    public double getNASALES() {
-        return NASALES;
+    public double getNaSales() {
+        return naSales;
     }
 
     /**
      * Returns the game's European sales.
      * @return the game's European sales.
      */
-    public double getEUSALES() {
-        return EUSALES;
+    public double getEuSales() {
+        return euSales;
     }
 
     /**
      * Returns the game's Japanese sales.
      * @return the game's Japanese sales.
      */
-    public double getJPSALES() {
-        return JPSALES;
+    public double getJpSales() {
+        return jpSales;
     }
 
     /**
      * Returns the game's other sales.
      * @return the game's other sales.
      */
-    public double getOTHERSALES() {
-        return OTHERSALES;
+    public double getOtherSales() {
+        return otherSales;
     }
 
     /**
@@ -191,12 +230,12 @@ public class TransformedGameData {
                 + "ESRB Rating: " + ESRBRATING + "\n"
                 + "Platform: " + PLATFORM + "\n"
                 + "Publisher: " + PUBLISHER + "\n"
-                + "Critic Score: " + CRITICSCORE + "\n"
-                + "Global Sales: " + GLOBALSALES + "\n"
-                + "North America Sales: " + NASALES + "\n"
-                + "Europe Sales: " + EUSALES + "\n"
-                + "Japan Sales: " + JPSALES + "\n"
-                + "Other Sales: " + OTHERSALES + "\n"
+                + "Critic Score: " + criticScore + "\n"
+                + "Global Sales: " + globalSales + "\n"
+                + "North America Sales: " + naSales + "\n"
+                + "Europe Sales: " + euSales + "\n"
+                + "Japan Sales: " + jpSales + "\n"
+                + "Other Sales: " + otherSales + "\n"
                 + "Release Year: " + YEAR + "\n";
     }
 }
