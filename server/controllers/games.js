@@ -28,7 +28,7 @@ exports.getGame = async (req, res) => {
     try {
         let query = "game" + req.params.id
         let response = cache.get(query)
-       
+
         if (!response) {
 
             const readyState = await db.connectToDB();
@@ -79,6 +79,7 @@ exports.getGamesByFilter = async (req, res) => {
             res.status(404).json({ message: "Could not connect to the database" })
         }
 
+        console.log(response);
         res.send(response)
     }
     catch (error) {

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Allfeedback from '../feedback/allFeedback';
 import FeedbackBox from '../feedback/feedbackBox';
-import { Divider } from "@mantine/core";
+import { Button, Center } from '@mantine/core';
 import Game from './game';
 import '../feedback/styles.css'
+import RatingPopUp from '../graphs/ratingPopUp'
 
 const GameView = () => {
 
@@ -92,6 +93,8 @@ const GameView = () => {
 
                 <FeedbackBox addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />
                 <br />
+                <RatingPopUp allFeedback={feedback} />
+                <br />
                 <Allfeedback allFeedback={feedback} />
 
             </div>
@@ -101,6 +104,8 @@ const GameView = () => {
     return (
         <div className="v_flex">
             <Game game={game} />
+            <br />
+            <RatingPopUp allFeedback={feedback} />
             <br />
             <Allfeedback allFeedback={feedback} />
         </div>
