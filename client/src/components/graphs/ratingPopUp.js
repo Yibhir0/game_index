@@ -21,7 +21,6 @@ export default function RatingPopUp(props) {
                 >
                     Rating Graph
                 </Button>
-
             </Group>
         </>
     );
