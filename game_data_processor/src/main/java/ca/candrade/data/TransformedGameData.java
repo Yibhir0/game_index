@@ -13,7 +13,7 @@ public class TransformedGameData {
     private final String NAME;
     private final String GENRE;
     private final String ESRBRATING;
-    private final String PLATFORM;
+    private final List<String> PLATFORM;
     private final String PUBLISHER;
     private final double CRITICSCORE;
     private final double GLOBALSALES;
@@ -22,8 +22,6 @@ public class TransformedGameData {
     private final double JPSALES;
     private final double OTHERSALES;
     private final int YEAR;
-    private final double USERRATING;
-    private final List<String> FEEDBACK;
     private final String IMAGE_URL;
 
     /**
@@ -57,7 +55,7 @@ public class TransformedGameData {
         this.NAME = NAME;
         this.GENRE = GENRE;
         this.ESRBRATING = ESRBRATING;
-        this.PLATFORM = PLATFORM;
+        this.PLATFORM = new ArrayList<String>();
         this.PUBLISHER = PUBLISHER;
         this.CRITICSCORE = CRITICSCORE;
         this.GLOBALSALES = GLOBALSALES;
@@ -66,8 +64,6 @@ public class TransformedGameData {
         this.JPSALES = JPSALES;
         this.OTHERSALES = OTHERSALES;
         this.YEAR = YEAR;
-        USERRATING = 0;
-        FEEDBACK = new ArrayList<>();
         IMAGE_URL = normaliseString(NAME) +
                 "_" +
                 normaliseString(PLATFORM) +
@@ -86,22 +82,6 @@ public class TransformedGameData {
         return s.replaceAll("[^A-Za-z0-9 ]", "")
                                 .replaceAll(" ", "_")
                                 .toLowerCase();
-    }
-
-    /**
-     * Returns the game's user rating.
-     * @return the game's user rating.
-     */
-    public double getUSERRATING() {
-        return USERRATING;
-    }
-
-    /**
-     * Returns the game's feedback.
-     * @return the game's feedback.
-     */
-    public List<String> getFEEDBACK() {
-        return FEEDBACK;
     }
     
     /**
@@ -132,7 +112,7 @@ public class TransformedGameData {
      * Returns the game's platform.
      * @return the game's platform.
      */
-    public String getPLATFORM() {
+    public List<String> getPLATFORM() {
         return PLATFORM;
     }
 

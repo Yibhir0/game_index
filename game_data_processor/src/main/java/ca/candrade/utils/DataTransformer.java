@@ -2,6 +2,7 @@ package ca.candrade.utils;
 
 import ca.candrade.data.GameData;
 import ca.candrade.data.TransformedGameData;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -114,22 +115,21 @@ public class DataTransformer {
     
     /**
      * Searches through the second gameList for a game with the same name and 
-     * release year as the provided gamedata.
+     * release year as the provided gameData.
      * 
      * @param gameData The game to search for.
      * @param gameList The list to search in.
-     * @return The matching game's index.
+     * @return The matching game's indices.
      */
-    public int findMatchingGame(GameData gameData,
+    public List<Integer> findMatchingGame(GameData gameData,
             List<GameData> gameList) {
+        List<Integer> matchIndices = new ArrayList<Integer>();
         for (int i = 0; i < gameList.size(); i++) {
             if (normaliseString(gameData.getNAME())
-                    .equals(normaliseString(gameList.get(i).getNAME())) && 
-                    normaliseString(gameData.getPLATFORM())
-                    .equals(normaliseString(gameList.get(i).getPLATFORM())))
-                return i;
+                    .equals(normaliseString(gameList.get(i).getNAME())))
+                matchIndices.add(i);
         }
-        return -1;
+        return matchIndices;
     }
     
     private String normaliseString(String gameName) {

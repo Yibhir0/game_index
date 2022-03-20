@@ -25,9 +25,9 @@ public class GenerateData {
     private static List<GameData> smallSet;
     private static final List<TransformedGameData> DATASET = new ArrayList<>();
     private static final DataConverter DATACONVERTER = new DataConverter();
-    private static final DataTransformer DATATRANSFORMER 
+    private static final DataTransformer DATATRANSFORMER
             = new DataTransformer();
-    private static final List<ImageData> imageDataList 
+    private static final List<ImageData> imageDataList
             = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -38,7 +38,7 @@ public class GenerateData {
         } catch (IOException ex) {
             LOG.error(ex.getLocalizedMessage());
         }
-        convertImagesToBlobs();
+        //convertImagesToBlobs();
     }
 
     private static void convertImagesToBlobs() {
@@ -53,31 +53,56 @@ public class GenerateData {
         }
     }
 
+    private static boolean hasSameName(List<String> list, String name) {
+        for (String s : list) {
+            if (name.equals(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static void performTransformation() {
         LOG.info("Perform data transformation.");
+        List<String> foundGameNames = new ArrayList<String>();
         for (int i = 0; i < smallSet.size(); i++) {
             if (i % (smallSet.size() / 100) == 0) {
                 LOG.info("Data Transformation: "
                         + i / (smallSet.size() / 100) + "% complete.");
             }
-            int foundIndex = DATATRANSFORMER
+            if (hasSameName(foundGameNames, smallSet.get(i).getNAME())) {
+                continue;
+            }
+            foundGameNames.add(smallSet.get(i).getNAME());
+            List<Integer> foundIndices = DATATRANSFORMER
                     .findMatchingGame(smallSet.get(i), largeSet);
-            if (foundIndex != -1) {
-                if (!largeSet.get(foundIndex)
+            if (!foundIndices.isEmpty()) {
+                List<GameData> foundGames = new ArrayList<GameData>();
+                for (int index : foundIndices) {
+                    foundGames.add(largeSet.remove(index));
+                }
+                if (foundIndices.size() > 1) {
+                    DATASET.add(DATATRANSFORMER
+                            .multiTransform(smallSet.get(i),
+                                    foundGames));
+                } else {
+                    DATASET.add(DATATRANSFORMER
+                            .transformData(smallSet.get(i),
+                                    foundGames.get(0)));
+                if (!foundGames.get(0)
                         .getIMAGEURL()
                         .equals("/games/boxart/default.jpg")) {
                     imageDataList.add(
                             new ImageData(
-                                    largeSet.get(foundIndex).getNAME(),
-                                    largeSet.get(foundIndex).getPLATFORM(),
-                                    largeSet.get(foundIndex).getIMAGEURL()
+                                    foundGames.get(0).getNAME(),
+                                    foundGames.get(0).getPLATFORM(),
+                                    foundGames.get(0).getIMAGEURL()
                             )
                     );
                 }
-                DATASET.add(DATATRANSFORMER
-                        .transformData(smallSet.get(i),
-                                largeSet.remove(foundIndex)));
+                }
             }
+
         }
         LOG.info("Data transformation complete. " + DATASET.size()
                 + " entries created. " + (smallSet.size() - DATASET.size())
