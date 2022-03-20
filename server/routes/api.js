@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const feedback = require('../controllers/feedback');
 const users = require('../controllers/users');
+const user = require('../controllers/user');
 
 /**
  * @swagger 
@@ -399,6 +400,14 @@ router.get('/games/:id/feedback', feedback.getComments);
  *                   example: 3.8
  */
 router.post('/games/:id/feedback', feedback.addComment);
+
+router.post('/users/:id/delList', user.deleteList);
+
+router.post('/users/:id/list', user.createList);
+
+router.post('/users/:id/list/delGame', user.removeGameFromList);
+
+router.post('/users/:id/list/addGame', user.addGameToList);
 
 router.post("/users/login", users.postUser);
 

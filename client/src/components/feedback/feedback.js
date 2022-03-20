@@ -2,7 +2,10 @@ import { Component } from "react";
 import { Container, Grid, Avatar } from '@mantine/core';
 import RatingBox from './rating';
 import { Link } from 'react-router-dom';
-import { Anchor } from "@mantine/core";
+import {
+    Text,
+    Anchor
+} from "@mantine/core";
 
 // import { Link } from 'react-router-dom';
 // import { Anchor } from "@mantine/core";
@@ -36,7 +39,11 @@ class Feedback extends Component {
                     <Grid.Col span={2} >
                         <Anchor component={Link} to={`/profile/${this.state.comment.userID}`} >
                             <Avatar src={this.state.user.picture} />
+                            <Text>
+                                {this.state.user.name}
+                            </Text>
                         </Anchor>
+                        
                     </Grid.Col>
                     <Grid.Col span={8} className="commentText">
                         {this.props.comment.comment}
