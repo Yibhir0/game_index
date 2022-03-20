@@ -3,7 +3,10 @@ import GoogleLogin, { GoogleLogout } from 'react-google-login';
 
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
-import { Anchor } from "@mantine/core";
+import {
+    Anchor,
+    Button,
+} from "@mantine/core";
 import './styles.css'
 import { useNavigate } from "react-router-dom";
 export default function SignIn() {
@@ -77,9 +80,12 @@ export default function SignIn() {
 
         return (
             <div>
-                <Anchor component={Link} to={`/profile/${userAccount._id}`} >
-                    {userAccount.name}
-                </Anchor>
+                <Button variant="subtle" radius="xs">
+                    <Anchor component={Link} to={`/profile/${userAccount._id}`} >
+                        {userAccount.name}
+                    </Anchor>
+                </Button>
+                <br></br>
                 <GoogleLogout
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                     buttonText="Logout"
@@ -96,7 +102,7 @@ export default function SignIn() {
             <div>
                 <GoogleLogin className='linkbtn'
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                    buttonText="Log in with Google"
+                    buttonText="Log in "
                     onSuccess={handleLogin}
                     onFailure={handleLogin}
                     cookiePolicy={'single_host_origin'}
