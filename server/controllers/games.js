@@ -28,7 +28,7 @@ exports.getGame = async (req, res) => {
     try {
         let query = "game" + req.params.id
         let response = cache.get(query)
-       
+
         if (!response) {
 
             const readyState = await db.connectToDB();
