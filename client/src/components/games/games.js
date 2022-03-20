@@ -1,5 +1,8 @@
 import { Component, useState } from "react";
 import {
+    Accordion, 
+    Avatar,
+    Title,
     Loader,
     SimpleGrid,
     Radio,
@@ -225,6 +228,7 @@ class Games extends Component {
         const rows = this.state.gamesL.map((game, index) => (
             <tr key={index}>
                 <td>{index}</td>
+                <td><Avatar src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL}`} size="lg" /></td>
                 <td><Anchor component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
                 <td>{game.genre}</td>
                 <td>{game.platform}</td>
@@ -326,47 +330,7 @@ class Games extends Component {
         
         return (
             <>
-                <SimpleGrid
-                    cols={4}
-                >
-                    <Grid.Col span={4}>
-                        <TextInput
-                            onChange={evt => this.updatePublisher(evt)}
-                            placeholder="Publisher name"
-                            label="Publisher:"
-                            description="Search for Publisher name."
-                        />
-                    </Grid.Col>
-                    <Grid.Col span={4}>
-                        <NumberInput
-                            onChange={evt => this.updateYear(evt)}
-                            placeholder="Year Released"
-                            label="Year Released"
-                            description="Filter by Year Released"
-                        />
-                    </Grid.Col>
-                    <Grid.Col span={4}>
-                        <NativeSelect
-                            onChange={evt => this.updateGenre(evt)}
-                            data={this.genres}
-                            label="Genre"
-                            placeholder="Select a Genre"
-                            description="Search by Genre"
-                        />
-                    </Grid.Col>
-                    <Grid.Col span={4}>
-                        <NativeSelect
-                            onChange={evt => this.updatePlatform(evt)}
-                            data={this.platforms}
-                            label="Platform"
-                            placeholder="Select a Platform"
-                            description="Search by Platform"
-                        />
-                    </Grid.Col>
-                    
-                    
-                </SimpleGrid>
-                <Grid>
+                <SimpleGrid cols={3}>
                     <Grid.Col span={4}>
                         <TextInput
                         onChange={evt => this.updateKeywords(evt)}
@@ -383,39 +347,91 @@ class Games extends Component {
                         </Button>
                     </Grid.Col>
                     <Grid.Col span={4}>
-                        <RadioGroup
-                            onChange={evt => this.updateSort(evt)}
-                            defaultValue="none"
-                            label="Sort by:"
-                            description="Pick a field to sort the games"
-                            >
-                            <Radio value="none">Default</Radio>
-                            <Radio value="gs">Global Sales</Radio>
-                            <Radio value="cs">Critic Score</Radio>
-                        </RadioGroup>
-                        <NativeSelect
-                            onChange={evt => this.updateOrdering(evt)}
-                            defaultValue="desc"
-                            label="Order by:"
-                            placeholder="Select order"
-                            data={[
-                                { value: 'desc', label: 'Descending' },
-                                { value: 'asc', label: 'Ascending' },
-                            ]}
-                            />
-                        <br></br>
-                        <Button onClick={this.sortGames}>
-                            Sort
-                        </Button>
+                        <Accordion>
+                            <Accordion.Item label="Filter">
+                                <SimpleGrid cols={2}>
+                                    <Grid.Col span={4}>
+                                        <TextInput
+                                            onChange={evt => this.updatePublisher(evt)}
+                                            placeholder="Publisher name"
+                                            label="Publisher:"
+                                            description="Search for Publisher name."
+                                        />
+                                    </Grid.Col>
+                                    <Grid.Col span={4}>
+                                        <NumberInput
+                                            onChange={evt => this.updateYear(evt)}
+                                            placeholder="Year Released"
+                                            label="Year Released"
+                                            description="Filter by Year Released"
+                                        />
+                                    </Grid.Col>
+                                    <Grid.Col span={4}>
+                                        <NativeSelect
+                                            onChange={evt => this.updateGenre(evt)}
+                                            data={this.genres}
+                                            label="Genre"
+                                            placeholder="Select a Genre"
+                                            description="Search by Genre"
+                                        />
+                                    </Grid.Col>
+                                    <Grid.Col span={4}>
+                                        <NativeSelect
+                                            onChange={evt => this.updatePlatform(evt)}
+                                            data={this.platforms}
+                                            label="Platform"
+                                            placeholder="Select a Platform"
+                                            description="Search by Platform"
+                                        />
+                                    </Grid.Col> 
+                                </SimpleGrid>
+                            </Accordion.Item>
+                        </Accordion>
                     </Grid.Col>
-                </Grid>
+                    <Grid.Col span={4}>
+                        <Accordion>
+                            <Accordion.Item label="Sort">
+                                <RadioGroup
+                                    onChange={evt => this.updateSort(evt)}
+                                    defaultValue="none"
+                                    label="Sort by:"
+                                    description="Pick a field to sort the games"
+                                    >
+                                    <Radio value="none">Default</Radio>
+                                    <Radio value="gs">Global Sales</Radio>
+                                    <Radio value="cs">Critic Score</Radio>
+                                </RadioGroup>
+                                <NativeSelect
+                                    onChange={evt => this.updateOrdering(evt)}
+                                    defaultValue="desc"
+                                    label="Order by:"
+                                    placeholder="Select order"
+                                    data={[
+                                        { value: 'desc', label: 'Descending' },
+                                        { value: 'asc', label: 'Ascending' },
+                                    ]}
+                                    />
+                                <br></br>
+                                <Button onClick={this.sortGames}>
+                                    Sort
+                                </Button>
+                            </Accordion.Item>
+                        </Accordion>
+                    </Grid.Col>
+                </SimpleGrid>
                 
-                {this.state.loading ? <Loader size="xl" /> :
+                {this.state.loading ?
+                    <div style={{ margin: 'auto', padding: 50 }}>
+                        <Title order={3}>Fetching All Games</Title>
+                        <Loader size="xl" />
+                    </div>
+                    :
                     <div>
                         <Table verticalSpacing="md" striped highlightOnHover>
                             <thead>
                                 <tr>
                                     <th>Index</th>
+                                    <th>Cover</th>
                                     <th>Name</th>
                                     <th>Genre</th>
                                     <th>Platform</th>
