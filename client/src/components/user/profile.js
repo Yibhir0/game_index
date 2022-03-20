@@ -46,6 +46,7 @@ class Profile extends Component {
             addingGame: false,
             deletingList: false,
             editingBio: false,
+            bioToUpdate: '',
             gameToAdd: [],
             gameToBeDeleted: [],
             addGameErrorMsg: '',
@@ -68,6 +69,7 @@ class Profile extends Component {
         this.checkDuplicates = this.checkDuplicates.bind(this);
         this.removeGameFromList = this.removeGameFromList.bind(this);
         this.checkPerms = this.checkPerms.bind(this);
+        this.editBio = this.editBio.bind(this);
         // this.updateUser = this.updateUser.bind(this);
     }
 
@@ -99,16 +101,41 @@ class Profile extends Component {
         console.log(this.props.id);
 
         let url = `/users/${this.props.id}`;
-
+        
         let response = await fetch(url);
 
         let user = await response.json();
 
         this.setState({
             currentUser: user,
+            bioToUpdate: user.bio,
             loading: false,
         }, () => {
             console.log(this.state.currentUser);
+        })
+    }
+
+    async editBio() {
+
+        console.log("edit bio");
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        }
+        let url = `/users/${this.state.currentUser._id}/bio?desc=${this.state.bioToUpdate}`;
+
+        let response = await fetch(url, requestOptions);
+        console.log(response);
+
+        await this.fetchUser();
+
+        this.setState({
+            editingBio: false,
+            bioToUpdate: this.state.currentUser.bio
         })
     }
 
@@ -536,13 +563,16 @@ class Profile extends Component {
                                     title="Edit Bio"
                                 >
                                     <Textarea
+                                        defaultValue={this.state.currentUser.bio}
+                                        onChange={(evt) => this.setState({
+                                            bioToUpdate: evt.target.value
+                                        })}
                                         placeholder="Your Bio"
-                                        required
-                                    >
-                                        {this.state.currentUser.bio}
-                                    </Textarea>
+                                    />
                                     <br></br>
-                                    <Button>
+                                    <Button
+                                        onClick={() => this.editBio()}
+                                    >
                                         Edit
                                     </Button>
 
@@ -571,15 +601,19 @@ class Profile extends Component {
                                                     </Title>
                                                 </div>
                                                 <div>
-                                                    <ActionIcon onClick={() => this.setState({
-                                                        editingBio: true,
-                                                    })}
-                                                        radius="sm"
-                                                        color="orange"
-                                                        variant="filled"
-                                                    >
-                                                        <IconEdit />
-                                                    </ActionIcon>
+                                                    {this.state.editPerms ?
+                                                        <ActionIcon onClick={() => this.setState({
+                                                            editingBio: true,
+                                                        })}
+                                                            radius="sm"
+                                                            color="orange"
+                                                            variant="filled"
+                                                        >
+                                                            <IconEdit />
+                                                        </ActionIcon>
+                                                        :
+                                                        <></>
+                                                    }
                                                 </div>
                                             </SimpleGrid>
                                             
