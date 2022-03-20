@@ -11,6 +11,7 @@
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@modulz/radix-icons": "^4.0.0",
     "@mui/material": "^5.4.3",
+    "@tabler/icons": "^1.56.0",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",

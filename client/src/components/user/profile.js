@@ -1,5 +1,7 @@
 import { Component, useState } from "react";
 import {
+    Textarea,
+    ActionIcon,
     Loader,
     Autocomplete,
     Modal,
@@ -22,6 +24,13 @@ import {
 } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { off } from "process";
+import {
+    IconFolderPlus,
+    IconEdit,
+    IconPlus,
+    IconTrash,
+    IconX,
+} from '@tabler/icons';
 
 class Profile extends Component {
 
@@ -36,6 +45,7 @@ class Profile extends Component {
             currentGameList: '',
             addingGame: false,
             deletingList: false,
+            editingBio: false,
             gameToAdd: [],
             gameToBeDeleted: [],
             addGameErrorMsg: '',
@@ -172,7 +182,7 @@ class Profile extends Component {
                                         deletingList: true,
                                         currentGameList: gameList.name
                                     })}
-                                    color="orange"
+                                    color="red"
                                 >
                                     Delete List
                                 </Button>
@@ -214,16 +224,15 @@ class Profile extends Component {
                                 <td>{game.year}</td>
                                 <td>
                                     {this.state.editPerms ?
-                                        <Button
-                                            color="red"
-                                            size="xs"
+                                        <ActionIcon
+                                            color="red" 
                                             onClick={() => this.setState({
                                                 gameToBeDeleted: game,
                                                 currentGameList: gameList.name
                                             }, () => this.removeGameFromList())}
                                         >
-                                            X
-                                        </Button>
+                                            <IconX />
+                                        </ActionIcon>
                                         :
                                         <></>
                                     }
@@ -466,6 +475,7 @@ class Profile extends Component {
                                                 data={this.state.gameStrings}
                                                 error={this.state.addGameErrorMsg}
                                             />
+                                            <br></br>
                                             <Button
                                                 onClick={this.addGameToList}
                                             >
@@ -515,6 +525,28 @@ class Profile extends Component {
                                         </div>
                                     </SimpleGrid>
                                 </Modal>
+                                
+                                {/* Editing Bio */}
+                                <Modal
+                                    size="lg"
+                                    opened={this.state.editingBio}
+                                    onClose={() => this.setState({
+                                        editingBio: false,
+                                    }, () => this.resetErrorMsg())}
+                                    title="Edit Bio"
+                                >
+                                    <Textarea
+                                        placeholder="Your Bio"
+                                        required
+                                    >
+                                        {this.state.currentUser.bio}
+                                    </Textarea>
+                                    <br></br>
+                                    <Button>
+                                        Edit
+                                    </Button>
+
+                                </Modal>
 
                                 {/* End of all modals*/}
 
@@ -532,7 +564,25 @@ class Profile extends Component {
                                                 alt="Random unsplash image"
                                             />
                                             <br></br>
-                                            <Title order={3}>Bio</Title>
+                                            <SimpleGrid cols={7}>
+                                                <div>
+                                                    <Title order={3}>
+                                                        Bio
+                                                    </Title>
+                                                </div>
+                                                <div>
+                                                    <ActionIcon onClick={() => this.setState({
+                                                        editingBio: true,
+                                                    })}
+                                                        radius="sm"
+                                                        color="orange"
+                                                        variant="filled"
+                                                    >
+                                                        <IconEdit />
+                                                    </ActionIcon>
+                                                </div>
+                                            </SimpleGrid>
+                                            
                                             <Text>
                                                 {this.state.currentUser.bio}
                                             </Text>
@@ -541,25 +591,27 @@ class Profile extends Component {
                                     </Grid.Col>
                                     <Grid.Col span={18}>
                                         <div style={{ margin: 'auto', padding: 50 }}>
-                                            <SimpleGrid cols={4}>
+                                            <SimpleGrid cols={8}>
                                                 <Grid.Col span={4}>
                                                     <Title order={2}>Game List</Title>
                                                 </Grid.Col>
                                                 <Grid.Col span={4}>
-                                                </Grid.Col>
-                                                <Grid.Col span={4}>
-                                                </Grid.Col>
-                                                <Grid.Col span={4}>
                                                     {this.state.editPerms ?
-                                                        <Button
-                                                            style={{ marginRight: 'auto' }}
+                                                        <ActionIcon
+                                                            radius="sm"
+                                                            variant="filled"
+                                                            color="blue"
                                                             onClick={() => this.setState({ creatingList: true })}
                                                         >
-                                                            Create List
-                                                        </Button>
+                                                            <IconFolderPlus />
+                                                        </ActionIcon>
                                                         :
                                                         <></>
                                                     }
+                                                </Grid.Col>
+                                                <Grid.Col span={4}>
+                                                </Grid.Col>
+                                                <Grid.Col span={4}>
                                                 </Grid.Col>
                                             </SimpleGrid>
                                             <Accordion iconPosition="right" >
