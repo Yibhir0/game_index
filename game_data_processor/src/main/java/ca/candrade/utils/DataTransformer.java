@@ -2,7 +2,6 @@ package ca.candrade.utils;
 
 import ca.candrade.data.GameData;
 import ca.candrade.data.TransformedGameData;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -73,21 +72,21 @@ public class DataTransformer {
         if (totalShipped != 0 
                 && totalRegionSpecific != 0 
                 && globalSales != 0) 
-            return Math.round(
+            return Math.floor(
                     (totalShipped + totalRegionSpecific + globalSales)/3
             );
         else if (totalShipped == 0 
                 && totalRegionSpecific != 0 
                 && globalSales != 0)
-            return Math.round((totalRegionSpecific+globalSales)/2);
+            return Math.floor((totalRegionSpecific+globalSales)/2);
         else if (totalShipped != 0 
                 && totalRegionSpecific == 0 
                 && globalSales != 0)
-            return Math.round((totalShipped+globalSales)/2);
+            return Math.floor((totalShipped+globalSales)/2);
         else if (totalShipped != 0 
                 && totalRegionSpecific != 0 
                 && globalSales == 0)
-            return Math.round((totalShipped+totalRegionSpecific)/2);
+            return Math.floor((totalShipped+totalRegionSpecific)/2);
         else if (totalShipped == 0 
                 && totalRegionSpecific == 0 
                 && globalSales != 0)
@@ -107,7 +106,7 @@ public class DataTransformer {
     private double correctDoubleValues(double dataOne,
             double dataTwo) {
         if (dataOne != 0 && dataTwo != 0) 
-            return Math.round((dataOne + dataTwo)/2);
+            return Math.floor((dataOne + dataTwo)/2);
         else if (dataOne != 0 && dataTwo == 0) return dataOne;
         else if (dataOne == 0 && dataTwo != 0) return dataTwo;
         else return 0;
@@ -115,24 +114,36 @@ public class DataTransformer {
     
     /**
      * Searches through the second gameList for a game with the same name and 
-     * release year as the provided gameData.
+     * release year as the provided gamedata.
      * 
      * @param gameData The game to search for.
      * @param gameList The list to search in.
-     * @return The matching game's indices.
+     * @return The matching game's index.
      */
-    public List<Integer> findMatchingGame(GameData gameData,
+    public int findMatchingGame(GameData gameData,
             List<GameData> gameList) {
-        List<Integer> matchIndices = new ArrayList<Integer>();
         for (int i = 0; i < gameList.size(); i++) {
             if (normaliseString(gameData.getNAME())
-                    .equals(normaliseString(gameList.get(i).getNAME())))
-                matchIndices.add(i);
+                    .equals(normaliseString(gameList.get(i).getNAME())) && 
+                    normaliseString(gameData.getPLATFORM())
+                    .equals(normaliseString(gameList.get(i).getPLATFORM())))
+                return i;
         }
-        return matchIndices;
+        return -1;
     }
     
     private String normaliseString(String gameName) {
         return gameName.replaceAll("\\W_", "").toLowerCase();
+    }
+
+    public TransformedGameData updateEntry(TransformedGameData original, TransformedGameData newData) {
+        original.addToNASales(newData.getNaSales());
+        original.addToEUSales(newData.getEuSales());
+        original.addToJPSales(newData.getJpSales());
+        original.addToOtherSales(newData.getOtherSales());
+        original.addToGlobalSales(newData.getGlobalSales());
+        original.updateCriticScore(newData.getCriticScore());
+        original.addToPlatformList(newData.getPLATFORM().get(0));
+        return original;
     }
 }
