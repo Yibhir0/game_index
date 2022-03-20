@@ -230,6 +230,7 @@ class Profile extends Component {
                             <th>Cover</th>
                             <th>Title</th>
                             <th>Genre</th>
+                            <th>Console</th>
                             <th>Publisher</th>
                             <th>Year</th>
                         </tr>
@@ -247,6 +248,7 @@ class Profile extends Component {
                                 </td>
                                 <td><Anchor component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
                                 <td>{game.genre}</td>
+                                <td>{game.platform}</td>
                                 <td>{game.publisher}</td>
                                 <td>{game.year}</td>
                                 <td>
@@ -485,6 +487,7 @@ class Profile extends Component {
 
                                 {/* Adding Game */}
                                 <Modal
+                                    size="lg"
                                     opened={this.state.addingGame}
                                     onClose={() => this.setState({
                                         addingGame: false,
@@ -493,6 +496,46 @@ class Profile extends Component {
                                     }, () => this.resetErrorMsg())}
                                     title="Add Game"
                                 >
+                                    <Title order={6}>Selected Game:</Title>
+                                    {this.state.gameToAdd.length ? 
+                                        <SimpleGrid cols={4}>
+                                            <div>
+                                                <Image
+                                                    width={130}
+                                                    height={130}
+                                                    src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${this.state.gameToAdd[0].image_URL}`}
+                                                    alt="Image failed to load"
+                                                />
+                                            </div>
+                                            <div>
+                                                <Title order={6}>Name:</Title>
+                                                <Text>{this.state.gameToAdd[0].name}</Text>
+                                                <Title order={6}>Console:</Title>
+                                                <Text>{this.state.gameToAdd[0].platform}</Text>
+                                                <Title order={6}>Year Released:</Title>
+                                                <Text>{this.state.gameToAdd[0].year}</Text>
+                                            </div>
+                                        </SimpleGrid>
+                                        :
+                                        <SimpleGrid cols={4}>
+                                            <div>
+                                                <Image
+                                                    width={130}
+                                                    height={130}
+                                                    alt="Image failed to load"
+                                                    withPlaceholder
+                                                />
+                                            </div>
+                                            <div>
+                                                <Title order={6}>Name:</Title>
+                                                <Text>None</Text>
+                                                <Title order={6}>Console:</Title>
+                                                <Text>None</Text>
+                                                <Title order={6}>Year Released:</Title>
+                                                <Text>None</Text>
+                                            </div>
+                                        </SimpleGrid>
+                                    }
                                     {this.state.isGamesLoaded ?
                                         <>
                                             <Autocomplete
