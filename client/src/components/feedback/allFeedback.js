@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Feedback from './feedback'
+import { Title } from '@mantine/core'
 
 class Allfeedback extends Component {
   render() {

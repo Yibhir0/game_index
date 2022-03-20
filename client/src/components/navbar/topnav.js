@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Anchor } from "@mantine/core";
+import {
+    Text,
+    Anchor,
+    Title,
+    Button,
+    SimpleGrid,
+} from "@mantine/core";
 
 import SignIn from '../user/signin';
 import './styles.css';
@@ -14,17 +20,46 @@ class TopNav extends Component {
     render() {
         return (
             <div>
-                <h1>Game Index</h1>
+                <Title
+                    color="blue"
+                    weight={700}
+                    size="xl"
+                >
+                    Game Index
+                </Title>
+                <br></br>
                 <nav className="topnav"
                 >
+                    <SimpleGrid cols={14}>
+                        <div>
+                            <Button variant="subtle" radius="xs">
+                                <Anchor component={Link} to={'/'} >
+                                    Home
+                                </Anchor>
+                            </Button>
+                        </div>
+                        <div>
+                            <Button variant="subtle" radius="xs">
+                                <Anchor component={Link} to={'/games'} >
+                                    Games
+                                </Anchor>
+                            </Button>
+                        </div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div>   
+                            <SignIn />
+                        </div>
+                    </SimpleGrid>
 
-                    <Anchor component={Link} to={'/'} >
-                        Home
-                    </Anchor>
-                    <Anchor component={Link} to={'/games'} >
-                        Games
-                    </Anchor>
-                    <SignIn />
                 </nav>
             </div>
         );
