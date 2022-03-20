@@ -25,9 +25,9 @@ public class GenerateData {
     private static List<GameData> smallSet;
     private static final List<TransformedGameData> DATASET = new ArrayList<>();
     private static final DataConverter DATACONVERTER = new DataConverter();
-    private static final DataTransformer DATATRANSFORMER
+    private static final DataTransformer DATATRANSFORMER 
             = new DataTransformer();
-    private static final List<ImageData> imageDataList
+    private static final List<ImageData> imageDataList 
             = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -53,60 +53,50 @@ public class GenerateData {
         }
     }
 
-    private static boolean hasSameName(List<String> list, String name) {
-        for (String s : list) {
-            if (name.equals(s)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private static void performTransformation() {
         LOG.info("Perform data transformation.");
-        List<String> foundGameNames = new ArrayList<String>();
         for (int i = 0; i < smallSet.size(); i++) {
             if (i % (smallSet.size() / 100) == 0) {
                 LOG.info("Data Transformation: "
                         + i / (smallSet.size() / 100) + "% complete.");
             }
-            if (hasSameName(foundGameNames, smallSet.get(i).getNAME())) {
-                continue;
-            }
-            foundGameNames.add(smallSet.get(i).getNAME());
-            List<Integer> foundIndices = DATATRANSFORMER
+            int foundIndex = DATATRANSFORMER
                     .findMatchingGame(smallSet.get(i), largeSet);
-            if (!foundIndices.isEmpty()) {
-                List<GameData> foundGames = new ArrayList<GameData>();
-                for (int index : foundIndices) {
-                    foundGames.add(largeSet.remove(index));
-                }
-                if (foundIndices.size() > 1) {
-                    DATASET.add(DATATRANSFORMER
-                            .multiTransform(smallSet.get(i),
-                                    foundGames));
-                } else {
-                    DATASET.add(DATATRANSFORMER
-                            .transformData(smallSet.get(i),
-                                    foundGames.get(0)));
-                if (!foundGames.get(0)
+            if (foundIndex != -1) {
+                if (!largeSet.get(foundIndex)
                         .getIMAGEURL()
                         .equals("/games/boxart/default.jpg")) {
                     imageDataList.add(
                             new ImageData(
-                                    foundGames.get(0).getNAME(),
-                                    foundGames.get(0).getPLATFORM(),
-                                    foundGames.get(0).getIMAGEURL()
+                                    largeSet.get(foundIndex).getNAME(),
+                                    largeSet.get(foundIndex).getPLATFORM(),
+                                    largeSet.get(foundIndex).getIMAGEURL()
                             )
                     );
                 }
+                TransformedGameData tgd = DATATRANSFORMER
+                        .transformData(smallSet.get(i),
+                                largeSet.remove(foundIndex));
+                int foundInList = findGame(tgd);
+                if (foundInList != -1) {
+                    tgd = DATATRANSFORMER.updateEntry(DATASET.get(foundInList), tgd);
+                    DATASET.remove(foundInList);
+                    DATASET.add(tgd);
+                } else {
+                    DATASET.add(tgd);
                 }
             }
-
         }
         LOG.info("Data transformation complete. " + DATASET.size()
                 + " entries created. " + (smallSet.size() - DATASET.size())
                 + " entries dropped.");
+    }
+
+    private static int findGame(TransformedGameData transformData) {
+        for (int i = 0; i < DATASET.size(); i++)
+            if (DATASET.get(i).getNAME().equals(transformData.getNAME())) 
+                return i;
+        return -1;
     }
 
     private static void assignDataSets() {
