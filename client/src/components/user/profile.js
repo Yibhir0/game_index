@@ -523,6 +523,7 @@ class Profile extends Component {
                                     
                                         <div style={{ margin: 'auto', padding: 50 }}>
                                             <Title order={2}>{this.state.currentUser.name}'s Profile</Title>
+                                            <br></br>
                                             <Image
                                                 width="15em"
                                                 height="15em"
@@ -530,10 +531,13 @@ class Profile extends Component {
                                                 src={this.state.currentUser.picture}
                                                 alt="Random unsplash image"
                                             />
+                                            <br></br>
+                                            <Title order={3}>Bio</Title>
                                             <Text>
-                                                Bio: {this.state.currentUser.bio}
+                                                {this.state.currentUser.bio}
                                             </Text>
                                         </div>
+
                                     </Grid.Col>
                                     <Grid.Col span={18}>
                                         <div style={{ margin: 'auto', padding: 50 }}>

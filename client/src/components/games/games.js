@@ -1,5 +1,6 @@
 import { Component, useState } from "react";
 import {
+    Avatar,
     Title,
     Loader,
     SimpleGrid,
@@ -226,6 +227,7 @@ class Games extends Component {
         const rows = this.state.gamesL.map((game, index) => (
             <tr key={index}>
                 <td>{index}</td>
+                <td><Avatar src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL}`} size="lg" /></td>
                 <td><Anchor component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
                 <td>{game.genre}</td>
                 <td>{game.platform}</td>
@@ -422,6 +424,7 @@ class Games extends Component {
                             <thead>
                                 <tr>
                                     <th>Index</th>
+                                    <th>Cover</th>
                                     <th>Name</th>
                                     <th>Genre</th>
                                     <th>Platform</th>

@@ -55,31 +55,24 @@ exports.getGame = async (req, res) => {
 // Response for filtering games
 exports.getGamesByFilter = async (req, res) => {
     try {
-        let query = "games" + req.query.keywords + req.query.year + req.query.publisher + req.query.genre + req.query.platform
-        let response = cache.get(query)
-        if (!response) {
-            const readyState = await db.connectToDB();
-            if (readyState === 1) {
+        const readyState = await db.connectToDB();
+        if (readyState === 1) {
 
-                let filters = {
-                    keywords: req.query.keywords,
-                    year: req.query.year,
-                    publisher: req.query.publisher,
-                    genre: req.query.genre,
-                    platform: req.query.platform
-                };
+            let filters = {
+                keywords: req.query.keywords,
+                year: req.query.year,
+                publisher: req.query.publisher,
+                genre: req.query.genre,
+                platform: req.query.platform
+            };
 
-                //console.log(filters);
-                response = await db.getGamesByFilter(filters)
-                cache.put(query, games)
+            const games = await db.getGamesByFilter(filters);
+            res.send(games);
 
-            }
         }
         else {
             res.status(404).json({ message: "Could not connect to the database" })
         }
-
-        res.send(response)
     }
     catch (error) {
         res.status(404).json({ message: error.message })
