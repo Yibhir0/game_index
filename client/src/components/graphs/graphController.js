@@ -30,6 +30,9 @@ class GraphController extends Component {
                         onValueMouseOver={(datapoint, { event }) => {
                             this.setState({ crossValue: datapoint })
                         }}
+                        onValueClick={(datapoint, event) => {
+                            this.setState({ gameId: datapoint.id })
+                        }}
                     // onValueMouseOut={this.setState({crossValue:[]})} This causes the graph to not render, idk why yet?
                     />
                     <XAxis style={{ line: { stroke: 'black' } }} />
