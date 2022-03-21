@@ -6,11 +6,11 @@ import Game from './game';
 import '../feedback/styles.css'
 import RatingPopUp from '../graphs/ratingPopUp'
 
-const GameView = () => {
+const GameView = (props) => {
 
     const [game, setGame] = useState({});
     const [feedback, setFeedBack] = useState([]);
-    const { id } = useParams()
+    let { id } = useParams()
 
     useEffect(() => {
 
@@ -27,7 +27,9 @@ const GameView = () => {
     }
 
     const fetchGame = async () => {
-        console.log(id)
+        if (props.id) {
+            id = props.id
+        }
         const url = `/games/${id}`;
         try {
             const response = await fetch(url);

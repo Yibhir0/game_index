@@ -3,6 +3,7 @@ import { ChartLabel, Borders, ContourSeries, FlexibleXYPlot, XAxis, YAxis, Verti
 import {
     Center
 } from "@mantine/core";
+import { Navigate } from "react-router-dom";
 
 class GraphController extends Component {
 
@@ -11,6 +12,7 @@ class GraphController extends Component {
         this.state = {
             crossValue: [],
             crosshairValues: [],
+            gameId: ''
         }
     }
 
@@ -65,6 +67,59 @@ class GraphController extends Component {
                 </FlexibleXYPlot>;
 
         }
+        else if (this.props.states.graphType === 'Sold-Least') {
+
+            graph =
+                <FlexibleXYPlot margin={{ top: 25 }} xType="ordinal">
+                    <VerticalBarSeries
+                        color='pink'
+                        data={this.props.states.graphData.leastGames}
+                        onValueMouseOver={(datapoint, { event }) => {
+                            this.setState({ crossValue: datapoint })
+                        }}
+                        onValueClick={(datapoint, event) => {
+                            this.setState({ gameId: datapoint.id })
+                        }}
+                    // onValueMouseOut={this.setState({crossValue:[]})} This causes the graph to not render, idk why yet?
+                    />
+                    <XAxis tickLabelAngle={90} style={{ line: { stroke: 'black' }, }}
+                        tickSize={1}
+                        tickPadding={-50}
+
+                    />
+                    <YAxis style={{ line: { stroke: 'black' } }}
+                        tickSize={1}
+                        tickPadding={2}
+                        tickFormat={v => v / 1000000}
+                    />
+                    <ChartLabel
+                        text="Global Sales (Millions)"
+                        className="alt-y-label"
+                        includeMargin={false}
+                        xPercent={0.09}
+                        yPercent={0.035}
+                        style={{
+                            textAnchor: 'end'
+                        }}
+                    />
+                    <ChartLabel
+                        text="Game"
+                        className="alt-x-label"
+                        includeMargin={false}
+                        xPercent={1}
+                        yPercent={1.115}
+                        style={{
+                            textAnchor: 'end'
+                        }}
+                    />
+                    {this.state.crossValue.length > 0 &&
+                        < Hint value={this.state.crossValue} align={{ horizontal: Hint.ALIGN.AUTO, vertical: Hint.ALIGN.BOTTOM_EDGE }}>
+                            <p>{this.state.crossValue.x}</p>
+                            <p>{this.state.crossValue.y}</p>
+                        </Hint>
+                    }
+                </FlexibleXYPlot>;
+        }
         else {
             graph =
                 <FlexibleXYPlot
@@ -111,7 +166,16 @@ class GraphController extends Component {
                 </FlexibleXYPlot>
         }
 
+
+        if (this.state.gameId) {
+            console.log(this.state.gameId)
+            let r = 'games/' + this.state.gameId
+            return <Navigate to={r} replace={true} />
+
+        }
+
         return (
+
             <div>
                 <Center style={{ height: 400, textAlign: 'center' }}>
                     {graph}
