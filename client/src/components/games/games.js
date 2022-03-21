@@ -226,7 +226,7 @@ class Games extends Component {
     async generateRows() {
         console.log(this.state.gamesL);
         const rows = this.state.gamesL.map((game, index) => (
-            <tr key={index}>
+            <tr className="bg-gradient-to-b from-gray-400 to-stone-100" key={index}>
                 <td>{index}</td>
                 <td><Avatar src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL}`} size="lg" /></td>
                 <td><Anchor component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
@@ -442,7 +442,6 @@ class Games extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-
                                 {this.state.rows}
                             </tbody>
                         </Table>

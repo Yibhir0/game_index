@@ -5,7 +5,9 @@ import {
     Anchor,
     Title,
     Button,
-    SimpleGrid,
+    Grid,
+    Avatar,
+    Image,
 } from "@mantine/core";
 
 import SignIn from '../user/signin';
@@ -20,46 +22,31 @@ class TopNav extends Component {
     render() {
         return (
             <div>
-                <Title
-                    color="blue"
-                    weight={700}
-                    size="xl"
-                >
-                    Game Index
-                </Title>
                 <br></br>
                 <nav className="topnav"
                 >
-                    <SimpleGrid cols={14}>
-                        <div>
-                            <Button variant="subtle" radius="xs">
+                    <Grid justify="space-between" align="flex-end" columns={15}>
+                        <Grid.Col span={3}>
+                            <Title> The Game Index </Title>
+                        </Grid.Col>
+                        <Grid.Col span={3}>
+                            <Button className= 'border-gray-500 rounded-lg hover:bg-gray-300/50 active:bg-gray-500/50' variant="subtle" radius="xs">
                                 <Anchor component={Link} to={'/'} >
                                     Home
                                 </Anchor>
                             </Button>
-                        </div>
-                        <div>
-                            <Button variant="subtle" radius="xs">
+                        </Grid.Col>
+                        <Grid.Col span={3}>
+                            <Button className='border-gray-500 rounded-lg hover:bg-gray-300/50 active:bg-gray-500/50' variant="subtle" radius="xs">
                                 <Anchor component={Link} to={'/games'} >
                                     Games
                                 </Anchor>
                             </Button>
-                        </div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div>   
-                            <SignIn />
-                        </div>
-                    </SimpleGrid>
-
+                        </Grid.Col >
+                        <Grid.Col span={3} offset={3}>
+                            <SignIn className="content-end"/>
+                        </Grid.Col>
+                    </Grid>
                 </nav>
             </div>
         );
