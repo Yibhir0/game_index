@@ -1,5 +1,5 @@
-import { Component, useState } from "react";
-import {ChartLabel,XYPlot, Borders , ContourSeries, FlexibleXYPlot, XAxis, YAxis, VerticalBarSeries, Hint, MarkSeries, Crosshair} from 'react-vis';
+import { Component } from "react";
+import { ChartLabel, Borders, ContourSeries, FlexibleXYPlot, XAxis, YAxis, VerticalBarSeries, Hint, MarkSeries } from 'react-vis';
 import {
     Center
 } from "@mantine/core";
@@ -8,16 +8,16 @@ class GraphController extends Component {
 
     constructor(props) {
         super(props)
-            this.state = {
-                crossValue: [],
-                crosshairValues: [],
-            }
+        this.state = {
+            crossValue: [],
+            crosshairValues: [],
+        }
     }
 
-    _onNearestX = (value, {index}) => {
+    _onNearestX = (value, { index }) => {
         this.setState({ crosshairValues: this.props.states.graphData.ratingSalesGames[index] });
     };
-    
+
     render() {
         let graph;
         if (this.props.states.graphType === 'Sold-Most') {
@@ -58,57 +58,57 @@ class GraphController extends Component {
                     />
                     {this.state.crossValue.length > 0 &&
                         < Hint value={this.state.crossValue} align={{ horizontal: Hint.ALIGN.AUTO, vertical: Hint.ALIGN.BOTTOM_EDGE }}>
-                    <p>{this.state.crossValue.x}</p>
-                    <p>{this.state.crossValue.y}</p>
-                    </Hint>
-        }
+                            <p>{this.state.crossValue.x}</p>
+                            <p>{this.state.crossValue.y}</p>
+                        </Hint>
+                    }
                 </FlexibleXYPlot>;
 
         }
         else {
             graph =
-                    <FlexibleXYPlot
-                        xDomain={[0, 17000000]}
-                        getX={d => d.globalsales}
-                        getY={d => d.criticscore}
-                        margin={{ top: 25 }}
+                <FlexibleXYPlot
+                    xDomain={[0, 17000000]}
+                    getX={d => d.globalsales}
+                    getY={d => d.criticscore}
+                    margin={{ top: 25 }}
                 >
-            <ContourSeries
-            animation
-            className="contour-series-example"
-            style={{
-              stroke: '#125C77',
-              strokeLinejoin: 'round'
-            }}
-            colorRange={['#79C7E3', '#FF9833']}
-            data={this.props.states.graphData.ratingSalesGames}
-          />
-           <MarkSeries onNearestX={this._onNearestX} animation data={this.props.states.graphData.ratingSalesGames} size={2} color={'#125C77'} />
-           <Borders style={{all: {fill: '#fff'}}} />
-           <XAxis tickFormat={v => v / 1000000}  style={{ line: { stroke:'black'}}} />
-           <YAxis style={{ line: { stroke: 'black' } }} />
-                    
-            <ChartLabel
-                text="Rating"
-                className="alt-y-label"
-                includeMargin={false}
-                yPercent={0.035}
-                xPercent={0.02}
-                style={{
-                    textAnchor: 'end'
-                    }}
+                    <ContourSeries
+                        animation
+                        className="contour-series-example"
+                        style={{
+                            stroke: '#125C77',
+                            strokeLinejoin: 'round'
+                        }}
+                        colorRange={['#79C7E3', '#FF9833']}
+                        data={this.props.states.graphData.ratingSalesGames}
                     />
-            <ChartLabel
-                text="Unit Sales (Millions)"
-                className="alt-x-label"
-                includeMargin={false}
-                xPercent={1}
-                yPercent={1.115}
-                style={{
-                textAnchor: 'end'
+                    <MarkSeries onNearestX={this._onNearestX} animation data={this.props.states.graphData.ratingSalesGames} size={2} color={'#125C77'} />
+                    <Borders style={{ all: { fill: '#fff' } }} />
+                    <XAxis tickFormat={v => v / 1000000} style={{ line: { stroke: 'black' } }} />
+                    <YAxis style={{ line: { stroke: 'black' } }} />
+
+                    <ChartLabel
+                        text="Rating"
+                        className="alt-y-label"
+                        includeMargin={false}
+                        yPercent={0.035}
+                        xPercent={0.02}
+                        style={{
+                            textAnchor: 'end'
                         }}
                     />
-        </FlexibleXYPlot>
+                    <ChartLabel
+                        text="Unit Sales (Millions)"
+                        className="alt-x-label"
+                        includeMargin={false}
+                        xPercent={1}
+                        yPercent={1.115}
+                        style={{
+                            textAnchor: 'end'
+                        }}
+                    />
+                </FlexibleXYPlot>
         }
 
         return (
