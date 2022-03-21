@@ -101,8 +101,12 @@ class Profile extends Component {
         console.log(this.props.id);
 
         let url = `/users/${this.props.id}`;
-        
-        let response = await fetch(url);
+
+        let response = await fetch(url, {
+            headers: {
+              'Cache-Control': 'no-cache'
+            }
+          });
 
         let user = await response.json();
 
