@@ -156,6 +156,22 @@ module.exports.createUser = async (user) => {
 
 }
 
+module.exports.updateBio = async (userId, desc) => {
+
+    try {
+        let updatedBio = await User.findOneAndUpdate(
+            {
+                _id: userId,
+            },
+            { $set: { bio: desc}}
+        );
+        return updatedBio;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports.createList = async (list, userId) => {
 
     try {
