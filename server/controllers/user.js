@@ -29,7 +29,6 @@ exports.updateBio = async (req, res) => {
 
 // Create list and add to user
 exports.createList = async (req, res) => {
-
     try {
         const readyState = await db.connectToDB();
         if (readyState === 1) {
