@@ -62,7 +62,7 @@ exports.getUser = async (req, res) => {
             res.status(404).json({ message: "Could not connect to the database" })
         }
 
-        res.send(response)
+        
     }
     catch (error) {
         res.status(404).json({ message: error.message })
