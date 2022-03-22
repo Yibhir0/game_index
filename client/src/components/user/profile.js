@@ -197,7 +197,7 @@ class Profile extends Component {
                     }}>
                         <SimpleGrid cols={10}>
                             <div>
-                                <Button
+                                <Button className= 'border-gray-500 rounded-lg bg-green-500 hover:bg-pink-400 active:bg-gray-500/50'
                                     onClick={() => this.setState({
                                         addingGame: true,
                                         currentGameList: gameList.name
@@ -208,7 +208,7 @@ class Profile extends Component {
                                 </Button>
                             </div>
                             <div>
-                                <Button
+                                <Button className= 'border-gray-500 rounded-lg bg-green-500 hover:bg-pink-400 active:bg-gray-500/50'
                                     onClick={() => this.setState({
                                         deletingList: true,
                                         currentGameList: gameList.name

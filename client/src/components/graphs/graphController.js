@@ -191,4 +191,3 @@ class GraphController extends Component {
 
 export default GraphController;
 
-

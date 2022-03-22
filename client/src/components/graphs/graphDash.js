@@ -83,9 +83,9 @@ class GraphDash extends Component {
 
     render() {
         return (
-            <Grid>
+            <Grid >
                 <Grid.Col span={12} justify="center" align="center">
-                    <SegmentedControl
+                    <SegmentedControl 
                         data={[
                             { label: 'Most Sold', value: 'Sold-Most' },
                             { label: 'Most Popular Category', value: 'Category-Most' },
