@@ -9,6 +9,7 @@ import React from "react";
  */
 
 const Game = (props) => {
+  console.log(props.game);
   let imageURL;
   if (typeof props.game.image_URL !== "object") {
     imageURL =
