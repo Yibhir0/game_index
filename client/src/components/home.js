@@ -71,7 +71,9 @@ class Home extends Component {
                     <ScrollArea style={{ height: 200 }}>
                         <SimpleGrid breakpoints={[{ maxWidth: 200, maxHeight: 0 }]} cols={this.state.games.length} spacing="100px">
                             {this.state.games.map((image, i) =>
-                                <Tooltip withArrow label={this.state.games[i].gameName}>
+
+                                <Tooltip withArrow label={this.state.games[i].gameName} key={i}>
+
                                     <Anchor component={Link} to={`/games/${this.state.games[i].gameId}`}>
                                         <Image style={{ minHeight: 100, minWidth: 100 }} src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${this.state.games[i].image}`} />
                                     </Anchor>
