@@ -54,7 +54,7 @@ class GraphDash extends Component {
 
 
         popularGames = [].concat(this.state.games)
-            .sort((a, b) => a.globalsales < b.globalsales).slice(0, 10);
+            .sort((a, b) => a.globalSales < b.globalSales).slice(0, 10);
 
         ratingSalesGames = [].concat(this.state.games)
             .map(x => { return ({ criticscore: x.criticScore, globalsales: x.globalSales }) }).slice(0, 100);
@@ -62,7 +62,7 @@ class GraphDash extends Component {
 
 
         leastGames = [].concat(this.state.games)
-            .sort((a, b) => a.globalsales > b.globalsales).slice(0, 10);
+            .sort((a, b) => a.globalSales > b.globalSales).slice(0, 10);
 
 
         this.setState({ graphData: { popularGames: this.getGraphDataFormat(popularGames), ratingSalesGames: ratingSalesGames, leastGames: this.getGraphDataFormat(leastGames) } })
