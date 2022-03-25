@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Allfeedback from '../feedback/allFeedback';
 import FeedbackBox from '../feedback/feedbackBox';
-import { Divider } from "@mantine/core";
 import Game from './game';
+import '../feedback/styles.css'
+import RatingPopUp from '../graphs/ratingPopUp'
 
-const GameView = () => {
+const GameView = (props) => {
 
     const [game, setGame] = useState({});
     const [feedback, setFeedBack] = useState([]);
-    const { id } = useParams()
+    let { id } = useParams()
 
     useEffect(() => {
 
@@ -19,26 +20,33 @@ const GameView = () => {
     }, []);
 
 
+    const hasCommented = () => {
+
+        let isCommented = feedback.find(item => item.userID === JSON.parse(localStorage.getItem("userProfile"))._id);
+        return isCommented ? true : false;
+    }
+
     const fetchGame = async () => {
+        if (props.id) {
+            id = props.id
+        }
         const url = `/games/${id}`;
         try {
             const response = await fetch(url);
             const json = await response.json();
             setGame(json);
 
+
         } catch (error) {
             console.log("error", error);
         }
     };
-
-
 
     const fetchFeedback = async () => {
         const feedbackUrl = `/games/${id}/feedback`;
         try {
             const response = await fetch(feedbackUrl);
             const json = await response.json();
-            console.log(json)
             setFeedBack(json);
         } catch (error) {
             console.log("error", error);
@@ -48,9 +56,7 @@ const GameView = () => {
     const addComment = async (values) => {
 
         // // Get the value of the comment box
-        // // and make sure it not some empty strings
         const comment = values.comment;
-
 
         const user = JSON.parse(localStorage.getItem("userProfile"));
 
@@ -59,7 +65,7 @@ const GameView = () => {
         // const timestamp = Date.now();
         const newComment = {
             gameID: id,
-            userId: userid,
+            userID: userid,
             comment: comment,
             rating: values.rating,
         };
@@ -79,22 +85,31 @@ const GameView = () => {
     }
 
 
-    if (localStorage.getItem("userProfile")) {
+    if (localStorage.getItem("userProfile") && !hasCommented()) {
         return (
             <div className="v_flex">
                 <Game game={game} />
-                <Divider />
-
-                <FeedbackBox addComment={addComment} id= {id} />
-                <Divider />
+                <br />
+                <FeedbackBox addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />
+                <br />
+                <RatingPopUp allFeedback={feedback} />
+                <br />
                 <Allfeedback allFeedback={feedback} />
+
             </div>
         )
     }
 
     return (
-        <Game game={game} />
+        <div className="v_flex">
+            <Game game={game} />
+            <br />
+            <RatingPopUp allFeedback={feedback} />
+            <br />
+            <Allfeedback allFeedback={feedback} />
+        </div>
     );
 };
+
 
 export default GameView;

@@ -1,8 +1,15 @@
 import { Component } from "react";
 import { Container, Grid, Avatar } from '@mantine/core';
 import RatingBox from './rating';
+import { Link } from 'react-router-dom';
+import {
+    Text,
+    Anchor
+} from "@mantine/core";
+
 // import { Link } from 'react-router-dom';
 // import { Anchor } from "@mantine/core";
+import './styles.css';
 
 class Feedback extends Component {
 
@@ -10,33 +17,44 @@ class Feedback extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            comment : this.props.comment
+            comment: this.props.comment,
+            user: {}
         }
     }
 
-    componentWillUpdate(){
-        
+    async componentDidMount() {
+        let url = `/users/${this.state.comment.userID}`;
+
+        let response = await fetch(url);
+
+        let user = await response.json();
+
+        this.setState({ user: user })
+
     }
     render() {
         return (
-            <div >
-
-                <Grid >
+            <Container className="commentBox" >
+                <Grid >               
                     <Grid.Col span={2} >
-                        <Avatar radius="xl" /></Grid.Col>
-                    <Grid.Col span={8}>
+                        <Anchor component={Link} to={`/profile/${this.state.comment.userID}`} >
+                            <Avatar src={this.state.user.picture} />
+                            <Text>
+                                {this.state.user.name}
+                            </Text>
+                        </Anchor>
+                        
+                    </Grid.Col>
+                    <Grid.Col span={8} className="commentText">
                         {this.props.comment.comment}
                     </Grid.Col>
                     <Grid.Col span={2}>
                         <RatingBox rating={this.props.comment.rating} dis={true} />
                     </Grid.Col>
-
                 </Grid>
-
-
-            </div>
+                <br />
+            </Container>
         );
     }
 }
-
-export default Feedback;
+export default Feedback

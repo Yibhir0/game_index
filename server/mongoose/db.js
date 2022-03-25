@@ -44,7 +44,6 @@ module.exports.getFeedbacks = async (gameId) => {
 
 module.exports.addFeedback = async (feedback) => {
 
-    console.log(feedback)
     const feed = new FeedBack(feedback);
     // Save the new model instance, passing a callback
     await feed.save(function (err) {
@@ -75,9 +74,9 @@ module.exports.getList = async (user, list_id) => {
 }
 
 
-module.exports.createList = async (user, id, list_name, gameslist) => {
-    await User.findOneAndUpdate({ _id: user._id }, { lists: { id: id, name: list_name, games: gameslist } });
-}
+// module.exports.createList = async (user, id, list_name, gameslist) => {
+//     await User.findOneAndUpdate({ _id: user._id }, { lists: { id: id, name: list_name, games: gameslist } });
+// }
 
 module.exports.addToList = async (user, list_name, game_name) => {
     let current_user = await User.findOne({ _id: user._id });
@@ -139,15 +138,110 @@ module.exports.createUser = async (user) => {
         let obj = {
             name: user.name,
             email: user.email,
-            picture: user.picture
-
+            picture: user.picture,
+            bio: user.bio,
         }
-        let newUser = await User.findOneAndUpdate(user.email, obj, { upsert: true });
+
+        let filter = { email: obj.email };
+
+        let newUser = await User.findOneAndUpdate(filter, obj, {
+            new: true,
+            upsert: true
+        });
         return newUser;
     }
     catch (error) {
         console.log(error);
     }
 
+}
+
+module.exports.updateBio = async (userId, desc) => {
+
+    try {
+        let updatedBio = await User.findOneAndUpdate(
+            {
+                _id: userId,
+            },
+            { $set: { bio: desc}}
+        );
+        return updatedBio;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports.createList = async (list, userId) => {
+
+    try {
+        let obj = {
+            name: list.name,
+            games: [],
+        }
+        let newList = await User.findOneAndUpdate(
+            { _id: userId },
+            { $push: {lists: obj} }, 
+        );
+        return newList;
+    }
+    catch (error) {
+        console.log(error);
+    }
+
+}
+
+module.exports.deleteList = async (userId, listName) => {
+
+    try {
+
+        let delList = await User.findOneAndUpdate(
+            {
+                _id: userId,
+            },
+            { $pull: { lists: { name: listName }}}
+        );
+        return delList;
+    }
+    catch (error) {
+        console.log(error);
+    }
+
+}
+
+module.exports.addGameToList = async (userId, listIndex, gameId) => {
+    try {
+        let game = await Games.findById({ _id: gameId });
+        let addGame = await User.findOneAndUpdate(
+            {
+                _id: userId,
+            },
+            { $push: {[`lists.${listIndex}.games`]: game}}
+        );
+        return addGame;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports.removeGameFromList = async (userId, listIndex, gameId) => {
+    try {
+        let game = await Games.findById({ _id: gameId });
+        let addGame = await User.findOneAndUpdate(
+            {
+                _id: userId,
+            },
+            { $pull: {[`lists.${listIndex}.games`]: game}}
+        );
+        return addGame;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports.getUser = async (id) => {
+    return await User.findById({ _id: id })
 }
 

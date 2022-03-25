@@ -1,16 +1,22 @@
 const db = require('../mongoose/db');
+const cache = require("memory-cache");
 
 // Response for endpoint /games
 exports.getGames = async (req, res) => {
     try {
-        const readyState = await db.connectToDB();
-        if (readyState === 1) {
-            const games = await db.getGames();
-            res.send(games);
+        let response = cache.get("allGames")
+        if (!response) {
+            const readyState = await db.connectToDB();
+            if (readyState === 1) {
+                response = await db.getGames();
+                cache.put("allGames", response)
+
+            }
+            else {
+                res.status(404).json({ message: "Could not connect to the database" })
+            }
         }
-        else {
-            res.status(404).json({ message: "Could not connect to the database" })
-        }
+        res.send(response);
     }
     catch (error) {
         res.status(404).json({ message: error.message })
@@ -20,14 +26,26 @@ exports.getGames = async (req, res) => {
 // Response for a specific page
 exports.getGame = async (req, res) => {
     try {
-        const readyState = await db.connectToDB();
-        if (readyState === 1) {
-            const game = await db.getGame(req.params.id)
-            res.send(game)
+        let query = "game" + req.params.id
+        let response = cache.get(query)
+
+        if (!response) {
+
+            const readyState = await db.connectToDB();
+
+            if (readyState === 1) {
+
+                response = await db.getGame(req.params.id)
+
+                cache.put(query, response)
+
+            }
+            else {
+                res.status(404).json({ message: "Could not connect to the database" })
+            }
         }
-        else {
-            res.status(404).json({ message: "Could not connect to the database" })
-        }
+
+        res.send(response)
     }
     catch (error) {
         res.status(404).json({ message: error.message })
@@ -48,9 +66,9 @@ exports.getGamesByFilter = async (req, res) => {
                 platform: req.query.platform
             };
 
-            //console.log(filters);
-            const games = await db.getGamesByFilter(filters)
-            res.send(games)
+            const games = await db.getGamesByFilter(filters);
+            res.send(games);
+
         }
         else {
             res.status(404).json({ message: "Could not connect to the database" })
