@@ -3,7 +3,7 @@ import TopNav from './navbar/topnav';
 import {
     Center, Grid, Text,
     PasswordInput, TextInput, Loader,
-    Title, List, Divider, ScrollArea,Avatar, Image, SimpleGrid, Tooltip, Anchor
+    Title, List, Divider, ScrollArea, Avatar, Image, SimpleGrid, Tooltip, Anchor
 } from "@mantine/core";
 import GraphDash from './graphs/graphDash';
 import "../index.css"
@@ -25,20 +25,20 @@ class Home extends Component {
 
     }
 
-        
+
     async componentDidMount() {
         await this.fetchGames();
     }
 
-/***
- * Fetches the games in the DB and adds them to the state.
- */
+    /***
+     * Fetches the games in the DB and adds them to the state.
+     */
     async fetchGames() {
         let fetchResponse = await fetch('/games');
         let fetchedGames = await fetchResponse.json();
         let fetchedGamesuh = [];
 
-        for (let i = 0; i < 1000; i++){
+        for (let i = 0; i < 1000; i++) {
             fetchedGamesuh.push({ image: fetchedGames[i].image_URL[0], gameName: fetchedGames[i].name, gameId: fetchedGames[i]._id })
         }
         this.setState({
@@ -47,7 +47,7 @@ class Home extends Component {
     }
 
     getimages() {
-        
+
     }
 
     render() {
@@ -69,8 +69,8 @@ class Home extends Component {
                 <br></br>
                 <Center>
                     <ScrollArea style={{ height: 200 }}>
-                        <SimpleGrid breakpoints={[{ maxWidth: 200, maxHeight:0}]} cols={this.state.games.length} spacing="100px">
-                            {this.state.games.map((image, i) => 
+                        <SimpleGrid breakpoints={[{ maxWidth: 200, maxHeight: 0 }]} cols={this.state.games.length} spacing="100px">
+                            {this.state.games.map((image, i) =>
                                 <Tooltip withArrow label={this.state.games[i].gameName}>
                                     <Anchor component={Link} to={`/games/${this.state.games[i].gameId}`}>
                                         <Image style={{ minHeight: 100, minWidth: 100 }} src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${this.state.games[i].image}`} />
@@ -83,7 +83,7 @@ class Home extends Component {
                 <Divider variant="dashed" />
 
 
-                {/* <GraphDash></GraphDash> */}
+                <GraphDash></GraphDash>
 
             </div>
         );
