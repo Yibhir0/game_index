@@ -57,7 +57,9 @@ class GraphDash extends Component {
             .sort((a, b) => a.globalsales < b.globalsales).slice(0, 10);
 
         ratingSalesGames = [].concat(this.state.games)
-            .map(x => { return ({ criticscore: x.criticscore, globalsales: x.globalsales }) }).slice(0, 100);
+            .map(x => { return ({ criticscore: x.criticScore, globalsales: x.globalSales }) }).slice(0, 100);
+
+
 
         leastGames = [].concat(this.state.games)
             .sort((a, b) => a.globalsales > b.globalsales).slice(0, 10);
@@ -71,8 +73,9 @@ class GraphDash extends Component {
         let dataArray = [];
 
         for (let game of gamesArray) {
-            dataArray.push({ x: game.name, y: game.globalsales, id: game._id });
+            dataArray.push({ x: game.name, y: game.globalSales, id: game._id });
         }
+
         return dataArray;
     }
 
@@ -85,7 +88,7 @@ class GraphDash extends Component {
         return (
             <Grid >
                 <Grid.Col span={12} justify="center" align="center">
-                    <SegmentedControl 
+                    <SegmentedControl
                         data={[
                             { label: 'Most Sold', value: 'Sold-Most' },
                             { label: 'Most Popular Category', value: 'Category-Most' },
