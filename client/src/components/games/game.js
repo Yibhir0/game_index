@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { SimpleGrid, Title, Grid } from "@mantine/core";
 import { Group, Avatar, Text, Accordion, Image } from "@mantine/core";
-import StarsRating from "stars-rating";
+//import StarsRating from "stars-rating";
 import React from "react";
 
 /**
@@ -51,14 +51,14 @@ const Game = (props) => {
             <Title order={4}>Release Year:</Title>
             <Text>{props.game.year}</Text>
             <Title order={4}>Critic Score:</Title>
-            <StarsRating
+            {/* <StarsRating
               count={5}
               half={true}
               value={props.game.criticScore}
               edit={false}
               size={24}
               color2={"#ffd700"}
-            />
+            /> */}
             <Title order={4}>ESRB Rating:</Title>
             <Text>{props.game.esrbrating}</Text>
           </div>
