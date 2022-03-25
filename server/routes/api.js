@@ -316,7 +316,7 @@ router.get('/games/:id', games.getGame);
  *       200: 
  *         description: Homepage.
  */
-router.get('/', games.goHome);
+// router.get('/', games.goHome);
 
 /**
  * @swagger 
