@@ -39,7 +39,7 @@ class Home extends Component {
         let fetchedGamesuh = [];
 
         for (let i = 0; i < 1000; i++){
-            fetchedGamesuh.push({ image: fetchedGames[i].image_URL, gameName: fetchedGames[i].name, gameId: fetchedGames[i]._id })
+            fetchedGamesuh.push({ image: fetchedGames[i].image_URL[0], gameName: fetchedGames[i].name, gameId: fetchedGames[i]._id })
         }
         this.setState({
             games: fetchedGamesuh
@@ -83,7 +83,7 @@ class Home extends Component {
                 <Divider variant="dashed" />
 
 
-                <GraphDash></GraphDash>
+                {/* <GraphDash></GraphDash> */}
 
             </div>
         );
