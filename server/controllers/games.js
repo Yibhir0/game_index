@@ -26,26 +26,26 @@ exports.getGames = async (req, res) => {
 // Response for a specific page
 exports.getGame = async (req, res) => {
     try {
-        let query = "game" + req.params.id
-        let response = cache.get(query)
+        // let query = "game" + req.params.id
+        // let response = cache.get(query)
 
-        if (!response) {
+        // if (!response) {
 
-            const readyState = await db.connectToDB();
+        const readyState = await db.connectToDB();
 
-            if (readyState === 1) {
+        if (readyState === 1) {
 
-                response = await db.getGame(req.params.id)
+            response = await db.getGame(req.params.id)
+            res.send(response);
+            // cache.put(query, response)
 
-                cache.put(query, response)
-
-            }
-            else {
-                res.status(404).json({ message: "Could not connect to the database" })
-            }
         }
+        else {
+            res.status(404).json({ message: "Could not connect to the database" })
+        }
+        // }
 
-        res.send(response)
+        // res.send(response)
     }
     catch (error) {
         res.status(404).json({ message: error.message })

@@ -1,5 +1,6 @@
 import { Component, useState } from "react";
 import {
+    Text,
     Accordion, 
     Avatar,
     Title,
@@ -228,14 +229,14 @@ class Games extends Component {
         const rows = this.state.gamesL.map((game, index) => (
             <tr className="bg-gradient-to-b from-gray-400 to-stone-100" key={index}>
                 <td>{index}</td>
-                <td><Avatar src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL}`} size="lg" /></td>
+                <td><Avatar src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL[0]}`} size="lg" /></td>
                 <td><Anchor component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
                 <td>{game.genre}</td>
-                <td>{game.platform}</td>
+                <td>{game.platform.map((platform) => (<Text>{platform}</Text>))}</td>
                 <td>{game.publisher}</td>
                 <td>{game.year}</td>
-                <td>{game.globalsales}</td>
-                <td>{game.criticscore}</td>
+                <td>{game.globalSales}</td>
+                <td>{game.criticScore}</td>
             </tr>
         ));
         this.setState({
