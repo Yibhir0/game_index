@@ -364,7 +364,7 @@ router.get('/games/:id/feedback', feedback.getComments);
  * @swagger
  * /games/{id}/feedback:
  *   post:
- *     summary: Create a comment under a game.
+ *     summary: Create a comment under a game..
  *     parameters:
  *       - in: path
  *         name: id
