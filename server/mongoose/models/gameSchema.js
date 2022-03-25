@@ -7,7 +7,7 @@ const gameSchema = new mongoose.Schema({
     nasales: { type: Number },
     othersales: { type: Number },
     eusales: { type: Number },
-    platform: { type: String },
+    platform: [],
     year: { type: Number },
     publisher: { type: String },
     esrbrating: { type: String },
@@ -15,7 +15,7 @@ const gameSchema = new mongoose.Schema({
     globalsales: { type: Number },
     name: { type: String },
     genre: { type: String },
-    feedback: [feedbackModel],
+    image_URL: [],
     userrating: { type: Number }
 })
 
