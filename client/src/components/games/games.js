@@ -1,6 +1,7 @@
 import { Component, useState } from "react";
 import {
-    Accordion, 
+    Text,
+    Accordion,
     Avatar,
     Title,
     Loader,
@@ -21,7 +22,7 @@ import { Link } from 'react-router-dom';
 class Games extends Component {
 
     constructor(props) {
-       
+
         super(props);
         this.genres = [
             { value: '', label: 'All' },
@@ -46,7 +47,7 @@ class Games extends Component {
         ];
 
         this.platforms = [
-            { value: '', label: 'All'},
+            { value: '', label: 'All' },
             { value: '3DS', label: 'Nintendo 3DS' },
             { value: 'PS', label: 'PlayStation' },
             { value: 'XOne', label: 'Xbox One' },
@@ -96,7 +97,7 @@ class Games extends Component {
             ordering: [-1, 1],
 
         };
-        
+
         this.search = this.search.bind(this);
         this.sortGames = this.sortGames.bind(this);
         this.generateRows = this.generateRows.bind(this);
@@ -175,7 +176,7 @@ class Games extends Component {
             } else {
                 await this.fetchGamesByFilter();
             }
-        //if not empty, then assumes the search bar has keywords, which will end up doing a filtered search
+            //if not empty, then assumes the search bar has keywords, which will end up doing a filtered search
         } else {
             await this.fetchGamesByFilter();
         }
@@ -201,7 +202,7 @@ class Games extends Component {
             }, () => {
                 this.generateRows();
             })
-        //sort by critic score
+            //sort by critic score
         } else if (this.state.sort === "cs") {
             const sortedGames = [].concat(this.state.gamesL)
                 .sort((a, b) => a.criticscore > b.criticscore ? this.state.ordering[0] : this.state.ordering[1]);
@@ -211,7 +212,7 @@ class Games extends Component {
             }, () => {
                 this.generateRows();
             })
-        //remove sorting
+            //remove sorting
         } else {
             this.setState({
                 pageNumber: 1,
@@ -228,14 +229,14 @@ class Games extends Component {
         const rows = this.state.gamesL.map((game, index) => (
             <tr className="bg-gradient-to-b from-gray-400 to-stone-100" key={index}>
                 <td>{index}</td>
-                <td><Avatar src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL}`} size="lg" /></td>
+                <td><Avatar src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL[0]}`} size="lg" /></td>
                 <td><Anchor component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
                 <td>{game.genre}</td>
-                <td>{game.platform}</td>
+                <td>{game.platform.map((platform, index) => (<Text key={index}>{platform}</Text>))}</td>
                 <td>{game.publisher}</td>
                 <td>{game.year}</td>
-                <td>{game.globalsales}</td>
-                <td>{game.criticscore}</td>
+                <td>{game.globalSales}</td>
+                <td>{game.criticScore}</td>
             </tr>
         ));
         this.setState({
@@ -248,7 +249,7 @@ class Games extends Component {
     updateKeywords(evt) {
         const filters = { ...this.state.filters }
         filters.keywords = evt.target.value;
-        this.setState({filters})
+        this.setState({ filters })
     }
 
     //update current year value
@@ -260,8 +261,8 @@ class Games extends Component {
         } else {
             filters.year = evt;
         }
-        
-        this.setState({filters})
+
+        this.setState({ filters })
     }
 
     updatePublisher(evt) {
@@ -293,14 +294,14 @@ class Games extends Component {
             this.setState({
                 ordering: [-1, 1]
             })
-        } else if(evt.target.value === 'asc'){
+        } else if (evt.target.value === 'asc') {
             this.setState({
                 ordering: [1, -1]
             })
         }
-        
+
     }
-    
+
     changePage(evt) {
         //if statement to prevent users from clicking on the same page button
         if (this.state.pageNumber !== evt) {
@@ -314,7 +315,7 @@ class Games extends Component {
         } else {
             console.log("same page");
         }
-        
+
     }
 
     //print the current state of the filter
@@ -327,19 +328,19 @@ class Games extends Component {
         console.log("Platform value: " + this.state.filters.platform);
     }
     render() {
-        
+
         return (
             <>
                 <SimpleGrid cols={3}>
                     <Grid.Col span={4}>
                         <TextInput
-                        onChange={evt => this.updateKeywords(evt)}
-                        placeholder="Keywords"
-                        label="Search:"
-                        description="Find a game by looking them up."
-                        variant="filled"
-                        radius="lg"
-                        size="md"
+                            onChange={evt => this.updateKeywords(evt)}
+                            placeholder="Keywords"
+                            label="Search:"
+                            description="Find a game by looking them up."
+                            variant="filled"
+                            radius="lg"
+                            size="md"
                         />
                         <br></br>
                         <Button onClick={this.search}>
@@ -383,7 +384,7 @@ class Games extends Component {
                                             placeholder="Select a Platform"
                                             description="Search by Platform"
                                         />
-                                    </Grid.Col> 
+                                    </Grid.Col>
                                 </SimpleGrid>
                             </Accordion.Item>
                         </Accordion>
@@ -396,7 +397,7 @@ class Games extends Component {
                                     defaultValue="none"
                                     label="Sort by:"
                                     description="Pick a field to sort the games"
-                                    >
+                                >
                                     <Radio value="none">Default</Radio>
                                     <Radio value="gs">Global Sales</Radio>
                                     <Radio value="cs">Critic Score</Radio>
@@ -410,7 +411,7 @@ class Games extends Component {
                                         { value: 'desc', label: 'Descending' },
                                         { value: 'asc', label: 'Ascending' },
                                     ]}
-                                    />
+                                />
                                 <br></br>
                                 <Button onClick={this.sortGames}>
                                     Sort
@@ -419,7 +420,7 @@ class Games extends Component {
                         </Accordion>
                     </Grid.Col>
                 </SimpleGrid>
-                
+
                 {this.state.loading ?
                     <div style={{ margin: 'auto', padding: 50 }}>
                         <Title order={3}>Fetching All Games</Title>
@@ -449,7 +450,7 @@ class Games extends Component {
                             total={this.state.totalPages}
                             page={this.state.pageNumber}
                             onChange={evt => this.changePage(evt)} />
-                    </div>} 
+                    </div>}
             </>
         );
     }

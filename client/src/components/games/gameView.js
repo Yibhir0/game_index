@@ -31,12 +31,14 @@ const GameView = (props) => {
             id = props.id
         }
         const url = `/games/${id}`;
+        console.log(url);
         try {
-            const response = await fetch(url);
-            const json = await response.json();
-            setGame(json);
-
-
+            const response = await fetch(url, {
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            });
+            setGame(await response.json());
         } catch (error) {
             console.log("error", error);
         }
