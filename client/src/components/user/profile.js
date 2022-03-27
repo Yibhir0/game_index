@@ -147,7 +147,7 @@ class Profile extends Component {
 
         //fetch all games
         console.log("game fetched");
-        let gameUrl = "/games";
+        let gameUrl = "/games-";
         let response = await fetch(gameUrl);
         console.log(response);
         let games = await response.json();
