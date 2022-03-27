@@ -40,10 +40,6 @@ export default function SignIn() {
             console.log(data);
             setUserAccount(data);
 
-            // if (window.location.pathname.includes(profileUrl)) {
-            //     window.location.reload(true);
-            // }
-            
             navigate(`/profile/${data._id}`, { replace: true });
 
             alert("You are successfully logged in ")
