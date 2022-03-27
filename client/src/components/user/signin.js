@@ -52,7 +52,7 @@ export default function SignIn() {
 
 
     }
-    // Logout user
+    // Logout user g
     const handleLogout = async response => {
         const res = await fetch("/users/logout", {
             method: "DELETE",
