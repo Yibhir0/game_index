@@ -23,6 +23,7 @@ stages:
     paths:
       - server/node_modules/
       - client/node_modules/
+
 test:
   stage: test
   dependencies:
