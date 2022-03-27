@@ -17,7 +17,7 @@ export default function App() {
       <Routes>
 
 
-        {/* <Route path="/" element={<Home />} /> */}
+        <Route exact path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/games" element={<Games />} />
         <Route path="/games/:id" element={<GameView />} />

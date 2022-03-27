@@ -24,6 +24,7 @@ class GraphDash extends Component {
 
 
     async componentDidMount() {
+        console.log("hello");
         await this.fetchGames();
         this.getGraphDatas();
     }
