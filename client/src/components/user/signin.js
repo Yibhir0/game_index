@@ -10,7 +10,7 @@ import {
 import './styles.css'
 import { useNavigate } from "react-router-dom";
 export default function SignIn() {
-    
+
     const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('userProfile')));
     //variable will change later for deployment
     // const profileUrl = "/profile";
@@ -61,7 +61,7 @@ export default function SignIn() {
 
         localStorage.clear();
         setUserAccount(null);
-   
+
         // if (window.location.pathname.includes(profileUrl)) {
         //     window.location.reload(true);
         // }
@@ -71,7 +71,7 @@ export default function SignIn() {
 
     }
 
-
+    // Login 
     function UserLogIn() {
 
         return (
