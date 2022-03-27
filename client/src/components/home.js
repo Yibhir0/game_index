@@ -34,7 +34,7 @@ class Home extends Component {
      * Fetches the games in the DB and adds them to the state.
      */
     async fetchGames() {
-        let fetchResponse = await fetch('/games');
+        let fetchResponse = await fetch('/games-');
         let fetchedGames = await fetchResponse.json();
         let fetchedGamesuh = [];
 
