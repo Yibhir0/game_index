@@ -80,7 +80,7 @@ const GameView = (props) => {
             rating: values.rating,
         };
 
-        const feedbackUrl = `/games/${id}/feedback`;
+        const feedbackUrl = `/api/games/${id}/feedback`;
 
         const requestOptions = {
             method: 'POST',
