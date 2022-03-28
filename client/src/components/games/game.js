@@ -34,12 +34,15 @@ const Game = (props) => {
   };
 
   const gameDetails = () => {
+    console.log(props.game);
     let platforms = "";
-    for (let i = 0; i < props.game.platform.length; i++) {
-      if (i === props.game.platform.length - 1) {
-        platforms += props.game.platform[i];
-      } else {
-        platforms += props.game.platform[i] + ", ";
+    if (typeof props.game.platform === "object" ) {
+      for (let i = 0; i < props.game.platform.length; i++) {
+        if (i === props.game.platform.length - 1) {
+          platforms += props.game.platform[i];
+        } else {
+          platforms += props.game.platform[i] + ", ";
+        }
       }
     }
 
