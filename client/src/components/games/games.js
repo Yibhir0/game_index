@@ -18,6 +18,7 @@ import {
     NativeSelect
 } from '@mantine/core';
 import { Link } from 'react-router-dom';
+import SearchPopUp from "../graphs/searchPopUp";
 
 class Games extends Component {
 
@@ -349,6 +350,8 @@ class Games extends Component {
                         <Button onClick={this.search}>
                             Search
                         </Button>
+                        <SearchPopUp games={"bruh"}/>
+                        
                     </Grid.Col>
                     <Grid.Col span={4}>
                         <Accordion>
