@@ -1,5 +1,6 @@
 import { Component } from "react";
 import {
+    Badge,
     Text,
     Accordion,
     Avatar,
@@ -232,14 +233,14 @@ class Games extends Component {
         console.log(this.state.gamesL);
         const rows = this.state.gamesL.map((game, index) => (
             <tr className="bg-gradient-to-b from-gray-400 to-stone-100" key={index}>
-                <td>{index}</td>
+                <td><Badge color="dark">{index}</Badge></td>
                 <td><Avatar src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL[0]}`} size="lg" /></td>
                 <td><Anchor component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
-                <td>{game.genre}</td>
-                <td>{game.platform.map((platform, index) => (<Text key={index}>{platform}</Text>))}</td>
-                <td>{game.publisher}</td>
-                <td>{game.year}</td>
-                <td>{game.globalSales}</td>
+                <td><Badge variant="filled" color="cyan">{game.genre}</Badge></td>
+                <td>{game.platform.map((platform, index) => (<Badge variant="filled" key={index}>{platform}</Badge>))}</td>
+                <td><Badge variant="filled" color="indigo">{game.publisher}</Badge></td>
+                <td><Badge variant="filled" color="violet">{game.year}</Badge></td>
+                <td><Badge variant="filled" color="grape">{game.globalSales}</Badge></td>
                 <td>{game.criticScore}</td>
             </tr>
         ));

@@ -197,7 +197,6 @@ class Profile extends Component {
                     <div style={{
                         padding: 10
                     }}>
-<<<<<<< HEAD
                         <Group>
                             <Button className= 'border-gray-500 rounded-lg bg-green-500 hover:bg-pink-400 active:bg-gray-500/50'
                                 onClick={() => this.setState({
@@ -218,33 +217,6 @@ class Profile extends Component {
                                 Delete List
                             </Button>
                         </Group> 
-=======
-                        <SimpleGrid cols={10}>
-                            <div>
-                                <Button className='border-gray-500 rounded-lg bg-green-500 hover:bg-pink-400 active:bg-gray-500/50'
-                                    onClick={() => this.setState({
-                                        addingGame: true,
-                                        currentGameList: gameList.name
-                                    })}
-                                    color="green"
-                                >
-                                    Add Game
-                                </Button>
-                            </div>
-                            <div>
-                                <Button className='border-gray-500 rounded-lg bg-green-500 hover:bg-pink-400 active:bg-gray-500/50'
-                                    onClick={() => this.setState({
-                                        deletingList: true,
-                                        currentGameList: gameList.name
-                                    })}
-                                    color="red"
-                                >
-                                    Delete List
-                                </Button>
-                            </div>
-                        </SimpleGrid>
-
->>>>>>> aad22902b01bf1bef6ac79f62db3bdd2b8661d14
                     </div>
                     :
                     <></>
@@ -667,7 +639,6 @@ class Profile extends Component {
                                                 withPlaceholder
                                             />
                                             <br></br>
-<<<<<<< HEAD
                                             <Group>
                                                 <Title order={3}>
                                                     Bio
@@ -688,31 +659,6 @@ class Profile extends Component {
                                                 }
                                             </Group>
                                             
-=======
-                                            <SimpleGrid cols={7}>
-                                                <div>
-                                                    <Title order={3}>
-                                                        Bio
-                                                    </Title>
-                                                </div>
-                                                <div>
-                                                    {this.state.editPerms ?
-                                                        <ActionIcon onClick={() => this.setState({
-                                                            editingBio: true,
-                                                        })}
-                                                            radius="sm"
-                                                            color="orange"
-                                                            variant="filled"
-                                                        >
-                                                            <IconEdit />
-                                                        </ActionIcon>
-                                                        :
-                                                        <></>
-                                                    }
-                                                </div>
-                                            </SimpleGrid>
-
->>>>>>> aad22902b01bf1bef6ac79f62db3bdd2b8661d14
                                             <Text>
                                                 {this.state.currentUser.bio}
                                             </Text>
