@@ -73,7 +73,7 @@ class Profile extends Component {
         // this.updateUser = this.updateUser.bind(this);
     }
 
-    
+
 
     async componentDidMount() {
         this.checkPerms();
@@ -93,20 +93,20 @@ class Profile extends Component {
                     console.log(this.state.editPerms);
                 })
             }
-        } 
+        }
     }
 
     async fetchUser() {
 
         console.log(this.props.id);
 
-        let url = `/users/${this.props.id}`;
+        let url = `/api/users/${this.props.id}`;
 
         let response = await fetch(url, {
             headers: {
-              'Cache-Control': 'no-cache'
+                'Cache-Control': 'no-cache'
             }
-          });
+        });
 
         let user = await response.json();
 
@@ -130,7 +130,7 @@ class Profile extends Component {
                 'Accept': 'application/json'
             },
         }
-        let url = `/users/${this.state.currentUser._id}/bio?desc=${this.state.bioToUpdate}`;
+        let url = `/api/users/${this.state.currentUser._id}/bio?desc=${this.state.bioToUpdate}`;
 
         let response = await fetch(url, requestOptions);
         console.log(response);
@@ -147,7 +147,7 @@ class Profile extends Component {
 
         //fetch all games
         console.log("game fetched");
-        let gameUrl = "/games-";
+        let gameUrl = "/api/games";
         let response = await fetch(gameUrl);
         console.log(response);
         let games = await response.json();
@@ -197,7 +197,7 @@ class Profile extends Component {
                     }}>
                         <SimpleGrid cols={10}>
                             <div>
-                                <Button className= 'border-gray-500 rounded-lg bg-green-500 hover:bg-pink-400 active:bg-gray-500/50'
+                                <Button className='border-gray-500 rounded-lg bg-green-500 hover:bg-pink-400 active:bg-gray-500/50'
                                     onClick={() => this.setState({
                                         addingGame: true,
                                         currentGameList: gameList.name
@@ -208,7 +208,7 @@ class Profile extends Component {
                                 </Button>
                             </div>
                             <div>
-                                <Button className= 'border-gray-500 rounded-lg bg-green-500 hover:bg-pink-400 active:bg-gray-500/50'
+                                <Button className='border-gray-500 rounded-lg bg-green-500 hover:bg-pink-400 active:bg-gray-500/50'
                                     onClick={() => this.setState({
                                         deletingList: true,
                                         currentGameList: gameList.name
@@ -217,9 +217,9 @@ class Profile extends Component {
                                 >
                                     Delete List
                                 </Button>
-                            </div> 
+                            </div>
                         </SimpleGrid>
-                        
+
                     </div>
                     :
                     <></>
@@ -258,7 +258,7 @@ class Profile extends Component {
                                 <td>
                                     {this.state.editPerms ?
                                         <ActionIcon
-                                            color="red" 
+                                            color="red"
                                             onClick={() => this.setState({
                                                 gameToBeDeleted: game,
                                                 currentGameList: gameList.name
@@ -312,7 +312,7 @@ class Profile extends Component {
 
         console.log("creating list in db for user: " + this.state.currentUser.name);
         console.log("list name: " + this.state.createdListName);
-        
+
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -321,7 +321,7 @@ class Profile extends Component {
             },
         }
 
-        let listUrl = "/users/"+this.state.currentUser._id+"/list?name="+this.state.createdListName;
+        let listUrl = "/api/users/" + this.state.currentUser._id + "/list?name=" + this.state.createdListName;
         let response = await fetch(listUrl, requestOptions);
         console.log(response);
     }
@@ -337,13 +337,13 @@ class Profile extends Component {
             },
         }
 
-        let listUrl = "/users/"+this.state.currentUser._id+"/delList?name="+this.state.currentGameList;
+        let listUrl = "/api/users/" + this.state.currentUser._id + "/delList?name=" + this.state.currentGameList;
         let response = await fetch(listUrl, requestOptions);
         console.log(response);
 
         await this.fetchUser();
         this.generateList();
-        
+
         this.setState({
             currentGameList: '',
         })
@@ -372,7 +372,7 @@ class Profile extends Component {
                     },
                 }
 
-                let url = "/users/" + this.state.currentUser._id + "/list/addGame?gameId=" + this.state.gameToAdd[0]._id + "&index=" + listIndex;
+                let url = "/api/users/" + this.state.currentUser._id + "/list/addGame?gameId=" + this.state.gameToAdd[0]._id + "&index=" + listIndex;
                 let response = await fetch(url, requestOptions);
                 console.log(response);
 
@@ -417,7 +417,7 @@ class Profile extends Component {
     }
 
     async removeGameFromList() {
-        
+
         //get index of the list where the game will be removed from
         let listIndex = this.state.currentUser.lists.findIndex(list => list.name === this.state.currentGameList);
 
@@ -432,14 +432,14 @@ class Profile extends Component {
             },
         }
 
-        let url = "/users/" + this.state.currentUser._id + "/list/delGame?gameId=" + this.state.gameToBeDeleted._id + "&index=" + listIndex;
+        let url = "/api/users/" + this.state.currentUser._id + "/list/delGame?gameId=" + this.state.gameToBeDeleted._id + "&index=" + listIndex;
         let response = await fetch(url, requestOptions);
         console.log(response);
-        
+
         await this.fetchUser();
         this.generateList();
     }
-    
+
 
     resetErrorMsg() {
         this.setState({
@@ -453,13 +453,13 @@ class Profile extends Component {
             <>
                 {this.state.loggedIn ?
                     <div>
-                    {this.state.loading ?
+                        {this.state.loading ?
                             <div style={{ margin: 'auto', padding: 50 }}>
                                 <Title order={3}>Loading profile page</Title>
                                 <Loader size="xl" />
                             </div>
                             :
-                            
+
                             <>
                                 {/* All modals */}
                                 {/* Creating List */}
@@ -501,7 +501,7 @@ class Profile extends Component {
                                     title="Add Game"
                                 >
                                     <Title order={6}>Selected Game:</Title>
-                                    {this.state.gameToAdd.length ? 
+                                    {this.state.gameToAdd.length ?
                                         <SimpleGrid cols={4}>
                                             <div>
                                                 <Image
@@ -599,7 +599,7 @@ class Profile extends Component {
                                         </div>
                                     </SimpleGrid>
                                 </Modal>
-                                
+
                                 {/* Editing Bio */}
                                 <Modal
                                     size="lg"
@@ -629,7 +629,7 @@ class Profile extends Component {
 
                                 <Grid columns={24}>
                                     <Grid.Col span={6}>
-                                    
+
                                         <div style={{ margin: 'auto', padding: 50 }}>
                                             <Title order={2}>{this.state.currentUser.name}'s Profile</Title>
                                             <br></br>
@@ -664,7 +664,7 @@ class Profile extends Component {
                                                     }
                                                 </div>
                                             </SimpleGrid>
-                                            
+
                                             <Text>
                                                 {this.state.currentUser.bio}
                                             </Text>

@@ -46,7 +46,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const api = require('./routes/api.js');
 
-app.use('/', api);
+app.use('/api', api);
 
 app.use(cors());
 

@@ -1,4 +1,4 @@
-import { Component, useState } from "react";
+import { Component } from "react";
 import {
     Text,
     Accordion,
@@ -18,6 +18,11 @@ import {
     NativeSelect
 } from '@mantine/core';
 import { Link } from 'react-router-dom';
+
+/**
+ * This component renders all the games and 
+ * deals with searching, sorting, and filtering.
+ */
 
 class Games extends Component {
 
@@ -128,7 +133,7 @@ class Games extends Component {
         });
         //fetch all games
         console.log("game fetched");
-        let gameUrl = "/games-";
+        let gameUrl = "/api/games";
         let response = await fetch(gameUrl);
         console.log(response);
         let games = await response.json();
@@ -144,7 +149,7 @@ class Games extends Component {
         });
         //fetch all games by filters
         console.log("game fetched by filters");
-        let gameUrl = "/games/filter?" +
+        let gameUrl = "/api/games/filter?" +
             "keywords=" + this.state.filters.keywords +
             "&year=" + this.state.filters.year +
             "&publisher=" + this.state.filters.publisher +

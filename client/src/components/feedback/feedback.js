@@ -7,10 +7,12 @@ import {
     Anchor
 } from "@mantine/core";
 
-// import { Link } from 'react-router-dom';
-// import { Anchor } from "@mantine/core";
 import './styles.css';
 
+
+/**
+ * Component renders one feedback with the associated user
+ */
 class Feedback extends Component {
 
     // eslint-disable-next-line no-useless-constructor
@@ -23,7 +25,7 @@ class Feedback extends Component {
     }
 
     async componentDidMount() {
-        let url = `/users/${this.state.comment.userID}`;
+        let url = `/api/users/${this.state.comment.userID}`;
 
         let response = await fetch(url);
 
@@ -35,7 +37,7 @@ class Feedback extends Component {
     render() {
         return (
             <Container className="commentBox" >
-                <Grid >               
+                <Grid >
                     <Grid.Col span={2} >
                         <Anchor component={Link} to={`/profile/${this.state.comment.userID}`} >
                             <Avatar src={this.state.user.picture} />
@@ -43,7 +45,7 @@ class Feedback extends Component {
                                 {this.state.user.name}
                             </Text>
                         </Anchor>
-                        
+
                     </Grid.Col>
                     <Grid.Col span={8} className="commentText">
                         {this.props.comment.comment}
