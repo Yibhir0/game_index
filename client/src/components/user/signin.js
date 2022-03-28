@@ -25,7 +25,7 @@ export default function SignIn() {
         console.log(googleData);
 
         try {
-            const res = await fetch("/users/login", {
+            const res = await fetch("/api/users/login", {
                 method: "POST",
                 body: JSON.stringify({
                     token: googleData.tokenId
@@ -54,7 +54,7 @@ export default function SignIn() {
     }
     // Logout user g
     const handleLogout = async response => {
-        const res = await fetch("/users/logout", {
+        const res = await fetch("/api/users/logout", {
             method: "DELETE",
         })
         const data = await res.json()

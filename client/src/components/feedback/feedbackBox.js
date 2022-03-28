@@ -1,32 +1,19 @@
-import { Textarea, Button, Grid, Center } from '@mantine/core';
+import { Textarea, Button, Grid } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
 import RatingBox from '../feedback/rating';
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+
+/**
+ * This component allow user to add a comment/feedback
+ * It receives a callback function that adds the
+ *  comment to the db and render the component.
+ * @param {*} props 
+ * @returns 
+ */
 export default function FeedbackBox(props) {
 
 
-    useEffect(() => {
-
-        //fetchFeedback();
-
-    }, []);
-
-
-    // const fetchGame = async () => {
-    //     const url = `/games/${id}`;
-    //     try {
-    //         const response = await fetch(url);
-    //         const json = await response.json();
-    //         setGame(json);
-
-    //     } catch (error) {
-    //         console.log("error", error);
-    //     }
-    // };
-
     const [rating, setRating] = useState(1);
-    //let navigate = useNavigate();
-
 
     const form = useForm({
         initialValues: {

@@ -1,8 +1,11 @@
-import { Center, Grid, SegmentedControl } from "@mantine/core";
-import { Component, useState } from "react";
-import { XYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, VerticalBarSeries } from 'react-vis';
+import { Grid, SegmentedControl } from "@mantine/core";
+import { Component } from "react";
 import GraphController from "./graphController";
 
+
+/**
+ * This 
+ */
 class GraphDash extends Component {
 
     constructor(props) {
@@ -24,7 +27,6 @@ class GraphDash extends Component {
 
 
     async componentDidMount() {
-        console.log("hello");
         await this.fetchGames();
         this.getGraphDatas();
     }
@@ -33,7 +35,7 @@ class GraphDash extends Component {
      * Fetches the games in the DB and adds them to the state.
      */
     async fetchGames() {
-        let fetchResponse = await fetch('/games-');
+        let fetchResponse = await fetch('/api/games');
         let fetchedGames = await fetchResponse.json();
 
         this.setState({

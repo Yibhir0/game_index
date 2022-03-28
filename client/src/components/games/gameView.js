@@ -6,6 +6,14 @@ import Game from './game';
 import '../feedback/styles.css'
 import RatingPopUp from '../graphs/ratingPopUp'
 
+/**
+ * This component renders all components
+ * related to a specific game including game details, feeedback
+ * ,rating, and a graph representation of number of users and with the rating.
+ * @param {*} props 
+ * @returns 
+ */
+
 const GameView = (props) => {
 
     const [game, setGame] = useState({});
@@ -30,7 +38,7 @@ const GameView = (props) => {
         if (props.id) {
             id = props.id
         }
-        const url = `/games/${id}`;
+        const url = `/api/games/${id}`;
         console.log(url);
         try {
             const response = await fetch(url, {
@@ -45,7 +53,7 @@ const GameView = (props) => {
     };
 
     const fetchFeedback = async () => {
-        const feedbackUrl = `/games/${id}/feedback`;
+        const feedbackUrl = `/api/games/${id}/feedback`;
         try {
             const response = await fetch(feedbackUrl);
             const json = await response.json();
