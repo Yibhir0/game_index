@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { SimpleGrid, Title, Grid } from "@mantine/core";
 import { Group, Avatar, Text, Accordion, Image } from "@mantine/core";
-//import StarsRating from "stars-rating";
+import StarsRating from "stars-rating";
 import React from "react";
 
 /**
@@ -35,6 +35,17 @@ const Game = (props) => {
   };
 
   const gameDetails = () => {
+    let platforms = "";
+    if (typeof props.game.platform === "object") {
+      for (let i = 0; i < props.game.platform.length; i++) {
+        if (i === props.game.platform.length - 1) {
+          platforms += props.game.platform[i];
+        } else {
+          platforms += props.game.platform[i] + ", ";
+        }
+      }
+    }
+
     return (
       <div>
         <Title order={1}>{props.game.name}</Title>
@@ -44,7 +55,7 @@ const Game = (props) => {
             <Title order={4}>Publisher:</Title>
             <Text>{props.game.publisher}</Text>
             <Title order={4}>Platform:</Title>
-            <Text>{props.game.platform}</Text>
+            <Text>{platforms}</Text>
             <Title order={4}>Genre:</Title>
             <Text>{props.game.genre}</Text>
           </div>
@@ -52,14 +63,14 @@ const Game = (props) => {
             <Title order={4}>Release Year:</Title>
             <Text>{props.game.year}</Text>
             <Title order={4}>Critic Score:</Title>
-            {/* <StarsRating
+            <StarsRating
               count={5}
               half={true}
               value={props.game.criticScore}
               edit={false}
               size={24}
               color2={"#ffd700"}
-            /> */}
+            />
             <Title order={4}>ESRB Rating:</Title>
             <Text>{props.game.esrbrating}</Text>
           </div>

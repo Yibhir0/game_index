@@ -147,7 +147,7 @@ class Profile extends Component {
 
         //fetch all games
         console.log("game fetched");
-        let gameUrl = "/games";
+        let gameUrl = "/games-";
         let response = await fetch(gameUrl);
         console.log(response);
         let games = await response.json();
@@ -246,13 +246,13 @@ class Profile extends Component {
                                     <Image
                                         width={80}
                                         height={80}
-                                        src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL}`}
+                                        src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL[0]}`}
                                         alt="Random unsplash image"
                                     />
                                 </td>
                                 <td><Anchor component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
                                 <td>{game.genre}</td>
-                                <td>{game.platform}</td>
+                                <td>{game.platform.map((platform) => <Text>{platform}</Text>)}</td>
                                 <td>{game.publisher}</td>
                                 <td>{game.year}</td>
                                 <td>
@@ -507,7 +507,7 @@ class Profile extends Component {
                                                 <Image
                                                     width={130}
                                                     height={130}
-                                                    src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${this.state.gameToAdd[0].image_URL}`}
+                                                    src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${this.state.gameToAdd[0].image_URL[0]}`}
                                                     alt="Image failed to load"
                                                 />
                                             </div>
@@ -515,7 +515,7 @@ class Profile extends Component {
                                                 <Title order={6}>Name:</Title>
                                                 <Text>{this.state.gameToAdd[0].name}</Text>
                                                 <Title order={6}>Console:</Title>
-                                                <Text>{this.state.gameToAdd[0].platform}</Text>
+                                                <Text>{this.state.gameToAdd[0].platform.map((platform) => <Text>{platform}</Text>)}</Text>
                                                 <Title order={6}>Year Released:</Title>
                                                 <Text>{this.state.gameToAdd[0].year}</Text>
                                             </div>
