@@ -10,7 +10,7 @@ import {
 import './styles.css'
 import { useNavigate } from "react-router-dom";
 export default function SignIn() {
-    
+
     const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('userProfile')));
     //variable will change later for deployment
     // const profileUrl = "/profile";
@@ -40,10 +40,6 @@ export default function SignIn() {
             console.log(data);
             setUserAccount(data);
 
-            // if (window.location.pathname.includes(profileUrl)) {
-            //     window.location.reload(true);
-            // }
-            
             navigate(`/profile/${data._id}`, { replace: true });
 
             alert("You are successfully logged in ")
@@ -56,7 +52,7 @@ export default function SignIn() {
 
 
     }
-
+    // Logout user g
     const handleLogout = async response => {
         const res = await fetch("/users/logout", {
             method: "DELETE",
@@ -65,7 +61,7 @@ export default function SignIn() {
 
         localStorage.clear();
         setUserAccount(null);
-   
+
         // if (window.location.pathname.includes(profileUrl)) {
         //     window.location.reload(true);
         // }
@@ -75,7 +71,7 @@ export default function SignIn() {
 
     }
 
-
+    // Login user
     function UserLogIn() {
 
         return (

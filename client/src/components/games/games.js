@@ -128,7 +128,7 @@ class Games extends Component {
         });
         //fetch all games
         console.log("game fetched");
-        let gameUrl = "/games";
+        let gameUrl = "/games-";
         let response = await fetch(gameUrl);
         console.log(response);
         let games = await response.json();
@@ -191,11 +191,10 @@ class Games extends Component {
     }
 
     sortGames() {
-
         //sort by global sales
         if (this.state.sort === "gs") {
             const sortedGames = [].concat(this.state.gamesL)
-                .sort((a, b) => a.globalsales > b.globalsales ? this.state.ordering[0] : this.state.ordering[1]);
+                .sort((a, b) => a.globalSales > b.globalSales ? this.state.ordering[0] : this.state.ordering[1]);
             this.setState({
                 pageNumber: 1,
                 gamesL: sortedGames,
@@ -205,7 +204,7 @@ class Games extends Component {
             //sort by critic score
         } else if (this.state.sort === "cs") {
             const sortedGames = [].concat(this.state.gamesL)
-                .sort((a, b) => a.criticscore > b.criticscore ? this.state.ordering[0] : this.state.ordering[1]);
+                .sort((a, b) => a.criticScore > b.criticScore ? this.state.ordering[0] : this.state.ordering[1]);
             this.setState({
                 pageNumber: 1,
                 gamesL: sortedGames,
@@ -293,10 +292,14 @@ class Games extends Component {
         if (evt.target.value === 'desc') {
             this.setState({
                 ordering: [-1, 1]
+            }, () => {
+                console.log(this.state.ordering);
             })
         } else if (evt.target.value === 'asc') {
             this.setState({
                 ordering: [1, -1]
+            }, () => {
+                console.log(this.state.ordering);
             })
         }
 
