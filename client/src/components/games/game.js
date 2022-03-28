@@ -9,7 +9,6 @@ import React from "react";
  */
 
 const Game = (props) => {
-  console.log(props.game);
   let imageURL;
   if (typeof props.game.image_URL !== "object") {
     imageURL =
@@ -95,8 +94,8 @@ const Game = (props) => {
 };
 
 function numberWithCommas(x) {
-  if (x === undefined) {
-    return "None Listed";
+  if (x === undefined || x === 0) {
+    return "None on Record";
   }
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
