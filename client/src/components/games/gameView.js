@@ -86,25 +86,15 @@ const GameView = (props) => {
 
     }
 
-
-    if (localStorage.getItem("userProfile") && !hasCommented()) {
-        return (
-            <div className="v_flex">
-                <Game game={game} />
-                <br />
-                <FeedbackBox addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />
-                <br />
-                <RatingPopUp allFeedback={feedback} />
-                <br />
-                <Allfeedback allFeedback={feedback} />
-
-            </div>
-        )
-    }
-
     return (
         <div className="v_flex">
             <Game game={game} />
+            <br />
+            { localStorage.getItem("userProfile") && !hasCommented() ?
+                <FeedbackBox addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />
+                :
+                <></>
+            }
             <br />
             <RatingPopUp allFeedback={feedback} />
             <br />
