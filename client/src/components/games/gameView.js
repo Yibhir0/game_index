@@ -8,6 +8,7 @@ import RatingPopUp from '../graphs/ratingPopUp'
 
 const GameView = (props) => {
 
+    const [currentUser, setCurrentUser] = useState({});
     const [game, setGame] = useState({});
     const [feedback, setFeedBack] = useState([]);
     let { id } = useParams()
@@ -15,8 +16,9 @@ const GameView = (props) => {
     useEffect(() => {
 
         fetchGame();
+        fetchUser();
         fetchFeedback();
-
+    
     }, []);
 
 
@@ -39,6 +41,24 @@ const GameView = (props) => {
                 }
             });
             setGame(await response.json());
+        } catch (error) {
+            console.log("error", error);
+        }
+    };
+
+    const fetchUser = async () => {
+
+        let userId = JSON.parse(localStorage.getItem("userProfile"))._id;
+
+        const url = `/users/${userId}`;
+        console.log(url);
+        try {
+            const response = await fetch(url, {
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            });
+            setCurrentUser(await response.json());
         } catch (error) {
             console.log("error", error);
         }
@@ -88,7 +108,7 @@ const GameView = (props) => {
 
     return (
         <div className="v_flex">
-            <Game game={game} />
+            <Game game={game} user={currentUser}/>
             <br />
             { localStorage.getItem("userProfile") && !hasCommented() ?
                 <FeedbackBox addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />

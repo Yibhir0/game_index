@@ -1,5 +1,6 @@
 import { Component, useState } from "react";
 import {
+    Group,
     Textarea,
     ActionIcon,
     Loader,
@@ -195,31 +196,26 @@ class Profile extends Component {
                     <div style={{
                         padding: 10
                     }}>
-                        <SimpleGrid cols={10}>
-                            <div>
-                                <Button className= 'border-gray-500 rounded-lg bg-green-500 hover:bg-pink-400 active:bg-gray-500/50'
-                                    onClick={() => this.setState({
-                                        addingGame: true,
-                                        currentGameList: gameList.name
-                                    })}
-                                    color="green"
-                                >
-                                    Add Game
-                                </Button>
-                            </div>
-                            <div>
-                                <Button className= 'border-gray-500 rounded-lg bg-green-500 hover:bg-pink-400 active:bg-gray-500/50'
-                                    onClick={() => this.setState({
-                                        deletingList: true,
-                                        currentGameList: gameList.name
-                                    })}
-                                    color="red"
-                                >
-                                    Delete List
-                                </Button>
-                            </div> 
-                        </SimpleGrid>
-                        
+                        <Group>
+                            <Button className= 'border-gray-500 rounded-lg bg-green-500 hover:bg-pink-400 active:bg-gray-500/50'
+                                onClick={() => this.setState({
+                                    addingGame: true,
+                                    currentGameList: gameList.name
+                                })}
+                                color="green"
+                            >
+                                Add Game
+                            </Button>
+                            <Button className= 'border-gray-500 rounded-lg bg-green-500 hover:bg-pink-400 active:bg-gray-500/50'
+                                onClick={() => this.setState({
+                                    deletingList: true,
+                                    currentGameList: gameList.name
+                                })}
+                                color="red"
+                            >
+                                Delete List
+                            </Button>
+                        </Group> 
                     </div>
                     :
                     <></>
@@ -642,28 +638,25 @@ class Profile extends Component {
                                                 withPlaceholder
                                             />
                                             <br></br>
-                                            <SimpleGrid cols={7}>
-                                                <div>
-                                                    <Title order={3}>
-                                                        Bio
-                                                    </Title>
-                                                </div>
-                                                <div>
-                                                    {this.state.editPerms ?
-                                                        <ActionIcon onClick={() => this.setState({
-                                                            editingBio: true,
-                                                        })}
-                                                            radius="sm"
-                                                            color="orange"
-                                                            variant="filled"
-                                                        >
-                                                            <IconEdit />
-                                                        </ActionIcon>
-                                                        :
-                                                        <></>
-                                                    }
-                                                </div>
-                                            </SimpleGrid>
+                                            <Group>
+                                                <Title order={3}>
+                                                    Bio
+                                                </Title>
+
+                                                {this.state.editPerms ?
+                                                    <ActionIcon onClick={() => this.setState({
+                                                        editingBio: true,
+                                                    })}
+                                                        radius="sm"
+                                                        color="orange"
+                                                        variant="filled"
+                                                    >
+                                                        <IconEdit />
+                                                    </ActionIcon>
+                                                    :
+                                                    <></>
+                                                }
+                                            </Group>
                                             
                                             <Text>
                                                 {this.state.currentUser.bio}
@@ -673,29 +666,21 @@ class Profile extends Component {
                                     </Grid.Col>
                                     <Grid.Col span={18}>
                                         <div style={{ margin: 'auto', padding: 50 }}>
-                                            <SimpleGrid cols={8}>
-                                                <Grid.Col span={4}>
-                                                    <Title order={2}>Game List</Title>
-                                                </Grid.Col>
-                                                <Grid.Col span={4}>
-                                                    {this.state.editPerms ?
-                                                        <ActionIcon
-                                                            radius="sm"
-                                                            variant="filled"
-                                                            color="blue"
-                                                            onClick={() => this.setState({ creatingList: true })}
-                                                        >
-                                                            <IconFolderPlus />
-                                                        </ActionIcon>
-                                                        :
-                                                        <></>
-                                                    }
-                                                </Grid.Col>
-                                                <Grid.Col span={4}>
-                                                </Grid.Col>
-                                                <Grid.Col span={4}>
-                                                </Grid.Col>
-                                            </SimpleGrid>
+                                            <Group>
+                                                <Title order={2}>Game List</Title>
+                                                {this.state.editPerms ?
+                                                    <ActionIcon
+                                                        radius="sm"
+                                                        variant="filled"
+                                                        color="blue"
+                                                        onClick={() => this.setState({ creatingList: true })}
+                                                    >
+                                                        <IconFolderPlus />
+                                                    </ActionIcon>
+                                                    :
+                                                    <></>
+                                                }
+                                            </Group>
                                             <Accordion iconPosition="right" >
                                                 {this.state.displayLists}
                                             </Accordion>

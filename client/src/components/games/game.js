@@ -1,14 +1,18 @@
 import { Link } from "react-router-dom";
 import { SimpleGrid, Title, Grid } from "@mantine/core";
-import { Group, Avatar, Text, Accordion, Image } from "@mantine/core";
+import { Group, ActionIcon, Avatar, Text, Accordion, Image } from "@mantine/core";
 import StarsRating from "stars-rating";
 import React from "react";
+import {
+  IconPlus
+} from '@tabler/icons';
 
 /**
  * This class renders the props.game details.
  */
 
 const Game = (props) => {
+
   let imageURL;
   if (typeof props.game.image_URL !== "object") {
     imageURL =
@@ -19,6 +23,7 @@ const Game = (props) => {
       "https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/" +
       props.game.image_URL[0];
   }
+
   const AccordionLabel = ({ label, description, imageURL }) => {
     return (
       <Group noWrap>
@@ -34,6 +39,7 @@ const Game = (props) => {
   };
 
   const gameDetails = () => {
+
     let platforms = "";
     if (typeof props.game.platform === "object" ) {
       for (let i = 0; i < props.game.platform.length; i++) {
@@ -47,7 +53,14 @@ const Game = (props) => {
 
     return (
       <div>
-        <Title order={1}>{props.game.name}</Title>
+        <Group>
+          <Title order={1}>
+            {props.game.name}
+          </Title>
+          <ActionIcon>
+            <IconPlus />
+          </ActionIcon>
+        </Group>
         <br></br>
         <SimpleGrid cols={4}>
           <div>
