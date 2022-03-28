@@ -18,7 +18,7 @@ export default function App() {
 
 
         <Route exact path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
+        <Route exact path="/home" element={<Home />} />
         <Route path="/games" element={<Games />} />
         <Route path="/games/:id" element={<GameView />} />
         <Route path="/Profile/:id" element={<UserProfile />} />

@@ -1,6 +1,10 @@
-import { Link } from "react-router-dom";
+
 import { SimpleGrid, Title, Grid } from "@mantine/core";
+<<<<<<< HEAD
 import { Group, ActionIcon, Avatar, Text, Accordion, Image } from "@mantine/core";
+=======
+import { Text, Image } from "@mantine/core";
+>>>>>>> aad22902b01bf1bef6ac79f62db3bdd2b8661d14
 import StarsRating from "stars-rating";
 import React from "react";
 import {
@@ -8,11 +12,15 @@ import {
 } from '@tabler/icons';
 
 /**
- * This class renders the props.game details.
+ * This component renders all games details.
  */
 
 const Game = (props) => {
+<<<<<<< HEAD
 
+=======
+  console.log(props.game);
+>>>>>>> aad22902b01bf1bef6ac79f62db3bdd2b8661d14
   let imageURL;
   if (typeof props.game.image_URL !== "object") {
     imageURL =
@@ -23,6 +31,7 @@ const Game = (props) => {
       "https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/" +
       props.game.image_URL[0];
   }
+<<<<<<< HEAD
 
   const AccordionLabel = ({ label, description, imageURL }) => {
     return (
@@ -37,11 +46,17 @@ const Game = (props) => {
       </Group>
     );
   };
+=======
+>>>>>>> aad22902b01bf1bef6ac79f62db3bdd2b8661d14
 
   const gameDetails = () => {
 
     let platforms = "";
+<<<<<<< HEAD
     if (typeof props.game.platform === "object" ) {
+=======
+    if (typeof props.game.platform === "object") {
+>>>>>>> aad22902b01bf1bef6ac79f62db3bdd2b8661d14
       for (let i = 0; i < props.game.platform.length; i++) {
         if (i === props.game.platform.length - 1) {
           platforms += props.game.platform[i];

@@ -5,6 +5,11 @@ import {
 } from "@mantine/core";
 import { Navigate } from "react-router-dom";
 
+/**
+ * This component displays the associated graphed that
+ * the user requested
+ */
+
 class GraphController extends Component {
 
     constructor(props) {
