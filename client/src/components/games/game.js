@@ -9,6 +9,7 @@ import React from "react";
  */
 
 const Game = (props) => {
+  console.log(props.game);
   let imageURL;
   if (typeof props.game.image_URL !== "object") {
     imageURL =
@@ -35,11 +36,13 @@ const Game = (props) => {
 
   const gameDetails = () => {
     let platforms = "";
-    for (let i = 0; i < props.game.platform.length; i++) {
-      if (i === props.game.platform.length - 1) {
-        platforms += props.game.platform[i];
-      } else {
-        platforms += props.game.platform[i] + ", ";
+    if (typeof props.game.platform === "object") {
+      for (let i = 0; i < props.game.platform.length; i++) {
+        if (i === props.game.platform.length - 1) {
+          platforms += props.game.platform[i];
+        } else {
+          platforms += props.game.platform[i] + ", ";
+        }
       }
     }
 
