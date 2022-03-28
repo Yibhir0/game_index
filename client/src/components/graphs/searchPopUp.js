@@ -8,6 +8,7 @@ export default function SearchPopUp(props) {
     return (
         <>
             <Modal
+                size="50%"
                 opened={opened}
                 onClose={() => setOpened(false)}
                 title="Visualisation"

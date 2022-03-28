@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import '../../../node_modules/react-vis/dist/style.css';
+import {Grid} from '@mantine/core'
 import {
-    RadialChart
+    RadialChart,
+    XYPlot,
+    VerticalGridLines,
+    HorizontalGridLines,
+    XAxis,
+    YAxis,LineSeries
 } from 'react-vis';
 
 class SearchGraphs extends Component {
@@ -35,35 +41,68 @@ class SearchGraphs extends Component {
 
         return (
             <div className="App">
-                <RadialChart
-  data={[
-    {
-      angle: 15,
-      label: 'deck.gl'
-    },
-    {
-      angle: 25,
-      label: 'math.gl'
-    },
-    {
-      angle: 8,
-      label: 'probe.gl'
-    },
-    {
-      angle: 27,
-      label: 'vis.gl'
-    },
-    {
-      angle: 15,
-      label: 'react-map-gl'
-    }
-  ]}
-  labelsRadiusMultiplier={1.1}
-  labelsStyle={{
-    fontSize: 12
-  }}
-  showLabels
-/>
+                <Grid>
+                <Grid.Col span={6}>
+                    <XYPlot height={300} width= {300}>
+                    <VerticalGridLines />
+                    <HorizontalGridLines />
+                    <XAxis />
+                    <YAxis />
+                    <LineSeries data={[ {x: 0, y: 8},
+                                        {x: 1, y: 5},
+                                        {x: 2, y: 4},
+                                        {x: 3, y: 9}]} />
+                            </XYPlot>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                    <XYPlot height={300} width= {300}>
+                    <VerticalGridLines />
+                    <HorizontalGridLines />
+                    <XAxis />
+                    <YAxis />
+                    <LineSeries data={[ {x: 0, y: 8},
+                                        {x: 1, y: 5},
+                                        {x: 2, y: 4},
+                                        {x: 3, y: 9}]} />
+                            </XYPlot>
+                    </Grid.Col> 
+                    <Grid.Col span={6}>
+                    <XYPlot height={300} width= {300}>
+                    <VerticalGridLines />
+                    <HorizontalGridLines />
+                    <XAxis />
+                    <YAxis />
+                    <LineSeries data={[ {x: 0, y: 8},
+                                        {x: 1, y: 5},
+                                        {x: 2, y: 4},
+                                        {x: 3, y: 9}]} />
+                            </XYPlot>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                    <XYPlot height={300} width= {300}>
+                    <VerticalGridLines />
+                    <HorizontalGridLines />
+                    <XAxis />
+                    <YAxis />
+                    <LineSeries data={[ {x: 0, y: 8},
+                                        {x: 1, y: 5},
+                                        {x: 2, y: 4},
+                                        {x: 3, y: 9}]} />
+                            </XYPlot>
+                    </Grid.Col> 
+                    <Grid.Col span={6}>
+                    <XYPlot height={300} width= {300}>
+                    <VerticalGridLines />
+                    <HorizontalGridLines />
+                    <XAxis />
+                    <YAxis />
+                    <LineSeries data={[ {x: 0, y: 8},
+                                        {x: 1, y: 5},
+                                        {x: 2, y: 4},
+                                        {x: 3, y: 9}]} />
+                            </XYPlot>
+                </Grid.Col> 
+            </Grid>
             </div>
         );
     }
