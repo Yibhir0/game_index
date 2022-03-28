@@ -1,5 +1,6 @@
 import { Component, useState } from "react";
 import {
+    Badge,
     Group,
     Textarea,
     ActionIcon,
@@ -247,10 +248,10 @@ class Profile extends Component {
                                     />
                                 </td>
                                 <td><Anchor component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
-                                <td>{game.genre}</td>
-                                <td>{game.platform.map((platform) => <Text>{platform}</Text>)}</td>
-                                <td>{game.publisher}</td>
-                                <td>{game.year}</td>
+                                <td><Badge variant="filled" color="cyan">{game.genre}</Badge></td>
+                                <td>{game.platform.map((platform) => <Badge variant="filled">{platform}</Badge>)}</td>
+                                <td><Badge variant="filled" color="indigo">{game.publisher}</Badge></td>
+                                <td><Badge variant="filled" color="violet">{game.year}</Badge></td>
                                 <td>
                                     {this.state.editPerms ?
                                         <ActionIcon
