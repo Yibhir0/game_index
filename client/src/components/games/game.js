@@ -74,14 +74,7 @@ const Game = (props) => {
             <Title order={4}>Release Year:</Title>
             <Text>{props.game.year}</Text>
             <Title order={4}>Critic Score:</Title>
-            <StarsRating
-              count={5}
-              half={true}
-              value={props.game.criticScore}
-              edit={false}
-              size={24}
-              color2={"#ffd700"}
-            />
+            {returnCriticData(props.game.criticScore)}
             <Title order={4}>ESRB Rating:</Title>
             <Text>{props.game.esrbrating}</Text>
           </div>
@@ -118,9 +111,22 @@ const Game = (props) => {
   );
 };
 
+function returnCriticData(criticScore) {
+  if (criticScore === 0) {
+      return (<Text>Not Rated</Text>);
+
+  }
+  return (<StarsRating count={5} half={true}
+    value={criticScore}
+    edit={false}
+    size={24}
+    color2={"#ffd700"}
+  />);
+}
+
 function numberWithCommas(x) {
-  if (x === undefined) {
-    return "None Listed";
+  if (x === undefined || x === 0) {
+    return "None on Record";
   }
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
