@@ -31,6 +31,7 @@ const GameView = (props) => {
     const hasCommented = () => {
 
         let isCommented = feedback.find(item => item.userID === JSON.parse(localStorage.getItem("userProfile"))._id);
+    
         return isCommented ? true : false;
     }
 
@@ -46,7 +47,8 @@ const GameView = (props) => {
                     'Cache-Control': 'no-cache'
                 }
             });
-            setGame(await response.json());
+            const g = await response.json()
+            setGame(g);
         } catch (error) {
             console.log("error", error);
         }
