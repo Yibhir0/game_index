@@ -96,7 +96,7 @@ class Games extends Component {
         genre: "", //genre for the video game
         platform: "", //platform for the video game
       },
-      sort: "none",
+      sort: "gs",
       ordering: [-1, 1],
     };
 
@@ -112,7 +112,7 @@ class Games extends Component {
     //fetch game, then setup pagination and then generate the rows to be displayed
     await this.fetchGames();
     this.setupPagination();
-    this.generateRows();
+    this.sortGames();
   }
 
   async setupPagination() {
@@ -266,8 +266,8 @@ class Games extends Component {
   async generateRows() {
     console.log(this.state.gamesL);
     const rows = this.state.gamesL.map((game, index) => (
-      <tr className="bg-gradient-to-b from-gray-400 to-stone-100" key={index}>
-        <td>{index}</td>
+      <tr className="bg-gradient-to-b from-gray-400 to-stone-100" key={index+1}>
+        <td>{index+1}</td>
         <td>
           <Avatar
             src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL[0]}`}
@@ -282,7 +282,7 @@ class Games extends Component {
         <td>{game.genre}</td>
         <td>
           {game.platform.map((platform, index) => (
-            <Text key={index}>{platform}</Text>
+            <Text key={index+1}>{platform}</Text>
           ))}
         </td>
         <td>{game.publisher}</td>
@@ -417,9 +417,8 @@ class Games extends Component {
                   <Grid.Col span={4}>
                     <TextInput
                       onChange={(evt) => this.updatePublisher(evt)}
-                      placeholder="Publisher name"
+                      placeholder="Filter by Publisher name"
                       label="Publisher:"
-                      description="Search for Publisher name."
                     />
                   </Grid.Col>
                   <Grid.Col span={4}>
@@ -427,9 +426,8 @@ class Games extends Component {
                       onChange={(evt) => this.updateYear(evt)}
                       min={1977}
                       max={2020}
-                      placeholder="Year Released"
+                      placeholder="Filter by Year Released"
                       label="Year Released"
-                      description="Filter by Year Released"
                     />
                   </Grid.Col>
                   <Grid.Col span={4}>
@@ -437,8 +435,7 @@ class Games extends Component {
                       onChange={(evt) => this.updateGenre(evt)}
                       data={this.genres}
                       label="Genre"
-                      placeholder="Select a Genre"
-                      description="Search by Genre"
+                      placeholder="Filter by Genre"
                     />
                   </Grid.Col>
                   <Grid.Col span={4}>
@@ -446,8 +443,7 @@ class Games extends Component {
                       onChange={(evt) => this.updatePlatform(evt)}
                       data={this.platforms}
                       label="Platform"
-                      placeholder="Select a Platform"
-                      description="Search by Platform"
+                      placeholder="Filter by Platform"s
                     />
                   </Grid.Col>
                 </SimpleGrid>
@@ -459,11 +455,9 @@ class Games extends Component {
               <Accordion.Item label="Sort">
                 <RadioGroup
                   onChange={(evt) => this.updateSort(evt)}
-                  defaultValue="none"
+                  defaultValue="gs"
                   label="Sort by:"
-                  description="Pick a field to sort the games"
                 >
-                  <Radio value="none">Default</Radio>
                   <Radio value="gs">Global Sales</Radio>
                   <Radio value="cs">Critic Score</Radio>
                 </RadioGroup>
