@@ -3,12 +3,17 @@ import GoogleLogin, { GoogleLogout } from 'react-google-login';
 
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
-import { Anchor } from "@mantine/core";
+import {
+    Anchor,
+    Button,
+} from "@mantine/core";
 import './styles.css'
 import { useNavigate } from "react-router-dom";
 export default function SignIn() {
 
     const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('userProfile')));
+    //variable will change later for deployment
+    // const profileUrl = "/profile";
     let navigate = useNavigate();
     /**
  * Handle login with google. This function sends
@@ -47,7 +52,7 @@ export default function SignIn() {
 
 
     }
-
+    // Logout user g
     const handleLogout = async response => {
         const res = await fetch("/users/logout", {
             method: "DELETE",
@@ -56,19 +61,27 @@ export default function SignIn() {
 
         localStorage.clear();
         setUserAccount(null);
+
+        // if (window.location.pathname.includes(profileUrl)) {
+        //     window.location.reload(true);
+        // }
+
         alert("You are successfully logged out ")
         navigate("/home", { replace: true });
 
     }
 
-
+    // Login user
     function UserLogIn() {
 
         return (
             <div>
-                <Anchor component={Link} to={`/profile/${userAccount._id}`} >
-                    {userAccount.name}
-                </Anchor>
+                <Button variant="subtle" radius="xs">
+                    <Anchor component={Link} to={`/profile/${userAccount._id}`} >
+                        {userAccount.name}
+                    </Anchor>
+                </Button>
+                <br></br>
                 <GoogleLogout
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                     buttonText="Logout"
@@ -85,7 +98,7 @@ export default function SignIn() {
             <div>
                 <GoogleLogin className='linkbtn'
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                    buttonText="Log in with Google"
+                    buttonText="Log in "
                     onSuccess={handleLogin}
                     onFailure={handleLogin}
                     cookiePolicy={'single_host_origin'}

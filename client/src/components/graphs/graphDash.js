@@ -11,27 +11,29 @@ class GraphDash extends Component {
         this.state = {
             games: [],
             graphType: "Sold-Most",
-            graphData : {
+            graphData: {
                 popularGames: [],
-                ratingSalesGames:[]
-                
+                ratingSalesGames: [],
+                leastGames: []
+
             }
         };
 
         this.changeGraph = this.changeGraph.bind(this);
     }
 
-        
+
     async componentDidMount() {
+        console.log("hello");
         await this.fetchGames();
         this.getGraphDatas();
     }
 
-/***
- * Fetches the games in the DB and adds them to the state.
- */
+    /***
+     * Fetches the games in the DB and adds them to the state.
+     */
     async fetchGames() {
-        let fetchResponse = await fetch('/games');
+        let fetchResponse = await fetch('/games-');
         let fetchedGames = await fetchResponse.json();
 
         this.setState({
@@ -49,25 +51,32 @@ class GraphDash extends Component {
     }
 
     getGraphDatas() {
-        let popularGames, ratingSalesGames, salesGames = []
+        let popularGames, ratingSalesGames, leastGames = []
+
 
         popularGames = [].concat(this.state.games)
-            .sort((a, b) => a.globalsales < b.globalsales).slice(0, 10);
-        
+            .sort((a, b) => a.globalSales < b.globalSales).slice(0, 10);
+
         ratingSalesGames = [].concat(this.state.games)
-            .map(x => {return({criticscore: x.criticscore, globalsales: x.globalsales})}).slice(0,100);
-        
-        
-        this.setState({ graphData: { popularGames: this.getGraphDataFormat(popularGames), ratingSalesGames: ratingSalesGames } })
-        
+            .map(x => { return ({ criticscore: x.criticScore, globalsales: x.globalSales }) }).slice(0, 100);
+
+
+
+        leastGames = [].concat(this.state.games)
+            .sort((a, b) => a.globalSales > b.globalSales).slice(0, 10);
+
+
+        this.setState({ graphData: { popularGames: this.getGraphDataFormat(popularGames), ratingSalesGames: ratingSalesGames, leastGames: this.getGraphDataFormat(leastGames) } })
+
     }
 
     getGraphDataFormat(gamesArray) {
         let dataArray = [];
 
         for (let game of gamesArray) {
-            dataArray.push({ x : game.name, y : game.globalsales });
+            dataArray.push({ x: game.name, y: game.globalSales, id: game._id });
         }
+
         return dataArray;
     }
 
@@ -78,21 +87,21 @@ class GraphDash extends Component {
 
     render() {
         return (
-            <Grid>
+            <Grid >
                 <Grid.Col span={12} justify="center" align="center">
                     <SegmentedControl
                         data={[
                             { label: 'Most Sold', value: 'Sold-Most' },
                             { label: 'Most Popular Category', value: 'Category-Most' },
-                            { label: 'Least Rated Publisher', value: 'Least-Rated' },
-                            ]}
-                            onChange={(value) => this.changeGraph(value)}    
+                            { label: 'Least Sold', value: 'Sold-Least' },
+                        ]}
+                        onChange={(value) => this.changeGraph(value)}
                     />
 
                 </Grid.Col>
 
                 <Grid.Col>
-                    <GraphController states = {this.state} />
+                    <GraphController states={this.state} />
                 </Grid.Col>
             </Grid>
         )

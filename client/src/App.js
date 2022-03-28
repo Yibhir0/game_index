@@ -12,19 +12,19 @@ import UserProfile from './components/user/userProfile'
 
 export default function App() {
   return (
-    <>
+    <div className="bg-gradient-to-br from-gray-400 to-stone-100">
       <TopNav />
       <Routes>
 
 
-        <Route path="/" element={<Home />} />
+        <Route exact path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/games" element={<Games />} />
         <Route path="/games/:id" element={<GameView />} />
         <Route path="/Profile/:id" element={<UserProfile />} />
         {/* <Route path="/users/login" element={<SignIn />} /> */}
       </Routes>
-    </>
+    </div>
 
   )
 }
