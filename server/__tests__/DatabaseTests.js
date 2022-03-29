@@ -55,7 +55,6 @@ test('Get all games from the DB', async () => {
 
 test('Get a specific game from the DB', async () => {
   const result = await db.getGame('623ca8d6daa8ca47ebf7a681')
-  console.log(result)
   expect(result['year']).toEqual(2006);
 });
 
@@ -117,10 +116,9 @@ test('Edit specific User', async () => {
   await db.updateBio(fakeUser._id, query);
 
   let editedUser = await db.getUser(fakeUser._id);
-  console.log(editedUser)
   expect(editedUser.bio).toBe("I've never been to paris");
 
-  // await fakeUser.findByIdAndDelete(editedUser._id);
+  await db.deleteUser(editedUser._id);
 
 });
 
