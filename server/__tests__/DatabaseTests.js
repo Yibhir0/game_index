@@ -78,26 +78,26 @@ test('Get a user from DB', async () => {
 
 });
 
-// test('Delete a specific User from the DB', async () => {
-//   let fakeUser = await User.create({
-//     name: 'Billy Bob',
-//     email: 'Bobbybilly@gmail.com',
-//     picture: 'image.com',
-//     password: { hash: 'asfd', salt: 'nopepper' },
-//     bio: "It's getting harder everyday",
-//     list: []
-//   });
+test('Delete a specific User from the DB', async () => {
+  let fakeUser = await User.create({
+    name: 'Billy Bob',
+    email: 'Bobbybilly@gmail.com',
+    picture: 'image.com',
+    password: { hash: 'asfd', salt: 'nopepper' },
+    bio: "It's getting harder everyday",
+    list: []
+  });
 
-//   await fakeUser.save();
+  await fakeUser.save();
 
-//   await db.deleteUser(fakeUser._id);
+  await db.deleteUser(fakeUser._id);
 
-//   let deletedUser = await db.getUser(fakeUser._id)
+  let deletedUser = await db.getUser(fakeUser._id)
 
-//   expect(deletedUser).toBe(null);
+  expect(deletedUser).toBe(null);
 
 
-// });
+});
 
 test('Edit specific User', async () => {
   let fakeUser = await User.create({
