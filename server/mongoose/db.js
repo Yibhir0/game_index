@@ -158,15 +158,9 @@ module.exports.createUser = async (user) => {
 
 module.exports.updateBio = async (userId, desc) => {
     try {
-        let updatedBio = await User.findOneAndUpdate({
-            _id: userId
-        }, 
-        {
-            bio: desc
-        }, 
-        { 
-            new: true
-        });
+        let updatedBio = await User.findByIdAndUpdate(
+            { _id: userId }, 
+            { $set: desc });
         return updatedBio;
     }
     catch (error) {
@@ -245,5 +239,9 @@ module.exports.removeGameFromList = async (userId, listIndex, gameId) => {
 
 module.exports.getUser = async (id) => {
     return await User.findById({ _id: id })
+}
+
+module.exports.deleteUser = async (id) => {
+    await User.findByIdAndDelete(id);
 }
 
