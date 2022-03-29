@@ -16,7 +16,7 @@ export default function RatingPopUp(props) {
             </Modal>
 
             <Group position="center">
-                <Button style={{ margin: "auto" }} variant="gradient" gradient={{ from: 'grape', to: 'pink', deg: 35 }}
+                <Button style={{ margin: "auto" }} className="bg-gradient-to-r from-purple-500 to-pink-500"
                     onClick={() => setOpened(true)}
                 >
                     Rating Graph
