@@ -28,7 +28,7 @@ test('Upload model to DB', async () => {
 
   expect(recentlyCreatedFeedback.gameID).toMatchObject(gameId);
 
-  await FeedBack.deleteOne({_id:feedbackTest._id})
+  await FeedBack.findByIdAndDelete({_id:feedbackTest._id})
 });
 
 test('Delete a specific document', async () => {
@@ -59,6 +59,7 @@ test('Get a specific game from the DB', async () => {
   expect(result['year']).toEqual(2006);
 });
 
+
 test('Get a user from DB', async () => {
   let fakeUser = await User.create({
     name: 'Billy Bob',
@@ -74,7 +75,7 @@ test('Get a user from DB', async () => {
 
   expect(queriedUser.email).toBe('Bobbybilly@gmail.com');
 
-  await User.deleteOne({ name: 'Billy Bob' });
+  await User.deleteMany({ name: 'Billy Bob' });
 
 });
 
@@ -99,7 +100,6 @@ test('Get a user from DB', async () => {
 
 // });
 
-
 test('Edit specific User', async () => {
   let fakeUser = await User.create({
     name: 'Billy Bob',
@@ -117,10 +117,10 @@ test('Edit specific User', async () => {
   await db.updateBio(fakeUser._id, query);
 
   let editedUser = await db.getUser(fakeUser._id);
-
+  console.log(editedUser)
   expect(editedUser.bio).toBe("I've never been to paris");
 
-  await db.deleteUser(editedUser);
+  // await fakeUser.findByIdAndDelete(editedUser._id);
 
 });
 
