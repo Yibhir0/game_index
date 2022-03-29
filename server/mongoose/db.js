@@ -22,7 +22,7 @@ module.exports.getFeedbacks = async (gameId) => {
 
 
 module.exports.deleteFeedBack = async (feedback) => {
-    await FeedBack.deleteOne({ _id: feedback._id })
+    await FeedBack.findByIdAndDelete({ _id: feedback._id })
 }
 
 module.exports.deleteAllFeedBack = async () => {
@@ -157,14 +157,16 @@ module.exports.createUser = async (user) => {
 }
 
 module.exports.updateBio = async (userId, desc) => {
-
     try {
-        let updatedBio = await User.findOneAndUpdate(
-            {
-                _id: userId,
-            },
-            { $set: { bio: desc}}
-        );
+        let updatedBio = await User.findOneAndUpdate({
+            _id: userId
+        }, 
+        {
+            bio: desc
+        }, 
+        { 
+            new: true
+        });
         return updatedBio;
     }
     catch (error) {
