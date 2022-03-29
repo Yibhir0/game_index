@@ -1,5 +1,6 @@
 import { Component, useState } from "react";
 import {
+    Space,
     Badge,
     Group,
     Textarea,
@@ -33,6 +34,8 @@ import {
     IconTrash,
     IconX,
 } from '@tabler/icons';
+
+import "../feedback/styles.css"
 
 class Profile extends Component {
 
@@ -192,13 +195,13 @@ class Profile extends Component {
     }
     generateList() {
         const lists = this.state.currentUser.lists.map((gameList) => (
-            <Accordion.Item label={gameList.name}>
+            <Accordion.Item className="border-black" label={gameList.name}>
                 {this.state.editPerms ?
                     <div style={{
                         padding: 10
                     }}>
                         <Group>
-                            <Button className= 'border-gray-500 rounded-lg bg-green-500 hover:bg-pink-400 active:bg-gray-500/50'
+                            <Button className="bg-gradient-to-b from-lime-700 to-lime-600 hover:from-lime-900 hover:to-lime-800"
                                 onClick={() => this.setState({
                                     addingGame: true,
                                     currentGameList: gameList.name
@@ -207,7 +210,7 @@ class Profile extends Component {
                             >
                                 Add Game
                             </Button>
-                            <Button className= 'border-gray-500 rounded-lg bg-green-500 hover:bg-pink-400 active:bg-gray-500/50'
+                            <Button className="bg-gradient-to-b from-red-700 to-red-600 hover:from-red-900 hover:to-red-800"
                                 onClick={() => this.setState({
                                     deletingList: true,
                                     currentGameList: gameList.name
@@ -227,18 +230,19 @@ class Profile extends Component {
                     horizontalSpacing={'xs'}
                 >
                     <thead>
-                        <tr>
+                        <tr className="bg-gray-400">
                             <th>Cover</th>
                             <th>Title</th>
                             <th>Genre</th>
                             <th>Console</th>
                             <th>Publisher</th>
                             <th>Year</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>{
                         gameList.games.map((game) => (
-                            <tr key={game.name}>
+                            <tr className="bg-gradient-to-b from-gray-700 to-gray-600" key={game.name}>
                                 <td>
                                     <Image
                                         width={80}
@@ -247,7 +251,7 @@ class Profile extends Component {
                                         alt="Random unsplash image"
                                     />
                                 </td>
-                                <td><Anchor component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
+                                <td><Anchor className="text-white" component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
                                 <td><Badge variant="filled" color="cyan">{game.genre}</Badge></td>
                                 <td>{game.platform.map((platform) => <Badge variant="filled">{platform}</Badge>)}</td>
                                 <td><Badge variant="filled" color="indigo">{game.publisher}</Badge></td>
@@ -643,7 +647,7 @@ class Profile extends Component {
                                                 <Title order={3}>
                                                     Bio
                                                 </Title>
-
+                                                    
                                                 {this.state.editPerms ?
                                                     <ActionIcon onClick={() => this.setState({
                                                         editingBio: true,
@@ -658,8 +662,8 @@ class Profile extends Component {
                                                     <></>
                                                 }
                                             </Group>
-                                            
-                                            <Text>
+                                            <Space h="md"/>
+                                            <Text className="commentText">
                                                 {this.state.currentUser.bio}
                                             </Text>
                                         </div>
@@ -671,6 +675,7 @@ class Profile extends Component {
                                                 <Title order={2}>Game List</Title>
                                                 {this.state.editPerms ?
                                                     <ActionIcon
+                                                        className="bg-gradient-to-b from-sky-700 to-sky-600 hover:from-sky-900 hover:to-sky-800"
                                                         radius="sm"
                                                         variant="filled"
                                                         color="blue"
@@ -682,6 +687,7 @@ class Profile extends Component {
                                                     <></>
                                                 }
                                             </Group>
+                                            <Space h="md" />
                                             <Accordion iconPosition="right" >
                                                 {this.state.displayLists}
                                             </Accordion>

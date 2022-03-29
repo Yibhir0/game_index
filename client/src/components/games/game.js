@@ -1,6 +1,6 @@
 
 import { SimpleGrid, Title, Grid } from "@mantine/core";
-import { Group, ActionIcon, Avatar, Text, Accordion, Image } from "@mantine/core";
+import { Space, Badge, Group, ActionIcon, Avatar, Text, Accordion, Image } from "@mantine/core";
 import StarsRating from "stars-rating";
 import React from "react";
 import {
@@ -64,33 +64,40 @@ const Game = (props) => {
         <SimpleGrid cols={4}>
           <div>
             <Title order={4}>Publisher:</Title>
-            <Text>{props.game.publisher}</Text>
+            <Badge color="indigo" variant="filled">{props.game.publisher}</Badge>
+            <Space h="md" />
             <Title order={4}>Platform:</Title>
-            <Text>{platforms}</Text>
+            <Badge variant="filled">{platforms}</Badge>
+            <Space h="md" />
             <Title order={4}>Genre:</Title>
-            <Text>{props.game.genre}</Text>
+            <Badge color="cyan" variant="filled">{props.game.genre}</Badge>
           </div>
           <div>
             <Title order={4}>Release Year:</Title>
-            <Text>{props.game.year}</Text>
+            <Badge color="violet" variant="filled">{props.game.year}</Badge>
+            <Space h="md" />
             <Title order={4}>Critic Score:</Title>
-            {returnCriticData(props.game.criticScore)}
+            <Badge color="gray">{returnCriticData(props.game.criticScore)}</Badge>
+            <Space h="md" />
             <Title order={4}>ESRB Rating:</Title>
-            <Text>{props.game.esrbrating}</Text>
+            <Badge color="teal" variant="filled">{props.game.esrbrating}</Badge>
           </div>
           <div>
             <Title order={4}>North American Sales:</Title>
-            <Text>{numberWithCommas(props.game.naSales)}</Text>
+            <Badge color="yellow" variant="filled">{numberWithCommas(props.game.naSales)}</Badge>
+            <Space h="md" />
             <Title order={4}>European Sales:</Title>
-            <Text>{numberWithCommas(props.game.euSales)}</Text>
+            <Badge color="orange" variant="filled">{numberWithCommas(props.game.euSales)}</Badge>
+            <Space h="md" />
             <Title order={4}>Japanese Sales:</Title>
-            <Text>{numberWithCommas(props.game.jpSales)}</Text>
+            <Badge color="red" variant="filled">{numberWithCommas(props.game.jpSales)}</Badge>
           </div>
           <div>
             <Title order={4}>Other Sales:</Title>
-            <Text>{numberWithCommas(props.game.otherSales)}</Text>
+            <Badge color="pink" variant="filled">{numberWithCommas(props.game.otherSales)}</Badge>
+            <Space h="md" />
             <Title order={4}>Global Sales:</Title>
-            <Text>{numberWithCommas(props.game.globalSales)}</Text>
+            <Badge color="grape" variant="filled">{numberWithCommas(props.game.globalSales)}</Badge>
           </div>
         </SimpleGrid>
       </div>
@@ -98,7 +105,7 @@ const Game = (props) => {
   };
 
   return (
-    <div style={{ margin: "auto", padding: 50 }}>
+    <div className="bg-gradient-to-b from-gray-400 to-stone-100" style={{ margin: "auto", padding: 50 }}>
       <Grid columns={12}>
         <Grid.Col span={2}>
           <Image src={imageURL} width={200} alt={props.game.name} />

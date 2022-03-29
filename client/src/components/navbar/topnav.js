@@ -18,8 +18,6 @@ import './styles.css';
  */
 class TopNav extends Component {
 
-
-
     render() {
         return (
             <div>
@@ -28,13 +26,13 @@ class TopNav extends Component {
                 >
                     <Group>
                         <Title> The Game Index </Title>
-                        <Button className= 'border-gray-500 rounded-lg hover:bg-gray-300/50 active:bg-gray-500/50' variant="subtle" radius="xs">
-                            <Anchor component={Link} to={'/'} >
+                        <Button className="bg-gradient-to-b from-gray-700 to-gray-600" variant="subtle" radius="xs">
+                            <Anchor className="text-white" component={Link} to={'/'} >
                                 Home
                             </Anchor>
                         </Button>
-                        <Button className='border-gray-500 rounded-lg hover:bg-gray-300/50 active:bg-gray-500/50' variant="subtle" radius="xs">
-                            <Anchor component={Link} to={'/games'} >
+                        <Button className="bg-gradient-to-b from-gray-700 to-gray-600" variant="subtle" radius="xs">
+                            <Anchor className="text-white" component={Link} to={'/games'} >
                                 Games
                             </Anchor>
                         </Button>

@@ -12,7 +12,7 @@ import UserProfile from './components/user/userProfile'
 
 export default function App() {
   return (
-    <div className="bg-gradient-to-br from-gray-400 to-stone-100">
+    <div className="bg-gray-400">
       <TopNav />
       <Routes>
 

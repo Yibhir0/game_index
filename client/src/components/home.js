@@ -46,10 +46,6 @@ class Home extends Component {
         });
     }
 
-    getimages() {
-
-    }
-
     render() {
         return (
 

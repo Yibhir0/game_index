@@ -250,23 +250,12 @@ class Games extends Component {
         } 
     }
 
-    // <tr className="bg-gradient-to-b from-gray-400 to-stone-100" key={index}>
-    //             <td><Badge color="dark">{index}</Badge></td>
-    //             <td><Avatar src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL[0]}`} size="lg" /></td>
-    //             <td><Anchor component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
-    //             <td><Badge variant="filled" color="cyan">{game.genre}</Badge></td>
-    //             <td>{game.platform.map((platform, index) => (<Badge variant="filled" key={index}>{platform}</Badge>))}</td>
-    //             <td><Badge variant="filled" color="indigo">{game.publisher}</Badge></td>
-    //             <td><Badge variant="filled" color="violet">{game.year}</Badge></td>
-    //             <td><Badge variant="filled" color="grape">{game.globalSales}</Badge></td>
-    //             <td>{game.criticScore}</td>
-    // </tr>
             
   //Generates rows for the games in the list
   async generateRows() {
     console.log(this.state.gamesL);
     const rows = this.state.gamesL.map((game, index) => (
-      <tr className="bg-gradient-to-b from-gray-400 to-stone-100" key={index+1}>
+      <tr className="bg-gradient-to-b from-gray-700 to-gray-600" key={index+1}>
         <td><Badge color="dark">{index + 1}</Badge></td>
         <td>
           <Avatar
@@ -275,7 +264,7 @@ class Games extends Component {
           />
         </td>
         <td>
-          <Anchor component={Link} to={`/games/${game._id}`}>
+          <Anchor className="text-white" component={Link} to={`/games/${game._id}`}>
             {game.name}
           </Anchor>
         </td>
@@ -284,8 +273,7 @@ class Games extends Component {
         <td><Badge variant="filled" color="indigo">{game.publisher}</Badge></td>
         <td><Badge variant="filled" color="violet">{game.year}</Badge></td>
         <td><Badge variant="filled" color="grape">{numberWithCommas(game.globalSales)}</Badge></td>
-        <td> {returnCriticData(game.criticScore)}
-        </td>
+        <td>{returnCriticData(game.criticScore)}</td>
       </tr>
     ));
     this.setState({
@@ -404,7 +392,7 @@ class Games extends Component {
               size="md"
             />
             <br></br>
-            <Button onClick={this.search}>Search</Button>
+            <Button className="bg-gradient-to-b from-gray-700 to-gray-600" onClick={this.search}>Search</Button>
           </Grid.Col>
           <Grid.Col span={4}>
             <Accordion>
@@ -468,7 +456,7 @@ class Games extends Component {
                   ]}
                 />
                 <br></br>
-                <Button onClick={this.sortGames}>Sort</Button>
+                <Button className="bg-gradient-to-b from-gray-700 to-gray-600" onClick={this.sortGames}>Sort</Button>
               </Accordion.Item>
             </Accordion>
           </Grid.Col>
@@ -483,7 +471,7 @@ class Games extends Component {
           <div>
             <Table verticalSpacing="md" striped highlightOnHover>
               <thead>
-                <tr>
+                <tr className="bg-gray-400">
                   <th>Index</th>
                   <th>Cover</th>
                   <th>Name</th>
@@ -511,7 +499,7 @@ class Games extends Component {
 
 function returnCriticData(criticScore) {
     if (criticScore === 0) {
-        return (<Text>Not Rated</Text>);
+        return (<Text className="text-white" >Not Rated</Text>);
 
     }
     return (<StarsRating count={5} half={true}
