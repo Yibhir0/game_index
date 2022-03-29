@@ -48,7 +48,7 @@ export default function FeedbackBox(props) {
                     /></Grid.Col>
                 <Grid.Col style={{ minHeight: 80 }} span={2}>
                     <RatingBox rating={rating} dis={false} getRating={getRating} />
-                    <Button type="submit">Comment/Rate</Button>
+                    <Button className="bg-gradient-to-b from-gray-700 to-gray-600" type="submit">Comment/Rate</Button>
                 </Grid.Col>
 
             </Grid>
