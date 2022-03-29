@@ -26,14 +26,14 @@ const GameView = (props) => {
         fetchGame();
         fetchUser();
         fetchFeedback();
-    
+
     }, []);
 
 
     const hasCommented = () => {
 
         let isCommented = feedback.find(item => item.userID === JSON.parse(localStorage.getItem("userProfile"))._id);
-    
+
         return isCommented ? true : false;
     }
 
@@ -60,7 +60,7 @@ const GameView = (props) => {
 
         let userId = JSON.parse(localStorage.getItem("userProfile"))._id;
 
-        const url = `/users/${userId}`;
+        const url = `/api/users/${userId}`;
         console.log(url);
         try {
             const response = await fetch(url, {
@@ -118,14 +118,14 @@ const GameView = (props) => {
 
     return (
         <div className="v_flex bg-stone-100">
-            <Game game={game} user={currentUser}/>
+            <Game game={game} user={currentUser} />
             <br />
-            { localStorage.getItem("userProfile") && !hasCommented() ?
+            {localStorage.getItem("userProfile") && !hasCommented() ?
                 <FeedbackBox className="bg-gradient-to-b from-gray-700 to-gray-600" addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />
                 :
                 <></>
             }
-            <br /> 
+            <br />
             <RatingPopUp allFeedback={feedback} />
             <br />
             <Allfeedback allFeedback={feedback} />
