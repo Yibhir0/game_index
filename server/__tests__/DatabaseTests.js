@@ -90,9 +90,9 @@ test('Get a user from DB', async () => {
 
 //   await fakeUser.save();
 
-//   await db.deleteUser(fakeUser);
+//   await db.deleteUser(fakeUser._id);
 
-//   let deletedUser = await db.getUser('Billy Bob')
+//   let deletedUser = await db.getUser(fakeUser._id)
 
 //   expect(deletedUser).toBe(null);
 
