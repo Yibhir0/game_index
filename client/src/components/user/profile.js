@@ -1,5 +1,6 @@
 import { Component, useState } from "react";
 import {
+    Paper,
     ScrollArea,
     Space,
     Badge,
@@ -205,13 +206,13 @@ class Profile extends Component {
                 horizontalSpacing={'xs'}
             >
                 <thead>
-                    <tr className="bg-gray-400">
-                        <th>Cover</th>
-                        <th>Title</th>
-                        <th>Genre</th>
-                        <th>Console</th>
-                        <th>Publisher</th>
-                        <th>Year</th>
+                    <tr className="bg-gray-700">
+                        <th><Text className="text-white">Cover</Text></th>
+                        <th><Text className="text-white">Title</Text></th>
+                        <th><Text className="text-white">Genre</Text></th>
+                        <th><Text className="text-white">Console</Text></th>
+                        <th><Text className="text-white">Publisher</Text></th>
+                        <th><Text className="text-white">Year</Text></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -476,7 +477,7 @@ class Profile extends Component {
     render() {
 
         return (
-            <>
+            <div className="bg-gradient-to-b from-gray-400 to-stone-100">
                 {this.state.loggedIn ?
                     <div>
                         {this.state.loading ?
@@ -741,7 +742,7 @@ class Profile extends Component {
                         <Title order={3}>Not logged in. Log in to view your profile.</Title>
                     </div>
                 }
-            </>
+            </div>
         );
     }
 }

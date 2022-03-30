@@ -1,6 +1,7 @@
 
 import { SimpleGrid, Title, Grid } from "@mantine/core";
 import {
+  NativeSelect,
   Space,
   Badge,
   Group,
@@ -119,7 +120,12 @@ const Game = (props) => {
         onClose={() => setAdd(false)}
         title={'Add Game'}
       >
-        <Text>B)</Text>
+        <NativeSelect
+          data={['React', 'Vue', 'Angular', 'Svelte']}
+          placeholder="Select one"
+          label="Select list:"
+          description="Select a list to add the game to."
+        />
       </Modal>
       <div className="bg-gradient-to-b from-gray-400 to-stone-100" style={{ margin: "auto", padding: 50 }}>
         <Grid columns={12}>
