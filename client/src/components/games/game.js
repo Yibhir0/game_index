@@ -43,9 +43,13 @@ const Game = (props) => {
           <Title order={1}>
             {props.game.name}
           </Title>
-          <ActionIcon>
-            <IconPlus />
-          </ActionIcon>
+          { localStorage.getItem("userProfile") ? 
+            <ActionIcon>
+              <IconPlus />
+            </ActionIcon>
+            :
+            <></>
+          }
         </Group>
         <br></br>
         <SimpleGrid cols={4}>
