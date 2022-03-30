@@ -67,7 +67,7 @@ export default function SignIn() {
         // }
 
         alert("You are successfully logged out ")
-        navigate("/home", { replace: true });
+        navigate("/", { replace: true });
 
     }
 
