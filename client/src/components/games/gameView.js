@@ -24,7 +24,7 @@ const GameView = (props) => {
     useEffect(() => {
 
         fetchGame();
-        fetchUser();
+        //fetchUser();
         fetchFeedback();
 
     }, []);
