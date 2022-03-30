@@ -57,20 +57,24 @@ const GameView = (props) => {
     };
 
     const fetchUser = async () => {
+        if (localStorage.getItem("userProfile")) {
+            let userId = JSON.parse(localStorage.getItem("userProfile"))._id;
 
-        let userId = JSON.parse(localStorage.getItem("userProfile"))._id;
-
-        const url = `/users/${userId}`;
-        console.log(url);
-        try {
-            const response = await fetch(url, {
-                headers: {
-                    'Cache-Control': 'no-cache'
-                }
-            });
-            setCurrentUser(await response.json());
-        } catch (error) {
-            console.log("error", error);
+            const url = `/users/${userId}`;
+            console.log(url);
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Cache-Control': 'no-cache'
+                    }
+                });
+                setCurrentUser(await response.json());
+                console.log("logged in");
+            } catch (error) {
+                console.log("error", error);
+            }
+        } else {
+            console.log("not logged in");
         }
     };
 
@@ -121,11 +125,11 @@ const GameView = (props) => {
             <Game game={game} user={currentUser}/>
             <br />
             { localStorage.getItem("userProfile") && !hasCommented() ?
-                <FeedbackBox className="bg-gradient-to-b from-gray-700 to-gray-600" addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />
+                <FeedbackBox addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />
                 :
                 <></>
             }
-            <br /> 
+            <br />
             <RatingPopUp allFeedback={feedback} />
             <br />
             <Allfeedback allFeedback={feedback} />
