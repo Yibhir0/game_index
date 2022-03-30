@@ -22,7 +22,6 @@ exports.postUser = async (req, res) => {
                 "name": name,
                 "email": email,
                 "picture": picture,
-                "bio": 'Welcome to my profile!',
             };
 
             const user = await db.createUser(newUser);
@@ -62,7 +61,7 @@ exports.getUser = async (req, res) => {
             res.status(404).json({ message: "Could not connect to the database" })
         }
 
-        
+
     }
     catch (error) {
         res.status(404).json({ message: error.message })

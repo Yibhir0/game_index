@@ -13,8 +13,6 @@ exports.updateBio = async (req, res) => {
 
             const bioUpdated = await db.updateBio(userId, desc);
 
-            console.log(bioUpdated)
-
             res.status(201)
             res.end("Bio successfully updated!");
         }
@@ -88,7 +86,7 @@ exports.addGameToList = async (req, res) => {
     try {
         const readyState = await db.connectToDB();
         if (readyState === 1) {
-            
+
             let listIndex = req.query.index;
             let userId = req.params.id;
             let gameId = req.query.gameId;
@@ -115,7 +113,7 @@ exports.removeGameFromList = async (req, res) => {
     try {
         const readyState = await db.connectToDB();
         if (readyState === 1) {
-            
+
             let listIndex = req.query.index;
             let userId = req.params.id;
             let gameId = req.query.gameId;

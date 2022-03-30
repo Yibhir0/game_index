@@ -215,11 +215,12 @@ class Profile extends Component {
                                     deletingList: true,
                                     currentGameList: gameList.name
                                 })}
+
                                 color="red"
                             >
                                 Delete List
                             </Button>
-                        </Group> 
+                        </Group>
                     </div>
                     :
                     <></>
@@ -259,6 +260,8 @@ class Profile extends Component {
                                 <td>
                                     {this.state.editPerms ?
                                         <ActionIcon
+
+                                            className="bg-gradient-to-b from-red-700 to-orange-600 hover:from-red-900 hover:to-red-800"
                                             color="red"
                                             onClick={() => this.setState({
                                                 gameToBeDeleted: game,
@@ -484,6 +487,11 @@ class Profile extends Component {
                                     />
                                     <br></br>
                                     <Button
+                                        className="bg-gradient-to-b from-blue-700 to-blue-600 hover:from-blue-900 hover:to-blue-800"
+
+                                        radius="sm"
+                                        color="blue"
+                                        variant="filled"
                                         onClick={this.createList}
                                     >
                                         Create
@@ -552,6 +560,11 @@ class Profile extends Component {
                                             />
                                             <br></br>
                                             <Button
+                                                className="bg-gradient-to-b from-green-700 to-green-600 hover:from-green-900 hover:to-green-800"
+
+                                                radius="sm"
+                                                color="green"
+                                                variant="filled"
                                                 onClick={this.addGameToList}
                                             >
                                                 Add
@@ -579,6 +592,8 @@ class Profile extends Component {
                                     <SimpleGrid cols={5}>
                                         <div>
                                             <Button
+                                                className="bg-gradient-to-b from-green-700 to-green-600 hover:from-green-900 hover:to-green-800"
+
                                                 color="green"
                                                 onClick={() => this.setState({
                                                     deletingList: false
@@ -589,6 +604,7 @@ class Profile extends Component {
                                         </div>
                                         <div>
                                             <Button
+                                                className="bg-gradient-to-b from-red-700 to-red-600 hover:from-red-900 hover:to-red-800"
                                                 color="red"
                                                 onClick={() => this.setState({
                                                     deletingList: false,
@@ -618,7 +634,7 @@ class Profile extends Component {
                                         placeholder="Your Bio"
                                     />
                                     <br></br>
-                                    <Button
+                                    <Button className="bg-gradient-to-b from-lime-700 to-lime-600 hover:from-lime-900 hover:to-lime-800"
                                         onClick={() => this.editBio()}
                                     >
                                         Edit
@@ -647,11 +663,12 @@ class Profile extends Component {
                                                 <Title order={3}>
                                                     Bio
                                                 </Title>
-                                                    
+
                                                 {this.state.editPerms ?
                                                     <ActionIcon onClick={() => this.setState({
                                                         editingBio: true,
                                                     })}
+                                                        className="bg-gradient-to-b from-orange-700 to-orange-600 hover:from-orange-900 hover:to-orange-800"
                                                         radius="sm"
                                                         color="orange"
                                                         variant="filled"
@@ -662,7 +679,7 @@ class Profile extends Component {
                                                     <></>
                                                 }
                                             </Group>
-                                            <Space h="md"/>
+                                            <Space h="md" />
                                             <Text className="commentText">
                                                 {this.state.currentUser.bio}
                                             </Text>
