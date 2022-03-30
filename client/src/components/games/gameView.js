@@ -22,7 +22,7 @@ const GameView = (props) => {
     let { id } = useParams()
 
     useEffect(() => {
-
+        
         fetchGame();
         fetchUser();
         fetchFeedback();
@@ -60,7 +60,7 @@ const GameView = (props) => {
         if (localStorage.getItem("userProfile")) {
             let userId = JSON.parse(localStorage.getItem("userProfile"))._id;
 
-            const url = `/api/users/${userId}`;
+            const url = `/api//users/${userId}`;
             console.log(url);
             try {
                 const response = await fetch(url, {

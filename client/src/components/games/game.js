@@ -1,8 +1,16 @@
 
 import { SimpleGrid, Title, Grid } from "@mantine/core";
-import { Space, Badge, Group, ActionIcon, Text, Image } from "@mantine/core";
+import {
+  Space,
+  Badge,
+  Group,
+  ActionIcon,
+  Text,
+  Image,
+  Modal,
+} from "@mantine/core";
 import StarsRating from "stars-rating";
-import React from "react";
+import { React, useEffect, useState } from "react";
 import {
   IconPlus
 } from '@tabler/icons';
@@ -12,6 +20,13 @@ import {
  */
 
 const Game = (props) => {
+
+  const [addingGame, setAdd] = useState(true);
+
+  useEffect(() => {
+    setAdd(false)
+  }, [])
+
   let imageURL;
   if (typeof props.game.image_URL !== "object") {
     imageURL =
@@ -44,7 +59,9 @@ const Game = (props) => {
             {props.game.name}
           </Title>
           { localStorage.getItem("userProfile") ? 
-            <ActionIcon>
+            <ActionIcon
+              onClick={() => setAdd(true)}
+            >
               <IconPlus />
             </ActionIcon>
             :
@@ -96,15 +113,24 @@ const Game = (props) => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-gray-400 to-stone-100" style={{ margin: "auto", padding: 50 }}>
-      <Grid columns={12}>
-        <Grid.Col span={2}>
-          <Image src={imageURL} width={200} alt={props.game.name} />
-        </Grid.Col>
-        <Grid.Col span={10}>
-          <Text size="sm">{gameDetails()}</Text>
-        </Grid.Col>
-      </Grid>
+    <div>
+      <Modal
+        opened={addingGame}
+        onClose={() => setAdd(false)}
+        title={'Add Game'}
+      >
+        <Text>B)</Text>
+      </Modal>
+      <div className="bg-gradient-to-b from-gray-400 to-stone-100" style={{ margin: "auto", padding: 50 }}>
+        <Grid columns={12}>
+          <Grid.Col span={2}>
+            <Image src={imageURL} width={200} alt={props.game.name} />
+          </Grid.Col>
+          <Grid.Col span={10}>
+            <Text size="sm">{gameDetails()}</Text>
+          </Grid.Col>
+        </Grid>
+      </div>
     </div>
   );
 };
