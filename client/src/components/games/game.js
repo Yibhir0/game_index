@@ -21,11 +21,11 @@ import {
  */
 
 const Game = (props) => {
-
+  // console.log(props.user);
   const [addingGame, setAdd] = useState(true);
-
+  
   useEffect(() => {
-    setAdd(false)
+    setAdd(false);
   }, [])
 
   let imageURL;
@@ -39,7 +39,11 @@ const Game = (props) => {
       props.game.image_URL[0];
   }
 
-
+  let listString;
+  if (Object.keys(props.user).length !== 0) {
+    listString = props.user.lists.map((list) => list.name)  
+  }
+  
   const gameDetails = () => {
 
     let platforms = "";
@@ -121,12 +125,13 @@ const Game = (props) => {
         title={'Add Game'}
       >
         <NativeSelect
-          data={['React', 'Vue', 'Angular', 'Svelte']}
+          data={listString}
           placeholder="Select one"
           label="Select list:"
           description="Select a list to add the game to."
         />
       </Modal>
+
       <div className="bg-gradient-to-b from-gray-400 to-stone-100" style={{ margin: "auto", padding: 50 }}>
         <Grid columns={12}>
           <Grid.Col span={2}>

@@ -23,13 +23,13 @@ const GameView = (props) => {
 
     useEffect(() => {
         
-        fetchGame();
         fetchUser();
+        fetchGame();
         fetchFeedback();
 
     }, []);
 
-
+    
     const hasCommented = () => {
 
         let isCommented = feedback.find(item => item.userID === JSON.parse(localStorage.getItem("userProfile"))._id);
@@ -60,7 +60,7 @@ const GameView = (props) => {
         if (localStorage.getItem("userProfile")) {
             let userId = JSON.parse(localStorage.getItem("userProfile"))._id;
 
-            const url = `/api//users/${userId}`;
+            const url = `/api/users/${userId}`;
             console.log(url);
             try {
                 const response = await fetch(url, {

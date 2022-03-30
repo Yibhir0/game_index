@@ -20,7 +20,7 @@ class TopNav extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{ paddingLeft: 50 }}>
                 <br></br>
                 <nav className="topnav"
                 >

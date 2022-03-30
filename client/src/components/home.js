@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TopNav from './navbar/topnav';
 import {
+    Space, Paper,
     Center, Grid, Text,
     PasswordInput, TextInput, Loader,
     Title, List, Divider, ScrollArea, Avatar, Image, SimpleGrid, Tooltip, Anchor
@@ -49,35 +50,37 @@ class Home extends Component {
     render() {
         return (
 
-            <div>
-
+            <div className="bg-gradient-to-b from-gray-400 to-stone-100">
                 <Center style={{ height: 200 }}>
                     <Title align='center' order={1}>
                         Welcome to the most popular <br></br> Gaming Database
                     </Title>
                 </Center>
 
-                <Grid justify="center" >
-                    <Grid.Col span={12} justify="center">
-                        <Text size='xl' align="center"> Everything you need for searching or analyzing games</Text>
-                    </Grid.Col>
-                </Grid>
-                <br></br>
-                <Center>
-                    <ScrollArea style={{ height: 200 }}>
-                        <SimpleGrid breakpoints={[{ maxWidth: 200, maxHeight: 0 }]} cols={this.state.games.length} spacing="100px">
-                            {this.state.games.map((image, i) =>
+                <div className="bg-gradient-to-b from-gray-700 to-gray-600">
+                    <Grid justify="center" >
+                        <Grid.Col span={12} justify="center">
+                            <Text className="text-white" size='xl' align="center"> Everything you need for searching or analyzing games</Text>
+                        </Grid.Col>
+                    </Grid>
+                    <br></br>
+                    <Center>
+                        <ScrollArea style={{ height: 200 }}>
+                            <SimpleGrid breakpoints={[{ maxWidth: 200, maxHeight: 0 }]} cols={this.state.games.length} spacing="100px">
+                                {this.state.games.map((image, i) =>
 
-                                <Tooltip withArrow label={this.state.games[i].gameName} key={i}>
+                                    <Tooltip withArrow label={this.state.games[i].gameName} key={i}>
 
-                                    <Anchor component={Link} to={`/games/${this.state.games[i].gameId}`}>
-                                        <Image style={{ minHeight: 100, minWidth: 100 }} src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${this.state.games[i].image}`} />
-                                    </Anchor>
-                                </Tooltip>
-                            )}
-                        </SimpleGrid>
-                    </ScrollArea>
-                </Center>
+                                        <Anchor component={Link} to={`/games/${this.state.games[i].gameId}`}>
+                                            <Image style={{ minHeight: 100, minWidth: 100 }} src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${this.state.games[i].image}`} />
+                                        </Anchor>
+                                    </Tooltip>
+                                )}
+                            </SimpleGrid>
+                        </ScrollArea>
+                    </Center>
+                </div>
+                <Space h="md"/>
                 <Divider variant="dashed" />
 
 
