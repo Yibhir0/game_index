@@ -1,6 +1,6 @@
 
 import { SimpleGrid, Title, Grid } from "@mantine/core";
-import { Space, Badge, Group, ActionIcon, Avatar, Text, Accordion, Image } from "@mantine/core";
+import { Space, Badge, Group, ActionIcon, Text, Image } from "@mantine/core";
 import StarsRating from "stars-rating";
 import React from "react";
 import {
@@ -23,19 +23,6 @@ const Game = (props) => {
       props.game.image_URL[0];
   }
 
-  const AccordionLabel = ({ label, description, imageURL }) => {
-    return (
-      <Group noWrap>
-        <Avatar src={imageURL} radius="xl" />
-        <div>
-          <Text>{label}</Text>
-          <Text size="sm" color="dimmed" weight={400}>
-            {description}
-          </Text>
-        </div>
-      </Group>
-    );
-  };
 
   const gameDetails = () => {
 

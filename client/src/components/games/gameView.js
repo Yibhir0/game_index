@@ -26,14 +26,14 @@ const GameView = (props) => {
         fetchGame();
         fetchUser();
         fetchFeedback();
-    
+
     }, []);
 
 
     const hasCommented = () => {
 
         let isCommented = feedback.find(item => item.userID === JSON.parse(localStorage.getItem("userProfile"))._id);
-    
+
         return isCommented ? true : false;
     }
 
@@ -122,7 +122,7 @@ const GameView = (props) => {
 
     return (
         <div className="v_flex bg-stone-100">
-            <Game game={game} user={currentUser}/>
+            <Game game={game} user={currentUser} />
             <br />
             { localStorage.getItem("userProfile") && !hasCommented() ?
                 <FeedbackBox addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />

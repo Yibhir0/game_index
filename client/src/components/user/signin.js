@@ -37,7 +37,7 @@ export default function SignIn() {
             const data = await res.json()
 
             localStorage.setItem('userProfile', JSON.stringify(data));
-            console.log(data);
+
             setUserAccount(data);
 
             navigate(`/profile/${data._id}`, { replace: true });
@@ -67,7 +67,7 @@ export default function SignIn() {
         // }
 
         alert("You are successfully logged out ")
-        navigate("/home", { replace: true });
+        navigate("/", { replace: true });
 
     }
 

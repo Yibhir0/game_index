@@ -22,7 +22,7 @@ module.exports.getFeedbacks = async (gameId) => {
 
 
 module.exports.deleteFeedBack = async (feedback) => {
-    await FeedBack.deleteOne({ _id: feedback._id })
+    await FeedBack.findByIdAndDelete({ _id: feedback._id })
 }
 
 module.exports.deleteAllFeedBack = async () => {
@@ -156,6 +156,7 @@ module.exports.createUser = async (user) => {
 
 }
 
+
 module.exports.updateBio = async (userId, desc) => {
 
     try {
@@ -163,7 +164,7 @@ module.exports.updateBio = async (userId, desc) => {
             {
                 _id: userId,
             },
-            { $set: { bio: desc}}
+            { $set: { bio: desc } }
         );
         return updatedBio;
     }
@@ -181,7 +182,7 @@ module.exports.createList = async (list, userId) => {
         }
         let newList = await User.findOneAndUpdate(
             { _id: userId },
-            { $push: {lists: obj} }, 
+            { $push: { lists: obj } },
         );
         return newList;
     }
@@ -199,7 +200,7 @@ module.exports.deleteList = async (userId, listName) => {
             {
                 _id: userId,
             },
-            { $pull: { lists: { name: listName }}}
+            { $pull: { lists: { name: listName } } }
         );
         return delList;
     }
@@ -216,7 +217,7 @@ module.exports.addGameToList = async (userId, listIndex, gameId) => {
             {
                 _id: userId,
             },
-            { $push: {[`lists.${listIndex}.games`]: game}}
+            { $push: { [`lists.${listIndex}.games`]: game } }
         );
         return addGame;
     }
@@ -232,7 +233,7 @@ module.exports.removeGameFromList = async (userId, listIndex, gameId) => {
             {
                 _id: userId,
             },
-            { $pull: {[`lists.${listIndex}.games`]: game}}
+            { $pull: { [`lists.${listIndex}.games`]: game } }
         );
         return addGame;
     }
@@ -243,5 +244,9 @@ module.exports.removeGameFromList = async (userId, listIndex, gameId) => {
 
 module.exports.getUser = async (id) => {
     return await User.findById({ _id: id })
+}
+
+module.exports.deleteUser = async (id) => {
+    await User.findByIdAndDelete(id);
 }
 
