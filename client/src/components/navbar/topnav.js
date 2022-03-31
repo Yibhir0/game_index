@@ -22,8 +22,7 @@ class TopNav extends Component {
         return (
             <div style={{ paddingLeft: 50 }}>
                 <br></br>
-                <nav className="topnav"
-                >
+                <nav>
                     <Title> The Game Index </Title>
 
                     <Group className="topnav">
