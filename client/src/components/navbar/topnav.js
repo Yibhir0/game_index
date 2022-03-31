@@ -20,12 +20,13 @@ class TopNav extends Component {
 
     render() {
         return (
-            <div>
-                <br></br>
-                <nav className="topnav"
+            <div className="bg-stone-400">
+
+                <nav
                 >
-                    <Group>
-                        <Title> The Game Index </Title>
+                    <Title> The Game Index </Title>
+
+                    <Group className="topnav">
                         <Button className="bg-gradient-to-b from-gray-700 to-gray-600" variant="subtle" radius="xs">
                             <Anchor className="text-white" component={Link} to={'/'} >
                                 Home
@@ -36,9 +37,11 @@ class TopNav extends Component {
                                 Games
                             </Anchor>
                         </Button>
-                        <SignIn className="content-end"/>
+                        <SignIn className="content-end" />
                     </Group>
                 </nav>
+                <br></br>
+                <br></br>
             </div>
         );
     }
