@@ -1,6 +1,7 @@
 
 import { SimpleGrid, Title, Grid } from "@mantine/core";
 import {
+  Tooltip,
   Center,
   Loader,
   ScrollArea,
@@ -184,12 +185,14 @@ const Game = (props) => {
             <ScrollArea style={{ height: 175 }}>
               {props.user.lists[selectedList].games.length >= 1 ?
                 <Group>
-                  {props.user.lists[selectedList].games.map((game) => (
-                    <Image
-                      style={{ paddingBottom: 130, minHeight: 100, minWidth: 100, maxWidth: 100, maxHeight: 100 }}
-                      src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL[0]}`}
-                    />
-                  ))}
+                    {props.user.lists[selectedList].games.map((game, i) => (
+                      <Tooltip withArrow label={game.name} key={i}>
+                        <Image
+                          style={{ paddingBottom: 130, minHeight: 100, minWidth: 100, maxWidth: 100, maxHeight: 100 }}
+                          src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL[0]}`}
+                        />
+                      </Tooltip>
+                    ))}
                 </Group>
                 :
                 <Center style={{ width: 550, height: 175 }}>
