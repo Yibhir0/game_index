@@ -25,6 +25,7 @@ const Game = (props) => {
 
   const [addingGame, setAdd] = useState(true);
   const [selectedList, setSelectedList] = useState(true);
+  const [errorMessage, setErrMessage] = useState('');
   
   useEffect(() => {
     setAdd(false);
@@ -70,8 +71,11 @@ const Game = (props) => {
       let response = await fetch(url, requestOptions);
       console.log(response);
 
+      setAdd(false);
+
       await props.fetchUser();
     } else {
+      setErrMessage("Game is already added to the selected list.");
       console.log("List already contains games");
     }
   }
@@ -161,22 +165,28 @@ const Game = (props) => {
     <div>
       <Modal
         opened={addingGame}
-        onClose={() => setAdd(false)}
+        onClose={() => {
+          setAdd(false);
+          setErrMessage('');
+        }}
         title={'Add Game'}
       >
 
         <NativeSelect
           data={listString}
-          onChange={(evt) => updateSelectedList(evt)}
+          onChange={(evt) => {
+            updateSelectedList(evt);
+            setErrMessage('');
+          }}
           placeholder="Select one"
           label="Select list:"
           description="Select a list to add the game to."
+          error={errorMessage}
         />
         <Space h="md"/>
         <Button
           className="bg-gradient-to-b from-green-700 to-green-600 hover:from-green-900 hover:to-green-800"
           onClick={() => { 
-            setAdd(false);
             addGameToList();
           }}
         >
@@ -200,10 +210,11 @@ const Game = (props) => {
 };
 
 function returnCriticData(criticScore) {
+
   if (criticScore === 0) {
       return (<Text>Not Rated</Text>);
-
   }
+
   return (<StarsRating count={5} half={true}
     value={criticScore}
     edit={false}
