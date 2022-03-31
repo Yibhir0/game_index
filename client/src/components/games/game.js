@@ -22,7 +22,7 @@ import {
  */
 
 const Game = (props) => {
-  
+
   const [addingGame, setAdd] = useState(true);
   const [selectedList, setSelectedList] = useState(true);
   
@@ -57,20 +57,31 @@ const Game = (props) => {
 
   const addGameToList = async () => {
 
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-      },
+    if (!checkDuplicatesInList()) {
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+      }
+
+      let url = "/api/users/" + props.user._id + "/list/addGame?gameId=" + props.game._id + "&index=" + selectedList;
+      let response = await fetch(url, requestOptions);
+      console.log(response);
+
+      await props.fetchUser();
+    } else {
+      console.log("List already contains games");
     }
+  }
 
-    let url = "/api/users/" + props.user._id + "/list/addGame?gameId=" + props.game._id + "&index=" + selectedList;
-    let response = await fetch(url, requestOptions);
-    console.log(response);
-
-    await props.fetchUser();
-    
+  const checkDuplicatesInList = () => {
+    if (props.user.lists[selectedList].games.findIndex((game) => game._id === props.game._id) >= 0) {
+      return true
+    } else {
+      return false
+    }
   }
   
   const gameDetails = () => {
