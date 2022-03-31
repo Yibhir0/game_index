@@ -385,6 +385,12 @@ class Games extends Component {
           <Grid.Col span={4}>
             <TextInput
               onChange={(evt) => this.updateKeywords(evt)}
+              onKeyPress={(ev) => {
+                if (ev.key === "Enter") {
+                  ev.preventDefault();
+                  this.search();
+                }
+              }}
               placeholder="Keywords"
               label="Search:"
               variant="filled"
@@ -401,6 +407,12 @@ class Games extends Component {
                   <Grid.Col span={4}>
                     <TextInput
                       onChange={(evt) => this.updatePublisher(evt)}
+                      onKeyPress={(ev) => {
+                        if (ev.key === "Enter") {
+                          ev.preventDefault();
+                          this.search();
+                        }
+                      }}
                       placeholder="Filter by Publisher name"
                       label="Publisher:"
                     />
@@ -408,6 +420,12 @@ class Games extends Component {
                   <Grid.Col span={4}>
                     <NumberInput
                       onChange={(evt) => this.updateYear(evt)}
+                      onKeyPress={(ev) => {
+                        if (ev.key === "Enter") {
+                          ev.preventDefault();
+                          this.search();
+                        }
+                      }}
                       min={1977}
                       max={2020}
                       placeholder="Filter by Year Released"
