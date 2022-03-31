@@ -1,6 +1,9 @@
 
 import { SimpleGrid, Title, Grid } from "@mantine/core";
 import {
+  Center,
+  Loader,
+  ScrollArea,
   Button,
   NativeSelect,
   Space,
@@ -24,12 +27,11 @@ import {
 const Game = (props) => {
 
   const [addingGame, setAdd] = useState(true);
-  const [selectedList, setSelectedList] = useState(true);
+  const [selectedList, setSelectedList] = useState(0);
   const [errorMessage, setErrMessage] = useState('');
   
   useEffect(() => {
     setAdd(false);
-    setSelectedList(0);
   }, [])
 
   let imageURL;
@@ -109,7 +111,10 @@ const Game = (props) => {
           </Title>
           { localStorage.getItem("userProfile") ? 
             <ActionIcon
-              onClick={() => setAdd(true)}
+              onClick={() => {
+                setAdd(true)
+                setSelectedList(0);
+              }}
             >
               <IconPlus />
             </ActionIcon>
@@ -164,6 +169,7 @@ const Game = (props) => {
   return (
     <div>
       <Modal
+        size="lg"
         opened={addingGame}
         onClose={() => {
           setAdd(false);
@@ -171,27 +177,59 @@ const Game = (props) => {
         }}
         title={'Add Game'}
       >
-
-        <NativeSelect
-          data={listString}
-          onChange={(evt) => {
-            updateSelectedList(evt);
-            setErrMessage('');
-          }}
-          placeholder="Select one"
-          label="Select list:"
-          description="Select a list to add the game to."
-          error={errorMessage}
-        />
-        <Space h="md"/>
-        <Button
-          className="bg-gradient-to-b from-green-700 to-green-600 hover:from-green-900 hover:to-green-800"
-          onClick={() => { 
-            addGameToList();
-          }}
-        >
-          Add
-        </Button>
+        {Object.keys(props.user).length !== 0 && props.user.lists.length >= 1 ?
+          <div>
+            <Text size="sm" weight={500}>Selected List: {props.user.lists[selectedList].name}</Text>
+            <Space h="md"/>
+            <ScrollArea style={{ height: 175 }}>
+              {props.user.lists[selectedList].games.length >= 1 ?
+                <Group>
+                  {props.user.lists[selectedList].games.map((game) => (
+                    <Image
+                      style={{ paddingBottom: 130, minHeight: 100, minWidth: 100, maxWidth: 100, maxHeight: 100 }}
+                      src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL[0]}`}
+                    />
+                  ))}
+                </Group>
+                :
+                <Center style={{ width: 550, height: 175 }}>
+                  <Text>List contains no games</Text>
+                </Center>
+                
+              }
+            </ScrollArea>
+            <Space h="md"/>
+            <NativeSelect
+              data={listString}
+              onChange={(evt) => {
+                updateSelectedList(evt);
+                setErrMessage('');
+              }}
+              placeholder="Select one"
+              label="Select list:"
+              description="Select a list to add the game to."
+              error={errorMessage}
+            />
+          </div>
+          :
+          <Text>It appears you do not have any list.</Text>
+        }
+        {Object.keys(props.user).length !== 0 ?
+          <div>
+            <Space h="md"/>
+            <Button
+              disabled={props.user.lists.length < 1}
+              className="bg-gradient-to-b from-green-700 to-green-600 hover:from-green-900 hover:to-green-800"
+              onClick={() => { 
+                addGameToList();
+              }}
+            >
+              Add
+            </Button>
+          </div>
+          :
+          <></>
+        }
 
       </Modal>
 
