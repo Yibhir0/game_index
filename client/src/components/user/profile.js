@@ -380,7 +380,7 @@ class Profile extends Component {
             if (!this.checkDuplicates(listIndex)) {
 
                 // server side for adding game
-                console.log("adding game");
+                console.log("Adding game");
 
                 const requestOptions = {
                     method: 'POST',
@@ -607,7 +607,6 @@ class Profile extends Component {
                                         <div>
                                             <Button
                                                 className="bg-gradient-to-b from-green-700 to-green-600 hover:from-green-900 hover:to-green-800"
-
                                                 color="green"
                                                 onClick={() => this.setState({
                                                     deletingList: false

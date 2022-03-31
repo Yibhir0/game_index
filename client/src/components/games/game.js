@@ -1,6 +1,7 @@
 
 import { SimpleGrid, Title, Grid } from "@mantine/core";
 import {
+  Button,
   NativeSelect,
   Space,
   Badge,
@@ -47,7 +48,26 @@ const Game = (props) => {
   }
 
   const updateSelectedList = (evt) => {
-    console.log(evt.currentTarget.value);
+    if (listString.length !== 0) {
+      let index = listString.indexOf(evt.currentTarget.value)
+      setSelectedList(index)
+    }
+  }
+
+  const addGameToList = async () => {
+
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+    }
+
+    let url = "/api/users/" + props.user._id + "/list/addGame?gameId=" + props.game._id + "&index=" + selectedList;
+    let response = await fetch(url, requestOptions);
+    console.log(response);
+    
   }
   
   const gameDetails = () => {
@@ -130,6 +150,7 @@ const Game = (props) => {
         onClose={() => setAdd(false)}
         title={'Add Game'}
       >
+
         <NativeSelect
           data={listString}
           onChange={(evt) => updateSelectedList(evt)}
@@ -137,6 +158,17 @@ const Game = (props) => {
           label="Select list:"
           description="Select a list to add the game to."
         />
+        <Space h="md"/>
+        <Button
+          className="bg-gradient-to-b from-green-700 to-green-600 hover:from-green-900 hover:to-green-800"
+          onClick={() => { 
+            setAdd(false);
+            addGameToList();
+          }}
+        >
+          Add
+        </Button>
+
       </Modal>
 
       <div className="bg-gradient-to-b from-gray-400 to-stone-100" style={{ margin: "auto", padding: 50 }}>
