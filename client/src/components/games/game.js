@@ -22,7 +22,7 @@ import {
  */
 
 const Game = (props) => {
-  // console.log(props.user);
+  
   const [addingGame, setAdd] = useState(true);
   const [selectedList, setSelectedList] = useState(true);
   
@@ -44,9 +44,10 @@ const Game = (props) => {
 
   let listString;
   if (Object.keys(props.user).length !== 0) {
-    listString = props.user.lists.map((list) => list.name)  
+    listString = props.user.lists.map((list) => list.name);
   }
 
+  
   const updateSelectedList = (evt) => {
     if (listString.length !== 0) {
       let index = listString.indexOf(evt.currentTarget.value)
@@ -67,6 +68,8 @@ const Game = (props) => {
     let url = "/api/users/" + props.user._id + "/list/addGame?gameId=" + props.game._id + "&index=" + selectedList;
     let response = await fetch(url, requestOptions);
     console.log(response);
+
+    await props.fetchUser();
     
   }
   

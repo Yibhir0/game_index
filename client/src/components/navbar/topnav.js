@@ -21,7 +21,7 @@ import logo from "./images/logo.png";
 class TopNav extends Component {
   render() {
     return (
-        <div style={{ paddingLeft: "50px"}}>
+        <div style={{ paddingLeft: "50px", paddingRight:"50px"}}>
         <nav>
           <Group className="topnav">
           <Title  className="mr-auto"><img src={logo} id="logo"></img></Title>
