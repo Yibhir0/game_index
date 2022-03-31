@@ -111,7 +111,7 @@ test('Edit specific User', async () => {
 
   await fakeUser.save();
 
-  let query = { bio: "I've never been to paris" };
+  let query = "I've never been to paris";
 
   await db.updateBio(fakeUser._id, query);
 
