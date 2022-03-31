@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { Component } from "react";
 import { ChartLabel, Borders, ContourSeries, FlexibleXYPlot, XAxis, YAxis, VerticalBarSeries, Hint, MarkSeries } from 'react-vis';
 import {
@@ -21,9 +22,9 @@ class GraphController extends Component {
         }
     }
 
-    _onNearestX = (value, { index }) => {
-        this.setState({ crosshairValues: this.props.states.graphData.ratingSalesGames[index] });
-    };
+    // _onNearestX = (value, { index }) => {
+    //     this.setState({ crosshairValues: this.props.states.graphData.ratingSalesGames[index] });
+    // };
 
     render() {
         let graph;
@@ -74,8 +75,7 @@ class GraphController extends Component {
                     }
                 </FlexibleXYPlot>;
 
-        }
-        else if (this.props.states.graphType === 'Sold-Least') {
+        } else if (this.props.states.graphType === 'Sold-Least') {
 
             graph =
                 <FlexibleXYPlot margin={{ top: 25 }} xType="ordinal">
@@ -127,8 +127,7 @@ class GraphController extends Component {
                         </Hint>
                     }
                 </FlexibleXYPlot>;
-        }
-        else {
+        } else {
             graph =
                 <FlexibleXYPlot
                     xDomain={[0, 17000000]}
@@ -176,6 +175,13 @@ class GraphController extends Component {
 
 
         if (this.state.gameId) {
+            console.log(this.state.gameId)
+            let r = 'games/' + this.state.gameId
+            return <Navigate to={r} replace={true} />
+
+        }
+
+        else if (this.state.gameId) {
             console.log(this.state.gameId)
             let r = 'games/' + this.state.gameId
             return <Navigate to={r} replace={true} />

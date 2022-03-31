@@ -1,8 +1,9 @@
 
+/* eslint-disable max-len */
+
 import { SimpleGrid, Title, Grid } from "@mantine/core";
 import { Space, Badge, Group, ActionIcon, Text, Image } from "@mantine/core";
 import StarsRating from "stars-rating";
-import React from "react";
 import {
   IconPlus
 } from '@tabler/icons';
@@ -27,7 +28,7 @@ const Game = (props) => {
   const gameDetails = () => {
 
     let platforms = "";
-    if (typeof props.game.platform === "object" ) {
+    if (typeof props.game.platform === "object") {
       for (let i = 0; i < props.game.platform.length; i++) {
         if (i === props.game.platform.length - 1) {
           platforms += props.game.platform[i];
@@ -107,15 +108,15 @@ const Game = (props) => {
 
 function returnCriticData(criticScore) {
   if (criticScore === 0) {
-      return (<Text>Not Rated</Text>);
+    return <Text>Not Rated</Text>;
 
   }
-  return (<StarsRating count={5} half={true}
+  return <StarsRating count={5} half={true}
     value={criticScore}
     edit={false}
     size={24}
     color2={"#ffd700"}
-  />);
+  />;
 }
 
 function numberWithCommas(x) {

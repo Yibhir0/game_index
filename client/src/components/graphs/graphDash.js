@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 import { Grid, SegmentedControl } from "@mantine/core";
 import { Component } from "react";
 import GraphController from "./graphController";
@@ -32,8 +34,8 @@ class GraphDash extends Component {
     }
 
     /***
-     * Fetches the games in the DB and adds them to the state.
-     */
+             * Fetches the games in the DB and adds them to the state.
+             */
     async fetchGames() {
         let fetchResponse = await fetch('/api/games');
         let fetchedGames = await fetchResponse.json();
@@ -45,9 +47,9 @@ class GraphDash extends Component {
     }
 
     /**
-     * Handler for the button graph selection.
-     * @param {*} value 
-     */
+             * Handler for the button graph selection.
+             * @param {*} value 
+             */
     changeGraph(value) {
         this.setState({ graphType: value })
     }
@@ -59,8 +61,12 @@ class GraphDash extends Component {
         popularGames = [].concat(this.state.games)
             .sort((a, b) => a.globalSales < b.globalSales).slice(0, 10);
 
+        console.log(popularGames);
+
         ratingSalesGames = [].concat(this.state.games)
-            .map(x => { return ({ criticscore: x.criticScore, globalsales: x.globalSales }) }).slice(0, 100);
+            .map(x => {
+                return { criticscore: x.criticScore, globalsales: x.globalSales }
+            }).slice(0, 100);
 
 
 
