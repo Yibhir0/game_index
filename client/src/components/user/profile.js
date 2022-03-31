@@ -1,6 +1,5 @@
 import { Component } from "react";
 import {
-    Paper,
     ScrollArea,
     Space,
     Badge,
@@ -191,6 +190,7 @@ class Profile extends Component {
     listContent(gameList) {
         return(
             <Table
+            
                 dir={"ltr"}
                 striped highlightOnHover
                 verticalSpacing={'xl'}

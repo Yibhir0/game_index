@@ -23,9 +23,11 @@ import {
 const Game = (props) => {
   // console.log(props.user);
   const [addingGame, setAdd] = useState(true);
+  const [selectedList, setSelectedList] = useState(true);
   
   useEffect(() => {
     setAdd(false);
+    setSelectedList(0);
   }, [])
 
   let imageURL;
@@ -42,6 +44,10 @@ const Game = (props) => {
   let listString;
   if (Object.keys(props.user).length !== 0) {
     listString = props.user.lists.map((list) => list.name)  
+  }
+
+  const updateSelectedList = (evt) => {
+    console.log(evt.currentTarget.value);
   }
   
   const gameDetails = () => {
@@ -126,6 +132,7 @@ const Game = (props) => {
       >
         <NativeSelect
           data={listString}
+          onChange={(evt) => updateSelectedList(evt)}
           placeholder="Select one"
           label="Select list:"
           description="Select a list to add the game to."
