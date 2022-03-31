@@ -1,4 +1,4 @@
-import { Component, useState } from "react";
+import { Component } from "react";
 import {
     Paper,
     ScrollArea,
@@ -15,25 +15,16 @@ import {
     Accordion,
     Image,
     SimpleGrid,
-    Radio,
-    RadioGroup,
     Grid,
-    NumberInput,
     TextInput,
     Table,
     Anchor,
-    Pagination,
     Button,
-    NativeSelect,
-    THEME_ICON_SIZES
 } from '@mantine/core';
 import { Link } from 'react-router-dom';
-import { off } from "process";
 import {
     IconFolderPlus,
     IconEdit,
-    IconPlus,
-    IconTrash,
     IconX,
 } from '@tabler/icons';
 

@@ -22,9 +22,15 @@ const GameView = (props) => {
     let { id } = useParams()
 
     useEffect(() => {
+<<<<<<< HEAD
         
         fetchUser();
         fetchGame();
+=======
+
+        fetchGame();
+        //fetchUser();
+>>>>>>> d6b636b6fa1c259c12433e17aa2c850a2d04b59a
         fetchFeedback();
 
     }, []);
