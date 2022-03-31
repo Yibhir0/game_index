@@ -75,18 +75,22 @@ export default function SignIn() {
     function UserLogIn() {
 
         return (
-            <div>
-                <Button variant="subtle" radius="xs">
-                    <Anchor component={Link} to={`/profile/${userAccount._id}`} >
-                        {userAccount.name}
+            <div className="topnav">
+                <Button className="bg-gradient-to-b from-gray-700 to-gray-600" variant="subtle" radius="xs">
+                    <Anchor className="text-white" component={Link} to={`/profile/${userAccount._id}`} >
+                        Profile
                     </Anchor>
                 </Button>
-                <br></br>
-                <GoogleLogout
-                    clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                    buttonText="Logout"
-                    onLogoutSuccess={handleLogout}
-                />
+
+                <Button className=" ml-4 ... bg-gradient-to-b from-pink-700 to-pink-600" variant="subtle" radius="xs">
+                    <GoogleLogout
+                        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                        buttonText="Logout"
+                        onLogoutSuccess={handleLogout}
+                    />
+                </Button>
+
+
             </div>
         )
 
@@ -95,16 +99,16 @@ export default function SignIn() {
     function Guest() {
         return (
 
-            <div>
-                <GoogleLogin className='linkbtn'
+            <Button className="bg-gradient-to-b from-green-700 to-green-600" variant="subtle" radius="xs">
+                <GoogleLogin
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                     buttonText="Log in "
                     onSuccess={handleLogin}
                     onFailure={handleLogin}
                     cookiePolicy={'single_host_origin'}
                 />
+            </Button>
 
-            </div>
         )
     }
 
