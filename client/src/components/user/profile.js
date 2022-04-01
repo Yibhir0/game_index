@@ -1,5 +1,6 @@
 import { Component } from "react";
 import {
+    ScrollArea,
     Space,
     Badge,
     Group,
@@ -58,6 +59,7 @@ class Profile extends Component {
         this.addListToDb = this.addListToDb.bind(this);
         this.deleteList = this.deleteList.bind(this);
         this.generateList = this.generateList.bind(this);
+        this.listContent = this.listContent.bind(this);
         this.fetchGames = this.fetchGames.bind(this);
         this.convertStringList = this.convertStringList.bind(this);
         this.addGameToList = this.addGameToList.bind(this);
@@ -184,6 +186,68 @@ class Profile extends Component {
             });
         }
     }
+
+    listContent(gameList) {
+        return(
+            <Table
+            
+                dir={"ltr"}
+                striped highlightOnHover
+                verticalSpacing={'xl'}
+                horizontalSpacing={'xs'}
+            >
+                <thead>
+                    <tr className="bg-gray-700">
+                        <th><Text className="text-white">Cover</Text></th>
+                        <th><Text className="text-white">Title</Text></th>
+                        <th><Text className="text-white">Genre</Text></th>
+                        <th><Text className="text-white">Console</Text></th>
+                        <th><Text className="text-white">Publisher</Text></th>
+                        <th><Text className="text-white">Year</Text></th>
+                        <th></th>
+                    </tr>
+                </thead>
+            
+                <tbody>{
+                    gameList.games.map((game) => (
+                        <tr className="bg-gradient-to-b from-gray-700 to-gray-600" key={game.name}>
+                            <td>
+                                <Image
+                                    width={80}
+                                    height={80}
+                                    src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL[0]}`}
+                                    alt="Random unsplash image"
+                                />
+                            </td>
+                            <td><Anchor className="text-white" component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
+                            <td><Badge variant="filled" color="cyan">{game.genre}</Badge></td>
+                            <td>{game.platform.map((platform) => <Badge variant="filled">{platform}</Badge>)}</td>
+                            <td><Badge variant="filled" color="indigo">{game.publisher}</Badge></td>
+                            <td><Badge variant="filled" color="violet">{game.year}</Badge></td>
+                            <td>
+                                {this.state.editPerms ?
+                                    <ActionIcon
+
+                                        className="bg-gradient-to-b from-red-700 to-orange-600 hover:from-red-900 hover:to-red-800"
+                                        color="red"
+                                        onClick={() => this.setState({
+                                            gameToBeDeleted: game,
+                                            currentGameList: gameList.name
+                                        }, () => this.removeGameFromList())}
+                                    >
+                                        <IconX />
+                                    </ActionIcon>
+                                    :
+                                    <></>
+                                }
+                            </td>
+                        </tr>
+                    ))
+                }</tbody>
+            </Table>
+        )
+    }
+
     generateList() {
         const lists = this.state.currentUser.lists.map((gameList) => (
             <Accordion.Item className="border-black" label={gameList.name}>
@@ -216,59 +280,18 @@ class Profile extends Component {
                     :
                     <></>
                 }
-                <Table
-                    striped highlightOnHover
-                    verticalSpacing={'xl'}
-                    horizontalSpacing={'xs'}
-                >
-                    <thead>
-                        <tr className="bg-gray-400">
-                            <th>Cover</th>
-                            <th>Title</th>
-                            <th>Genre</th>
-                            <th>Console</th>
-                            <th>Publisher</th>
-                            <th>Year</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>{
-                        gameList.games.map((game) => (
-                            <tr className="bg-gradient-to-b from-gray-700 to-gray-600" key={game.name}>
-                                <td>
-                                    <Image
-                                        width={80}
-                                        height={80}
-                                        src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL[0]}`}
-                                        alt="Random unsplash image"
-                                    />
-                                </td>
-                                <td><Anchor className="text-white" component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
-                                <td><Badge variant="filled" color="cyan">{game.genre}</Badge></td>
-                                <td>{game.platform.map((platform) => <Badge variant="filled">{platform}</Badge>)}</td>
-                                <td><Badge variant="filled" color="indigo">{game.publisher}</Badge></td>
-                                <td><Badge variant="filled" color="violet">{game.year}</Badge></td>
-                                <td>
-                                    {this.state.editPerms ?
-                                        <ActionIcon
 
-                                            className="bg-gradient-to-b from-red-700 to-orange-600 hover:from-red-900 hover:to-red-800"
-                                            color="red"
-                                            onClick={() => this.setState({
-                                                gameToBeDeleted: game,
-                                                currentGameList: gameList.name
-                                            }, () => this.removeGameFromList())}
-                                        >
-                                            <IconX />
-                                        </ActionIcon>
-                                        :
-                                        <></>
-                                    }
-                                </td>
-                            </tr>
-                        ))
-                    }</tbody>
-                </Table>
+                {gameList.games.length > 4 ?
+                    <ScrollArea
+                        dir={"rtl"}
+                        style={{ height: 600 }}>
+                        {this.listContent(gameList)}
+                    </ScrollArea>
+                    :
+                    <>
+                        {this.listContent(gameList)}     
+                    </>    
+                }
             </Accordion.Item>
         ));
 
@@ -357,7 +380,7 @@ class Profile extends Component {
             if (!this.checkDuplicates(listIndex)) {
 
                 // server side for adding game
-                console.log("adding game");
+                console.log("Adding game");
 
                 const requestOptions = {
                     method: 'POST',
@@ -445,7 +468,7 @@ class Profile extends Component {
     render() {
 
         return (
-            <>
+            <div className="bg-gradient-to-b from-gray-400 to-stone-100">
                 {this.state.loggedIn ?
                     <div>
                         {this.state.loading ?
@@ -584,7 +607,6 @@ class Profile extends Component {
                                         <div>
                                             <Button
                                                 className="bg-gradient-to-b from-green-700 to-green-600 hover:from-green-900 hover:to-green-800"
-
                                                 color="green"
                                                 onClick={() => this.setState({
                                                     deletingList: false
@@ -710,7 +732,7 @@ class Profile extends Component {
                         <Title order={3}>Not logged in. Log in to view your profile.</Title>
                     </div>
                 }
-            </>
+            </div>
         );
     }
 }

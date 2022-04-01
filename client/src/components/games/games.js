@@ -1,22 +1,23 @@
 import { Component } from "react";
 import {
-    Badge,
-    Text,
-    Accordion,
-    Avatar,
-    Title,
-    Loader,
-    SimpleGrid,
-    Radio,
-    RadioGroup,
-    Grid,
-    NumberInput,
-    TextInput,
-    Table,
-    Anchor,
-    Pagination,
-    Button,
-    NativeSelect
+  Space,
+  Badge,
+  Text,
+  Accordion,
+  Avatar,
+  Title,
+  Loader,
+  SimpleGrid,
+  Radio,
+  RadioGroup,
+  Grid,
+  NumberInput,
+  TextInput,
+  Table,
+  Anchor,
+  Pagination,
+  Button,
+  NativeSelect
 } from '@mantine/core';
 import StarsRating from "stars-rating";
 import { Link } from 'react-router-dom';
@@ -385,6 +386,12 @@ class Games extends Component {
           <Grid.Col span={4}>
             <TextInput
               onChange={(evt) => this.updateKeywords(evt)}
+              onKeyPress={(ev) => {
+                if (ev.key === "Enter") {
+                  ev.preventDefault();
+                  this.search();
+                }
+              }}
               placeholder="Keywords"
               label="Search:"
               variant="filled"
@@ -401,6 +408,12 @@ class Games extends Component {
                   <Grid.Col span={4}>
                     <TextInput
                       onChange={(evt) => this.updatePublisher(evt)}
+                      onKeyPress={(ev) => {
+                        if (ev.key === "Enter") {
+                          ev.preventDefault();
+                          this.search();
+                        }
+                      }}
                       placeholder="Filter by Publisher name"
                       label="Publisher:"
                     />
@@ -408,6 +421,12 @@ class Games extends Component {
                   <Grid.Col span={4}>
                     <NumberInput
                       onChange={(evt) => this.updateYear(evt)}
+                      onKeyPress={(ev) => {
+                        if (ev.key === "Enter") {
+                          ev.preventDefault();
+                          this.search();
+                        }
+                      }}
                       min={1977}
                       max={2020}
                       placeholder="Filter by Year Released"
@@ -461,7 +480,7 @@ class Games extends Component {
             </Accordion>
           </Grid.Col>
         </SimpleGrid>
-
+        <Space h="md" />
         {this.state.loading ? (
           <div style={{ margin: "auto", padding: 50 }}>
             <Title order={3}>Fetching All Games</Title>
@@ -471,16 +490,16 @@ class Games extends Component {
           <div>
             <Table verticalSpacing="md" striped highlightOnHover>
               <thead>
-                <tr className="bg-gray-400">
-                  <th>Index</th>
-                  <th>Cover</th>
-                  <th>Name</th>
-                  <th>Genre</th>
-                  <th>Platform</th>
-                  <th>Publisher</th>
-                  <th>Year Released</th>
-                  <th>Global Sales</th>
-                  <th>Critic Score</th>
+                <tr className="bg-gray-700">
+                  <th><Text className="text-white">Index</Text></th>
+                  <th><Text className="text-white">Cover</Text></th>
+                  <th><Text className="text-white">Name</Text></th>
+                  <th><Text className="text-white">Genre</Text></th>
+                  <th><Text className="text-white">Platform</Text></th>
+                  <th><Text className="text-white">Publisher</Text></th>
+                  <th><Text className="text-white">Year Released</Text></th>
+                  <th><Text className="text-white">Global Sales</Text></th>
+                  <th><Text className="text-white">Critic Score</Text></th>
                 </tr>
               </thead>
               <tbody>{this.state.rows}</tbody>
