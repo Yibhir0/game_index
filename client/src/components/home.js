@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import TopNav from "./navbar/topnav";
 import {
+  Space,
+  Paper,
   Center,
   Grid,
   Text,
@@ -44,7 +46,7 @@ class Home extends Component {
     let fetchResponse = await fetch("/api/games");
     let fetchedGames = this.sortGames(await fetchResponse.json()).slice(
       0,
-      1000
+      200
     );
 
     this.setState({

@@ -21,9 +21,8 @@ import logo from "./images/logo.png";
 class TopNav extends Component {
   render() {
     return (
-      <div>
+        <div style={{ paddingLeft: "50px", paddingRight:"50px"}}>
         <nav>
-
           <Group className="topnav">
           <Title  className="mr-auto"><img src={logo} id="logo"></img></Title>
             <Button
@@ -47,8 +46,6 @@ class TopNav extends Component {
             <SignIn className="content-end" />
           </Group>
         </nav>
-        <br></br>
-        <br></br>
       </div>
     );
   }
