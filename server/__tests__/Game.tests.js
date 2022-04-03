@@ -16,13 +16,21 @@ describe('Test /games', () => {
     })
 })
 
-// jest.setTimeout(100000);
 describe('Test /games/:id', () => {
     test('Should return a specific game', async () => {
         const response = await request.get('/api/games/623ca8d6daa8ca47ebf7a682')
         expect(response.status).toBe(200)
         expect(response.type).toMatch('application/json')
         expect(response._body.name).toBe('Super Mario Bros.')
+    })
+})
+
+describe('Test /games/:id/feedback', () => {
+    test('Should return the comments on a specific game', async () => {
+        const response = await request.get('/api/games/623ca8d6daa8ca47ebf7a68d/feedback')
+        expect(response.status).toBe(200)
+        expect(response.type).toMatch('application/json')
+        expect(response._body[0].comment).toBe('sick game.')
     })
 })
 
