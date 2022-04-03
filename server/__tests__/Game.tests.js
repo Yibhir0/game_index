@@ -34,5 +34,15 @@ describe('Test /games/:id/feedback', () => {
     })
 })
 
+describe('Test /games/filter', () => {
+    test('Should return a list of game where the filter apply', async () => {
+        const response = await request.get('/api/games/filter?keywords=&year=1992&publisher=&genre=&platform=')
+        expect(response.status).toBe(200)
+        expect(response.type).toMatch('application/json')
+        expect(response._body[0].name).toBe('Super Mario Land 2: 6 Golden Coins')
+        expect(response._body.length).toEqual(29)
+    })
+})
+
 
 
