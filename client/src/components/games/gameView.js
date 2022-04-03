@@ -22,14 +22,14 @@ const GameView = (props) => {
     let { id } = useParams()
 
     useEffect(() => {
-
+        
+        fetchUser();
         fetchGame();
-        //fetchUser();
         fetchFeedback();
 
     }, []);
 
-
+    
     const hasCommented = () => {
 
         let isCommented = feedback.find(item => item.userID === JSON.parse(localStorage.getItem("userProfile"))._id);
@@ -57,20 +57,24 @@ const GameView = (props) => {
     };
 
     const fetchUser = async () => {
+        if (localStorage.getItem("userProfile")) {
+            let userId = JSON.parse(localStorage.getItem("userProfile"))._id;
 
-        let userId = JSON.parse(localStorage.getItem("userProfile"))._id;
-
-        const url = `/api/users/${userId}`;
-        console.log(url);
-        try {
-            const response = await fetch(url, {
-                headers: {
-                    'Cache-Control': 'no-cache'
-                }
-            });
-            setCurrentUser(await response.json());
-        } catch (error) {
-            console.log("error", error);
+            const url = `/api/users/${userId}`;
+            console.log(url);
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Cache-Control': 'no-cache'
+                    }
+                });
+                setCurrentUser(await response.json());
+                console.log("logged in");
+            } catch (error) {
+                console.log("error", error);
+            }
+        } else {
+            console.log("not logged in");
         }
     };
 
@@ -118,10 +122,10 @@ const GameView = (props) => {
 
     return (
         <div className="v_flex bg-stone-100">
-            <Game game={game} user={currentUser} />
+            <Game game={game} user={currentUser} fetchUser={fetchUser} />
             <br />
-            {localStorage.getItem("userProfile") && !hasCommented() ?
-                <FeedbackBox className="bg-gradient-to-b from-gray-700 to-gray-600" addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />
+            { localStorage.getItem("userProfile") && !hasCommented() ?
+                <FeedbackBox addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />
                 :
                 <></>
             }
