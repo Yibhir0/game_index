@@ -22,7 +22,7 @@ export default function SignIn() {
  */
     const handleLogin = async googleData => {
 
-        console.log(googleData);
+        console.log("heLLO ID " + process.env.REACT_APP_GOOGLE_CLIENT_ID);
 
         try {
             const res = await fetch("/api/users/login", {
