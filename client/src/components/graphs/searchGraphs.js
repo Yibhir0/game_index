@@ -112,8 +112,8 @@ class SearchGraphs extends Component {
                 </XYPlot>
                     </Grid.Col>
                    
-                    <Grid.Col span={6}>
-                    <FlexibleXYPlot margin={{ top: 25 }} xType="ordinal">
+                    <Grid.Col span={12}>
+                    <XYPlot margin={{ top: 25 }} xType="ordinal" height={300} width={600}>
                     <VerticalBarSeries
                         data={this.state.leastGames}
                         // onValueMouseOver={(datapoint, { event }) => {
@@ -153,20 +153,8 @@ class SearchGraphs extends Component {
                         }}
                     />
                 
-                </FlexibleXYPlot>
-                    </Grid.Col>
-                    <Grid.Col span={6}>
-                    <XYPlot height={300} width= {300}>
-                    <VerticalGridLines />
-                    <HorizontalGridLines />
-                    <XAxis />
-                    <YAxis />
-                    <LineSeries data={[ {x: 0, y: 8},
-                                        {x: 1, y: 5},
-                                        {x: 2, y: 4},
-                                        {x: 3, y: 9}]} />
-                            </XYPlot>
-                    </Grid.Col> 
+                </XYPlot>
+                </Grid.Col>
                     <Grid.Col span={12}>
                     <FlexibleXYPlot
           xType="ordinal"
