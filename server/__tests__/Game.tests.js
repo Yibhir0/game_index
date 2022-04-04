@@ -9,21 +9,27 @@ const mongoose = require('mongoose')
 beforeAll(async () => await db.connectToDB());
 afterAll(async () => await db.closeDB());
 
-describe('Test /games', () => {
+describe('Test all /games get', () => {
     test('should return the list of games', async () => {
         const response = await request.get('/api/games')
         expect(response.status).toEqual(200)
         expect(response.type).toMatch('application/json')
         expect(response._body[0].name).toBe('Wii Sports')
     })
-})
 
-describe('Test /games/:id', () => {
     test('Should return a specific game', async () => {
         const response = await request.get('/api/games/623ca8d6daa8ca47ebf7a682')
         expect(response.status).toBe(200)
         expect(response.type).toMatch('application/json')
         expect(response._body.name).toBe('Super Mario Bros.')
+    })
+
+    test('Should return a list of game where the filter apply', async () => {
+        const response = await request.get('/api/games/filter?keywords=&year=1992&publisher=&genre=&platform=')
+        expect(response.status).toBe(200)
+        expect(response.type).toMatch('application/json')
+        expect(response._body[0].name).toBe('Super Mario Land 2: 6 Golden Coins')
+        expect(response._body.length).toEqual(29)
     })
 })
 
@@ -34,19 +40,7 @@ describe('Test /games/:id/feedback', () => {
         expect(response.type).toMatch('application/json')
         expect(response._body[0].comment).toBe('sick game.')
     })
-})
 
-describe('Test /games/filter', () => {
-    test('Should return a list of game where the filter apply', async () => {
-        const response = await request.get('/api/games/filter?keywords=&year=1992&publisher=&genre=&platform=')
-        expect(response.status).toBe(200)
-        expect(response.type).toMatch('application/json')
-        expect(response._body[0].name).toBe('Super Mario Land 2: 6 Golden Coins')
-        expect(response._body.length).toEqual(29)
-    })
-})
-
-describe('Test /games/:id/feedback Post', () => {
     test('Should post a comment under a specific game', async () => {
         const comments = await request.get('/api/games/623ca8d6daa8ca47ebf7a68d/feedback')
         const count = comments._body.length
