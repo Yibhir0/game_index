@@ -67,11 +67,11 @@ class GraphDash extends Component {
       .concat(this.state.games)
       .sort((a, b) => a.globalSales < b.globalSales)
       .slice(0, 10);
-    
+
     ratingSalesGames = []
       .concat(this.state.games)
       .map((x) => {
-        return { criticscore: x.criticScore, globalsales: x.globalSales };
+        return { criticscore: x.criticScore, globalsales: x.globalSales, name: x.name, id: x._id };
       })
       .slice(0, 1000);
 
