@@ -62,6 +62,7 @@ describe('Test /games/:id/feedback Post', () => {
         const newComments = await request.get('/api/games/623ca8d6daa8ca47ebf7a68d/feedback')
         expect(newComments._body.length).toEqual(count + 1)
         expect(postComment.status).toBe(200)
+        await FeedBack.findByIdAndDelete({ _id: feedback._id })
     })
 })
 
