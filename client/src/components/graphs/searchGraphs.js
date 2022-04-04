@@ -21,6 +21,7 @@ class SearchGraphs extends Component {
         this.state = {
             gamesInPage: props.gamesInPage,
             popularGames: [],
+            clusterGames: []
         };
     }
 
@@ -39,22 +40,52 @@ class SearchGraphs extends Component {
             .sort((a, b) => a.globalSales > b.globalSales)
             .slice(0, 10);
 
-        let clusterGames = [];
 
         this.setState({
             popularGames: this.getGraphDataFormat(popularGames),
             leastGames: this.getGraphDataFormat(leastGames),
-            jpSales: this.getClusterDataFormat(this.state.gamesInPage),
+            clusterGames: this.getClusterDataFormat(this.state.gamesInPage),
         });
+        console.log("after setstate")
+        console.log(this.state.clusterGames)
     }
 
     getClusterDataFormat(gamesArray) {
+        console.log("here")
         let clusterArray = [];
         let jpArray = [];
+        let naArray = [];
+        let euArray = [];
+        let otherArray = [];
+
+        for (let game of gamesArray) {
+            naArray.push({ x: game.name, y: game.naSales });
+        }
+
+        for (let game of gamesArray) {
+            euArray.push({ x: game.name, y: game.euSales });
+        }
+
+
         for (let game of gamesArray) {
             jpArray.push({ x: game.name, y: game.jpSales });
         }
-        return jpArray;
+
+        for (let game of gamesArray) {
+            otherArray.push({ x: game.name, y: game.otherSales });
+        }
+        
+        
+        clusterArray.push(naArray);
+        clusterArray.push(euArray);
+        clusterArray.push(jpArray);
+        clusterArray.push(otherArray);
+
+        console.log("Lebrunasf ")
+        console.log(clusterArray)
+
+        return clusterArray;
+
     }
 
     getGraphDataFormat(gamesArray) {
@@ -118,51 +149,6 @@ class SearchGraphs extends Component {
                     </Grid.Col>
 
                     <Grid.Col span={12}>
-                        <XYPlot
-                            margin={{ top: 25 }}
-                            xType="ordinal"
-                            height={300}
-                            width={600}
-                        >
-                            <VerticalBarSeries data={this.state.leastGames} />
-                            <XAxis
-                                tickLabelAngle={90}
-                                style={{
-                                    line: { stroke: "black" },
-                                    text: { fill: "black" },
-                                }}
-                                tickSize={1}
-                                tickPadding={-50}
-                            />
-                            <YAxis
-                                style={{ line: { stroke: "black" } }}
-                                tickSize={1}
-                                tickPadding={2}
-                                tickFormat={(v) => v / 1000000}
-                            />
-                            <ChartLabel
-                                text="Global Sales (Millions)"
-                                className="alt-y-label"
-                                includeMargin={false}
-                                xPercent={0.25}
-                                yPercent={0.035}
-                                style={{
-                                    textAnchor: "end",
-                                }}
-                            />
-                            <ChartLabel
-                                text="Game"
-                                className="alt-x-label"
-                                includeMargin={false}
-                                xPercent={1}
-                                yPercent={1.155}
-                                style={{
-                                    textAnchor: "end",
-                                }}
-                            />
-                        </XYPlot>
-                    </Grid.Col>
-                    <Grid.Col span={12}>
                         <FlexibleXYPlot
                             xType="ordinal"
                             stackBy="y"
@@ -172,41 +158,40 @@ class SearchGraphs extends Component {
                             <DiscreteColorLegend
                                 style={{
                                     position: "absolute",
-                                    left: "50px",
+                                    left: "100px",
                                     top: "10px",
                                 }}
                                 orientation="horizontal"
                                 items={[
                                     {
                                         title: "NA Sales",
-                                        color: "#1241AB",
+                                        color: "#FFDDE2FF",
                                     },
                                     {
                                         title: "EU Sales",
-                                        color: "#708CCD",
+                                        color: "#FAA094FF",
                                     },
                                     {
                                         title: "JP Sales",
-                                        color: "#D2D9EF",
+                                        color: "#9ED9CCFF",
                                     },
+                                    {
+                                        title: "Other Sales",
+                                        color: "#008C76FF",
+                                    }
                                 ]}
                             />
                             <VerticalGridLines />
                             <HorizontalGridLines />
-                            <XAxis
-                                tickLabelAngle={90}
-                                style={{
-                                    line: { stroke: "black" },
-                                    text: { fill: "black" },
-                                }}
-                                tickSize={1}
-                                tickPadding={-50}
-                            />
-                            <YAxis />
+                            
+                            <YAxis
+                            tickSize={1}
+                            tickPadding={2}
+                            tickFormat={(v) => v / 1000000}/>
                             <VerticalBarSeries
                                 cluster="game"
-                                color="#1241AB"
-                                data={this.state.jpSales}
+                                color="#008C76FF"
+                                data={this.state.clusterGames[0]}
                             />
                             <XAxis
                                 tickLabelAngle={90}
@@ -217,26 +202,50 @@ class SearchGraphs extends Component {
                                 tickSize={1}
                                 tickPadding={-50}
                             />
-                            {/* <VerticalBarSeries
+                            <VerticalBarSeries
                 cluster="game"
-                color="#708CCD"
-                data={[
-                  { x: "Q1", y: 3 },
-                  { x: "Q2", y: 7 },
-                  { x: "Q3", y: 2 },
-                  { x: "Q4", y: 1 },
-                ]}
+                color="#9ED9CCFF"
+                data={this.state.clusterGames[1]}
               />
               <VerticalBarSeries
                 cluster="game"
-                color="#D2D9EF"
-                data={[
-                  { x: "Q1", y: 3 },
-                  { x: "Q2", y: 8 },
-                  { x: "Q3", y: 11 },
-                  { x: "Q4", y: 19 },
-                ]}
-              /> */}
+                color="#FAA094FF"
+                data={this.state.clusterGames[2]}
+                            />
+                <VerticalBarSeries
+                cluster="game"
+                color="#FFDDE2FF"
+                data={this.state.clusterGames[3]}
+                            />
+                            <XAxis
+                                tickLabelAngle={90}
+                                style={{
+                                    line: { stroke: "black" },
+                                    text: { fill: "black" },
+                                }}
+                                tickSize={1}
+                                tickPadding={-50}
+                            />
+                             <ChartLabel
+                                text="Game"
+                                className="alt-x-label"
+                                includeMargin={false}
+                                xPercent={1}
+                                yPercent={1.155}
+                                style={{
+                                    textAnchor: "end",
+                                }}
+                            />
+                             <ChartLabel
+                                text="Global Sales (Millions)"
+                                className="alt-y-label"
+                                includeMargin={false}
+                                xPercent={0.25}
+                                yPercent={0.035}
+                                style={{
+                                    textAnchor: "end",
+                                }}
+                            />
                         </FlexibleXYPlot>
                     </Grid.Col>
                 </Grid>
