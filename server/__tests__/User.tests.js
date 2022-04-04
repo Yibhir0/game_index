@@ -2,14 +2,14 @@ const supertest = require('supertest')
 const app = require("../app")
 const request = supertest(app)
 
-describe('Test /users/:id get', () => {
-    test('Should get a specific user', async () => {
-        const response = await request.get('/api/users/6241f2f9daa8ca47eb711649')
-        expect(response.status).toBe(200)
-        expect(response.type).toMatch('application/json')
-        expect(response._body.name).toBe('Nael Louis')
-    })
-})
+// describe('Test /users/:id get', () => {
+//     test('Should get a specific user', async () => {
+//         const response = await request.get('/api/users/6241f2f9daa8ca47eb711649')
+//         expect(response.status).toBe(200)
+//         expect(response.type).toMatch('application/json')
+//         expect(response._body.name).toBe('Nael Louis')
+//     })
+// })
 
 describe('Test /users/:id post', () => {
     test('Should update the bio of a specific user', async () => {
@@ -46,12 +46,4 @@ describe('Test /users/:id post', () => {
         expect(response.status).toBe(201)
         expect(user._body.lists.length).toEqual(0)
     })
-
-    // test('Should create a user', async () => {
-
-    // })
-    
-    // test('Should delete a specific user', async () => {
-
-    // })
 })
