@@ -41,6 +41,7 @@ import {
   IconEdit,
   IconX,
 } from '@tabler/icons';
+import { showNotification } from "@mantine/notifications";
 
 /**
  * This component renders all games details.
@@ -97,7 +98,14 @@ const Game = (props) => {
 
       setAdd(false);
 
+      displayNotification(
+        'Game Added',
+        `${props.game.name} has been successfully added to list`,
+        'green',
+        <IconPlus />,
+      );
       await props.fetchUser();
+      
     } else {
       setErrMessage("Game is already added to the selected list.");
       console.log("List already contains games");
@@ -137,7 +145,25 @@ const Game = (props) => {
       </div>
     )
   }
-
+  const displayNotification = (title, desc, color, icon) => {
+    showNotification({
+        title: title,
+        color: color,
+        icon: icon,
+        style: {
+            backgroundColor: '#374151',
+            borderColor: '#374151'
+        },
+        styles: (theme) => ({
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+                color: theme.colors.red[7]
+              },
+        }),
+        message: desc,
+    })
+  }
   const gameDetails = () => {
 
     return (
