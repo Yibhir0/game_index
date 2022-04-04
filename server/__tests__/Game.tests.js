@@ -3,6 +3,8 @@ const app = require("../app")
 const request = supertest(app)
 const db = require('../mongoose/db')
 const router = require('../routes/api')
+const FeedBack = require('../mongoose/models/feedbackSchema')
+const mongoose = require('mongoose')
 
 beforeAll(async () => await db.connectToDB());
 afterAll(async () => await db.closeDB());
@@ -41,6 +43,25 @@ describe('Test /games/filter', () => {
         expect(response.type).toMatch('application/json')
         expect(response._body[0].name).toBe('Super Mario Land 2: 6 Golden Coins')
         expect(response._body.length).toEqual(29)
+    })
+})
+
+describe('Test /games/:id/feedback Post', () => {
+    test('Should post a comment under a specific game', async () => {
+        const comments = await request.get('/api/games/623ca8d6daa8ca47ebf7a68d/feedback')
+        const count = comments._body.length
+        var gameId = new mongoose.Types.ObjectId('623ca8d6daa8ca47ebf7a68d')
+        var userId = new mongoose.Types.ObjectId('56cb91bdc3464f14678934ba')
+        let feedback = await FeedBack.create({
+            gameID: gameId,
+            userID: userId,
+            comment: "I love this game!",
+            rating: 2
+        })
+        const postComment = await request.post('/api/games/623ca8d6daa8ca47ebf7a68d/feedback').send(feedback)
+        const newComments = await request.get('/api/games/623ca8d6daa8ca47ebf7a68d/feedback')
+        expect(newComments._body.length).toEqual(count + 1)
+        expect(postComment.status).toBe(200)
     })
 })
 
