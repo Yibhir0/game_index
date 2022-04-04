@@ -32,14 +32,18 @@ public class ImageProcessor {
      * parameters.
      */
     public ImageProcessor() {
-        String connectStr = System.getenv("AZURE_STORAGE_CONNECTION_STRING");
+        String connectStr = "DefaultEndpointsProtocol=https;AccountName=thelemongamerindex;AccountKey=d76IFedWWxqjsrIQNeyDTelYghwjnH2qeb+j1crWMn9VIXmt5qxpxGb1IVHi4iMtXY58Laajv0B4+AStS6r5pA==;EndpointSuffix=core.windows.net";
         BlobServiceClient blobServiceClient
                 = new BlobServiceClientBuilder()
                         .connectionString(connectStr)
                         .buildClient();
         String containerName = "imagedata";
-        CONTAINERCLIENT
+        if (blobServiceClient.getBlobContainerClient(containerName).exists()) {
+            CONTAINERCLIENT = blobServiceClient.getBlobContainerClient(containerName);
+        } else {
+            CONTAINERCLIENT
                 = blobServiceClient.createBlobContainer(containerName);
+        }
     }
 
     /**
@@ -129,5 +133,9 @@ public class ImageProcessor {
                 = CONTAINERCLIENT
                         .getBlobClient(basePath + tImageData.getFILENAME());
         blobClient.uploadFromFile(basePath + tImageData.getFILENAME());
+    }
+    
+    public BlobContainerClient getContainerClient() {
+        return CONTAINERCLIENT;
     }
 }
