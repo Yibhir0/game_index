@@ -22,7 +22,7 @@ class RatingSales extends Component {
                 margin={{ top: 25 }}
             >
                 <ContourSeries
-                    size={2}
+
                     animation
                     className="contour-series-example"
                     style={{
@@ -36,7 +36,7 @@ class RatingSales extends Component {
 
                 />
                 <MarkSeries
-
+                    animation
                     onValueClick={(datapoint, event) => {
                         this.props.changeId(datapoint.id);
                     }}
