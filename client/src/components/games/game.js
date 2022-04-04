@@ -1,5 +1,7 @@
 import { SimpleGrid, Title, Grid } from "@mantine/core";
 import {
+  Paper,
+  ThemeIcon,
   Tooltip,
   Center,
   Loader,
@@ -17,7 +19,27 @@ import {
 import StarsRating from "stars-rating";
 import { React, useEffect, useState } from "react";
 import {
-  IconPlus
+  IconCashBanknote,
+  IconCurrencyYen,
+  IconCurrencyEuro,
+  IconCurrencyDollar,
+  IconMoodKid,
+  IconStar,
+  IconWorld,
+  IconListNumbers,
+  IconCalendarTime,
+  IconPacman,
+  IconDeviceGamepad,
+  IconSword,
+  IconWritingSign,
+  IconPhoto,
+  IconPencil,
+  IconMinus,
+  IconPlus,
+  IconCheck,
+  IconFolderPlus,
+  IconEdit,
+  IconX,
 } from '@tabler/icons';
 
 /**
@@ -90,12 +112,43 @@ const Game = (props) => {
     }
   }
   
+  const generateTag = (title, icon, badge) => {
+    return (
+      <div>
+        <Group spacing="xs">
+          <ThemeIcon
+            sx={(theme) => ({
+                backgroundColor: "#374151",
+            })}
+          >
+              {icon}
+          </ThemeIcon>
+          <Title
+            order={4}
+            sx={(theme) => ({
+              color: "#374151"
+            })}
+          >
+            {title}
+          </Title>
+          {badge}
+        <Space h="xs" />
+        </ Group>
+      </div>
+    )
+  }
+
   const gameDetails = () => {
 
     return (
       <div>
         <Group>
-          <Title order={1}>
+          <Title
+            order={1}
+            sx={(theme) => ({
+              color: "#242c38"
+            })}
+          >
             {props.game.name}
           </Title>
           { localStorage.getItem("userProfile") ? 
@@ -112,42 +165,30 @@ const Game = (props) => {
           }
         </Group>
         <br></br>
-        <SimpleGrid cols={4}>
+        <SimpleGrid cols={3}>
           <div>
-            <Title order={4}>Publisher:</Title>
-            <Badge color="indigo" variant="filled">{props.game.publisher}</Badge>
+            {generateTag('Publisher:', <IconPacman />, <Badge color="indigo" variant="filled">{props.game.publisher}</Badge>)}
             <Space h="md" />
-            <Title order={4}>Platform:</Title>
-            <Badge variant="filled">{platformDataUpdate(props.game.platform)}</Badge>
+            {generateTag('Platform:', <IconDeviceGamepad />, <Badge variant="filled">{platformDataUpdate(props.game.platform)}</Badge>)} 
             <Space h="md" />
-            <Title order={4}>Genre:</Title>
-            <Badge color="cyan" variant="filled">{props.game.genre}</Badge>
+            {generateTag('Genre:', <IconSword />, <Badge color="cyan" variant="filled">{props.game.genre}</Badge>)} 
+            <Space h="md" />
+            {generateTag('Release Year:', <IconCalendarTime/>, <Badge color="violet" variant="filled">{props.game.year}</Badge>)}
+            <Space h="md" />
+            {generateTag('Critic Score:', <IconStar />, returnCriticData(props.game.criticScore))}
+            <Space h="md" />
+            {generateTag('ESRB Rating:', <IconMoodKid/>, esrbColour(props.game.esrbrating))}
           </div>
           <div>
-            <Title order={4}>Release Year:</Title>
-            <Badge color="violet" variant="filled">{props.game.year}</Badge>
+            {generateTag('North American Sales:', <IconCurrencyDollar/>, numberColour(props.game.naSales))}
             <Space h="md" />
-            <Title order={4}>Critic Score:</Title>
-            {returnCriticData(props.game.criticScore)}
-            <Title order={4}>ESRB Rating:</Title>
-            {esrbColour(props.game.esrbrating)}
-          </div>
-          <div>
-            <Title order={4}>North American Sales:</Title>
-            {numberColour(props.game.naSales)}
+            {generateTag('European Sales:', <IconCurrencyEuro/>, numberColour(props.game.euSales))}
             <Space h="md" />
-            <Title order={4}>European Sales:</Title>
-            {numberColour(props.game.euSales)}
+            {generateTag('Japanese Sales:', <IconCurrencyYen/>, numberColour(props.game.jpSales))}
             <Space h="md" />
-            <Title order={4}>Japanese Sales:</Title>
-            {numberColour(props.game.jpSales)}
-          </div>
-          <div>
-            <Title order={4}>Other Sales:</Title>
-            {numberColour(props.game.otherSales)}
+            {generateTag('Other Sales:', <IconCashBanknote/>, numberColour(props.game.otherSales))}
             <Space h="md" />
-            <Title order={4}>Global Sales:</Title>
-            {numberColour(props.game.globalSales)}
+            {generateTag('Global Sales:', <IconWorld/>, numberColour(props.game.globalSales))}
           </div>
         </SimpleGrid>
       </div>
@@ -226,7 +267,7 @@ const Game = (props) => {
       <div className="bg-gradient-to-b from-gray-400 to-stone-100" style={{ margin: "auto", padding: 50 }}>
         <Grid columns={12}>
           <Grid.Col span={2}>
-            <Image src={imageURL} width={200} alt={props.game.name} />
+            <Image radius="sm" src={imageURL} width={200} alt={props.game.name} />
           </Grid.Col>
           <Grid.Col span={10}>
             <Text size="sm">{gameDetails()}</Text>
@@ -283,7 +324,6 @@ function returnCriticData(criticScore) {
     return (
       <Tooltip withArrow label={"Not Rated by Critics"}>
         <Badge color="gray">{criticText}</Badge>
-        <Space h="md" />
       </Tooltip>);
   } else {
     criticText = (<StarsRating count={5} half={true}
@@ -294,8 +334,7 @@ function returnCriticData(criticScore) {
     />);
     return (
       <Tooltip withArrow label={criticScore}>
-        <Badge color="gray">{criticText}</Badge>
-        <Space h="md" />
+          {criticText}
       </Tooltip>);
   }
 }

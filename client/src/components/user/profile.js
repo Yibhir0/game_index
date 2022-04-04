@@ -250,6 +250,7 @@ class Profile extends Component {
                         <tr className="bg-gradient-to-b from-gray-700 to-gray-600" key={game.name}>
                             <td>
                                 <Image
+                                    radius="sm"
                                     width={80}
                                     height={80}
                                     src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL[0]}`}

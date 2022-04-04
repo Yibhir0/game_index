@@ -1,5 +1,7 @@
 import { Component } from "react";
 import {
+  ThemeIcon,
+  Group,
   Tooltip,
   Space,
   Badge,
@@ -20,8 +22,29 @@ import {
   Button,
   NativeSelect
 } from '@mantine/core';
+import {
+  IconStar,
+  IconWorld,
+  IconListNumbers,
+  IconCalendarTime,
+  IconPacman,
+  IconDeviceGamepad,
+  IconSword,
+  IconWritingSign,
+  IconPhoto,
+  IconPencil,
+  IconMinus,
+  IconPlus,
+  IconCheck,
+  IconFolderPlus,
+  IconEdit,
+  IconX,
+} from '@tabler/icons';
 import StarsRating from "stars-rating";
 import { Link } from 'react-router-dom';
+import {
+  generateHeader
+} from '../user/profile.js'
 
 /**
  * This component renders all the games and 
@@ -109,6 +132,7 @@ class Games extends Component {
     this.changePage = this.changePage.bind(this);
     this.setupPagination = this.setupPagination.bind(this);
     this.printFilters = this.printFilters.bind(this);
+    this.generateHeader = this.generateHeader.bind(this);
   }
 
   async componentDidMount() {
@@ -371,6 +395,21 @@ class Games extends Component {
     }
   }
 
+  generateHeader(header, icon) {
+    return (
+        <Group spacing="xs">
+            <ThemeIcon
+                sx={(theme) => ({
+                    backgroundColor: "#374151",
+                })}
+            >
+                {icon}
+            </ThemeIcon>
+            <Text className="text-white">{header}</Text>
+        </Group>
+    )
+}
+
   //print the current state of the filter
   printFilters() {
     console.log("Filter toggle: " + this.state.filters.toggle);
@@ -492,15 +531,15 @@ class Games extends Component {
             <Table verticalSpacing="md" striped highlightOnHover>
               <thead>
                 <tr className="bg-gray-700">
-                  <th><Text className="text-white">Index</Text></th>
-                  <th><Text className="text-white">Cover</Text></th>
-                  <th><Text className="text-white">Name</Text></th>
-                  <th><Text className="text-white">Genre</Text></th>
-                  <th><Text className="text-white">Platform</Text></th>
-                  <th><Text className="text-white">Publisher</Text></th>
-                  <th><Text className="text-white">Year Released</Text></th>
-                  <th><Text className="text-white">Global Sales</Text></th>
-                  <th><Text className="text-white">Critic Score</Text></th>
+                  <th>{this.generateHeader('', <IconListNumbers />)}</th>
+                  <th>{this.generateHeader('Cover', <IconPhoto />)}</th>
+                  <th>{this.generateHeader('Title', <IconWritingSign />)}</th>
+                  <th>{this.generateHeader('Genre', <IconSword />)}</th>
+                  <th>{this.generateHeader('Platform', <IconDeviceGamepad />)}</th>
+                  <th>{this.generateHeader('Publisher', <IconPacman />)}</th>
+                  <th>{this.generateHeader('Year', <IconCalendarTime />)}</th>
+                  <th>{this.generateHeader('Global Sales', <IconWorld />)}</th>
+                  <th>{this.generateHeader('Critic Score', <IconStar />)}</th>
                 </tr>
               </thead>
               <tbody>{this.state.rows}</tbody>
@@ -524,7 +563,6 @@ function returnCriticData(criticScore) {
     return (
       <Tooltip withArrow label={"Not Rated by Critics"}>
         <Badge color="gray">{criticText}</Badge>
-        <Space h="md" />
       </Tooltip>);
   } else {
     criticText = (<StarsRating count={5} half={true}
@@ -535,8 +573,7 @@ function returnCriticData(criticScore) {
     />);
     return (
       <Tooltip withArrow label={criticScore}>
-        <Badge color="gray">{criticText}</Badge>
-        <Space h="md" />
+        {criticText}
       </Tooltip>);
   }
 }
