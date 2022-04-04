@@ -2,46 +2,86 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Allfeedback from '../feedback/allFeedback';
 import FeedbackBox from '../feedback/feedbackBox';
-import { Divider } from "@mantine/core";
 import Game from './game';
 import '../feedback/styles.css'
+import RatingPopUp from '../graphs/ratingPopUp'
 
-const GameView = () => {
+/**
+ * This component renders all components
+ * related to a specific game including game details, feeedback
+ * ,rating, and a graph representation of number of users and with the rating.
+ * @param {*} props 
+ * @returns 
+ */
 
+const GameView = (props) => {
+
+    const [currentUser, setCurrentUser] = useState({});
     const [game, setGame] = useState({});
     const [feedback, setFeedBack] = useState([]);
-    const { id } = useParams()
+    let { id } = useParams()
 
     useEffect(() => {
-
+        
+        fetchUser();
         fetchGame();
         fetchFeedback();
 
     }, []);
 
-
+    
     const hasCommented = () => {
 
         let isCommented = feedback.find(item => item.userID === JSON.parse(localStorage.getItem("userProfile"))._id);
+
         return isCommented ? true : false;
     }
 
     const fetchGame = async () => {
-        console.log(id)
-        const url = `/games/${id}`;
+        if (props.id) {
+            id = props.id
+        }
+        const url = `/api/games/${id}`;
+        console.log(url);
         try {
-            const response = await fetch(url);
-            const json = await response.json();
-            setGame(json);
-
-
+            const response = await fetch(url, {
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            });
+            const g = await response.json()
+            setGame(g);
         } catch (error) {
             console.log("error", error);
         }
     };
 
-    const fetchFeedback = async () => {
-        const feedbackUrl = `/games/${id}/feedback`;
+    const fetchUser = async () => {
+        if (localStorage.getItem("userProfile")) {
+            let userId = JSON.parse(localStorage.getItem("userProfile"))._id;
+
+            const url = `/api/users/${userId}`;
+            console.log(url);
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Cache-Control': 'no-cache'
+                    }
+                });
+                setCurrentUser(await response.json());
+                console.log("logged in");
+            } catch (error) {
+                console.log("error", error);
+            }
+        } else {
+            console.log("not logged in");
+        }
+    };
+
+    const fetchFeedback = async (data) => {
+
+        console.log(data)
+        const feedbackUrl = `/api/games/${id}/feedback`;
         try {
             const response = await fetch(feedbackUrl);
             const json = await response.json();
@@ -68,7 +108,7 @@ const GameView = () => {
             rating: values.rating,
         };
 
-        const feedbackUrl = `/games/${id}/feedback`;
+        const feedbackUrl = `/api/games/${id}/feedback`;
 
         const requestOptions = {
             method: 'POST',
@@ -78,29 +118,21 @@ const GameView = () => {
 
         fetch(feedbackUrl, requestOptions)
             .then(response => response.json())
-            .then(data => fetchFeedback());
+            .then(data => fetchFeedback(data));
 
-    }
-
-
-    if (localStorage.getItem("userProfile") && !hasCommented()) {
-        return (
-            <div className="v_flex">
-                <Game game={game} />
-
-                <br />
-
-                <FeedbackBox addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />
-                <br />
-                <Allfeedback allFeedback={feedback} />
-
-            </div>
-        )
     }
 
     return (
-        <div className="v_flex">
-            <Game game={game} />
+        <div className="v_flex bg-stone-100">
+            <Game game={game} user={currentUser} fetchUser={fetchUser} />
+            <br />
+            { localStorage.getItem("userProfile") && !hasCommented() ?
+                <FeedbackBox addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />
+                :
+                <></>
+            }
+            <br />
+            <RatingPopUp allFeedback={feedback} />
             <br />
             <Allfeedback allFeedback={feedback} />
         </div>

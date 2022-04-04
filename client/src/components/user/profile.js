@@ -1,5 +1,11 @@
-import { Component, useState } from "react";
+import { Component } from "react";
 import {
+    ScrollArea,
+    Space,
+    Badge,
+    Group,
+    Textarea,
+    ActionIcon,
     Loader,
     Autocomplete,
     Modal,
@@ -8,19 +14,20 @@ import {
     Accordion,
     Image,
     SimpleGrid,
-    Radio,
-    RadioGroup,
     Grid,
-    NumberInput,
     TextInput,
     Table,
     Anchor,
-    Pagination,
     Button,
-    NativeSelect,
-    THEME_ICON_SIZES
 } from '@mantine/core';
 import { Link } from 'react-router-dom';
+import {
+    IconFolderPlus,
+    IconEdit,
+    IconX,
+} from '@tabler/icons';
+
+import "../feedback/styles.css"
 
 class Profile extends Component {
 
@@ -30,64 +37,115 @@ class Profile extends Component {
         this.state = {
             isGamesLoaded: false,
             gamesL: [],
-            allList: [
-                {
-                    name: "Favorite Games 1",
-                    list: []
-                },
-                {
-                    name: "Favorite Games 2",
-                    list: []
-                }
-            ],
             creatingList: false,
             createdListName: '',
             currentGameList: '',
             addingGame: false,
+            deletingList: false,
+            editingBio: false,
+            bioToUpdate: '',
             gameToAdd: [],
+            gameToBeDeleted: [],
             addGameErrorMsg: '',
             createListErrorMsg: '',
-            user: {}
+            userId: '',
+            currentUser: {},
+            loading: true,
+            loggedIn: true,
+            editPerms: false,
         };
 
         this.createList = this.createList.bind(this);
+        this.addListToDb = this.addListToDb.bind(this);
+        this.deleteList = this.deleteList.bind(this);
         this.generateList = this.generateList.bind(this);
+        this.listContent = this.listContent.bind(this);
         this.fetchGames = this.fetchGames.bind(this);
         this.convertStringList = this.convertStringList.bind(this);
         this.addGameToList = this.addGameToList.bind(this);
         this.resetErrorMsg = this.resetErrorMsg.bind(this);
         this.checkDuplicates = this.checkDuplicates.bind(this);
+        this.removeGameFromList = this.removeGameFromList.bind(this);
+        this.checkPerms = this.checkPerms.bind(this);
+        this.editBio = this.editBio.bind(this);
+        // this.updateUser = this.updateUser.bind(this);
+    }
+
+
+
+    async componentDidMount() {
+        this.checkPerms();
+        await this.fetchUser()
+        this.generateList();
+        await this.fetchGames();
+    }
+
+    checkPerms() {
+        if (localStorage.getItem('userProfile') != null) {
+            if ((JSON.parse(localStorage.getItem('userProfile')))._id === this.props.id) {
+                this.setState({ editPerms: true }, () => {
+                    console.log(this.state.editPerms);
+                })
+            } else {
+                this.setState({ editPerms: false }, () => {
+                    console.log(this.state.editPerms);
+                })
+            }
+        }
     }
 
     async fetchUser() {
 
-        let url = `/users/${this.props.id}`;
+        console.log(this.props.id);
 
-        let response = await fetch(url);
+        let url = `/api/users/${this.props.id}`;
+
+        let response = await fetch(url, {
+            headers: {
+                'Cache-Control': 'no-cache'
+            }
+        });
 
         let user = await response.json();
 
-        console.log(user);
-
-        this.setState({ user: user })
+        this.setState({
+            currentUser: user,
+            bioToUpdate: user.bio,
+            loading: false,
+        }, () => {
+            console.log(this.state.currentUser);
+        })
     }
 
-    async componentDidMount() {
+    async editBio() {
 
-        this.generateList();
-        await this.fetchUser()
-        await this.fetchGames();
+        console.log("edit bio");
 
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        }
+        let url = `/api/users/${this.state.currentUser._id}/bio?desc=${this.state.bioToUpdate}`;
 
+        let response = await fetch(url, requestOptions);
+        console.log(response);
+
+        await this.fetchUser();
+
+        this.setState({
+            editingBio: false,
+            bioToUpdate: this.state.currentUser.bio
+        })
     }
 
     async fetchGames() {
-        this.setState({
-            loading: true
-        });
+
         //fetch all games
         console.log("game fetched");
-        let gameUrl = "/games";
+        let gameUrl = "/api/games";
         let response = await fetch(gameUrl);
         console.log(response);
         let games = await response.json();
@@ -128,54 +186,120 @@ class Profile extends Component {
             });
         }
     }
-    generateList() {
-        const lists = this.state.allList.map((gameList) => (
-            <Accordion.Item label={gameList.name}>
-                <Table verticalSpacing={'xl'}>
-                    <thead>
-                        <tr>
-                            <th>Cover</th>
-                            <th>Title</th>
-                            <th>Genre</th>
-                            <th>Publisher</th>
-                            <th>Year</th>
-                            <th>
-                                <Button
-                                    onClick={() => this.setState({
-                                        addingGame: true,
-                                        currentGameList: gameList.name
-                                    })}
-                                    color="green"
-                                >
-                                    Add Game
-                                </Button>
-                            </th>
+
+    listContent(gameList) {
+
+        if (gameList.games.length === 0) {
+            return <Text>You have not Added games to this list</Text>
+        }
+
+        return (
+
+
+
+            <Table
+
+                dir={"ltr"}
+                striped highlightOnHover
+                verticalSpacing={'xl'}
+                horizontalSpacing={'xs'}
+            >
+                <thead>
+                    <tr className="bg-gray-700">
+                        <th><Text className="text-white">Cover</Text></th>
+                        <th><Text className="text-white">Title</Text></th>
+                        <th><Text className="text-white">Genre</Text></th>
+                        <th><Text className="text-white">Console</Text></th>
+                        <th><Text className="text-white">Publisher</Text></th>
+                        <th><Text className="text-white">Year</Text></th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>{
+                    gameList.games.map((game) => (
+                        <tr className="bg-gradient-to-b from-gray-700 to-gray-600" key={game.name}>
+                            <td>
+                                <Image
+                                    width={80}
+                                    height={80}
+                                    src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL[0]}`}
+                                    alt="Random unsplash image"
+                                />
+                            </td>
+                            <td><Anchor className="text-white" component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
+                            <td><Badge variant="filled" color="cyan">{game.genre}</Badge></td>
+                            <td>{game.platform.map((platform) => <Badge variant="filled">{platform}</Badge>)}</td>
+                            <td><Badge variant="filled" color="indigo">{game.publisher}</Badge></td>
+                            <td><Badge variant="filled" color="violet">{game.year}</Badge></td>
+                            <td>
+                                {this.state.editPerms ?
+                                    <ActionIcon
+
+                                        className="bg-gradient-to-b from-red-700 to-orange-600 hover:from-red-900 hover:to-red-800"
+                                        color="red"
+                                        onClick={() => this.setState({
+                                            gameToBeDeleted: game,
+                                            currentGameList: gameList.name
+                                        }, () => this.removeGameFromList())}
+                                    >
+                                        <IconX />
+                                    </ActionIcon>
+                                    :
+                                    <></>
+                                }
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>{
-                        gameList.list.map((game) => (
-                            <tr key={game.name}>
-                                <td>
-                                    <Image
-                                        width={80}
-                                        height={80}
-                                        src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                                        alt="Random unsplash image"
-                                    />
-                                </td>
-                                <td>{game.name}</td>
-                                <td>{game.genre}</td>
-                                <td>{game.publisher}</td>
-                                <td>{game.year}</td>
-                                <td>
-                                    <Button color="red" size="xs">
-                                        X
-                                    </Button>
-                                </td>
-                            </tr>
-                        ))
-                    }</tbody>
-                </Table>
+                    ))
+                }</tbody>
+            </Table>
+        )
+    }
+
+    generateList() {
+        const lists = this.state.currentUser.lists.map((gameList) => (
+            <Accordion.Item className="border-black" label={gameList.name}>
+                {this.state.editPerms ?
+                    <div style={{
+                        padding: 10
+                    }}>
+                        <Group>
+                            <Button className="bg-gradient-to-b from-lime-700 to-lime-600 hover:from-lime-900 hover:to-lime-800"
+                                onClick={() => this.setState({
+                                    addingGame: true,
+                                    currentGameList: gameList.name
+                                })}
+                                color="green"
+                            >
+                                Add Game
+                            </Button>
+                            <Button className="bg-gradient-to-b from-red-700 to-red-600 hover:from-red-900 hover:to-red-800"
+                                onClick={() => this.setState({
+                                    deletingList: true,
+                                    currentGameList: gameList.name
+                                })}
+
+                                color="red"
+                            >
+                                Delete List
+                            </Button>
+                        </Group>
+                    </div>
+                    :
+                    <></>
+                }
+
+                {gameList.games.length > 4 ?
+                    <ScrollArea
+                        dir={"rtl"}
+                        style={{ height: 600 }}>
+                        {this.listContent(gameList)}
+                    </ScrollArea>
+                    :
+                    <>
+                        {this.listContent(gameList)}
+                    </>
+                }
             </Accordion.Item>
         ));
 
@@ -184,52 +308,102 @@ class Profile extends Component {
         });
     }
 
-    createList() {
+    async createList() {
         if (this.state.createdListName.trim().length === 0) {
             this.setState({
                 createListErrorMsg: "List name cannot be empty."
             })
             console.log("Cannot be empty");
         } else {
-            console.log("List created: " + this.state.createdListName);
-            this.setState({
-                allList:
-                    [
-                        ...this.state.allList,
-                        {
-                            name: this.state.createdListName,
-                            list: [],
-                        }
-                    ]
-            }, () => {
-                console.log(this.state.allList);
+            if (!this.checkListDuplicates()) {
+                console.log("List created: " + this.state.createdListName);
+                await this.addListToDb();
+                await this.fetchUser();
                 this.generateList();
-            })
-            this.setState({
-                creatingList: false,
-                createdListName: '',
-            })
+
+                this.setState({
+                    creatingList: false,
+                    createdListName: '',
+                })
+            } else {
+                this.setState({
+                    createListErrorMsg: "List name already exist"
+                })
+            }
 
         }
     }
-    addGameToList() {
+
+    async addListToDb() {
+
+        console.log("creating list in db for user: " + this.state.currentUser.name);
+        console.log("list name: " + this.state.createdListName);
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        }
+
+        let listUrl = "/api/users/" + this.state.currentUser._id + "/list?name=" + this.state.createdListName;
+        let response = await fetch(listUrl, requestOptions);
+        console.log(response);
+    }
+
+    async deleteList() {
+        console.log("deleting list");
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        }
+
+        let listUrl = "/api/users/" + this.state.currentUser._id + "/delList?name=" + this.state.currentGameList;
+        let response = await fetch(listUrl, requestOptions);
+        console.log(response);
+
+        await this.fetchUser();
+        this.generateList();
+
+        this.setState({
+            currentGameList: '',
+        })
+    }
+
+    async addGameToList() {
         if (this.state.gameToAdd.length) {
             //print game to add info
             console.log("Game to add:");
             console.log(this.state.gameToAdd);
-            console.log(this.state.allList);
 
             //get index of the list where the game will be added to
-            let listIndex = this.state.allList.findIndex(list => list.name === this.state.currentGameList);
+            let listIndex = this.state.currentUser.lists.findIndex(list => list.name === this.state.currentGameList);
 
             //check if list contains duplicates before adding
             if (!this.checkDuplicates(listIndex)) {
-                const copyList = { ...this.state.allList };
-                copyList[listIndex].list.push(this.state.gameToAdd[0]);
 
-                let allList = Object.values(copyList);
+                // server side for adding game
+                console.log("Adding game");
+
+                const requestOptions = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                }
+
+                let url = "/api/users/" + this.state.currentUser._id + "/list/addGame?gameId=" + this.state.gameToAdd[0]._id + "&index=" + listIndex;
+                let response = await fetch(url, requestOptions);
+                console.log(response);
+
+                await this.fetchUser();
                 this.setState({
-                    allList,
                     addingGame: false,
                     gameToAdd: []
                 }, () => {
@@ -253,11 +427,43 @@ class Profile extends Component {
     }
 
     checkDuplicates(index) {
-        if ((this.state.allList[index].list.filter((game) => game._id === this.state.gameToAdd[0]._id)).length >= 1) {
+        if ((this.state.currentUser.lists[index].games.filter((game) => game._id === this.state.gameToAdd[0]._id)).length >= 1) {
             return true;
         } else {
             return false;
         }
+    }
+
+    checkListDuplicates() {
+        if ((this.state.currentUser.lists.filter((list) => list.name.trim() === this.state.createdListName.trim())).length >= 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    async removeGameFromList() {
+
+        //get index of the list where the game will be removed from
+        let listIndex = this.state.currentUser.lists.findIndex(list => list.name === this.state.currentGameList);
+
+        // server side for deleting game
+        console.log("deleting game");
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+        }
+
+        let url = "/api/users/" + this.state.currentUser._id + "/list/delGame?gameId=" + this.state.gameToBeDeleted._id + "&index=" + listIndex;
+        let response = await fetch(url, requestOptions);
+        console.log(response);
+
+        await this.fetchUser();
+        this.generateList();
     }
 
 
@@ -270,101 +476,285 @@ class Profile extends Component {
     render() {
 
         return (
-            <>
-                <Modal
-                    opened={this.state.creatingList}
-                    onClose={() => this.setState({
-                        creatingList: false,
-                        createdListName: '',
-                    })}
-                    title="Create List"
-                >
-                    <TextInput
-                        onChange={(evt) => this.setState({
-                            createdListName: evt.target.value
-                        }, () => this.resetErrorMsg())}
-                        placeholder="List name"
-                        label="Enter Game List name:"
-                        size="md"
-                        error={this.state.createListErrorMsg}
-                        required
-                    />
-                    <br></br>
-                    <Button
-                        onClick={this.createList}
-                    >
-                        Create
-                    </Button>
-                </Modal>
-                <Modal
-                    opened={this.state.addingGame}
-                    onClose={() => this.setState({
-                        addingGame: false,
-                        currentGameList: '',
-                        gameToAdd: [],
-                    })}
-                    title="Add Game"
-                >
-                    {this.state.isGamesLoaded ?
-                        <>
-                            <Autocomplete
-                                onChange={evt => this.updateAddGame(evt)}
-                                label="Search game:"
-                                placeholder="Write keyword"
-                                data={this.state.gameStrings}
-                                error={this.state.addGameErrorMsg}
-                            />
-                            <Button
-                                onClick={this.addGameToList}
-                            >
-                                Add
-                            </Button>
-                        </>
-                        :
-                        <Loader size="xl" />
-                    }
-                </Modal>
-                <Grid columns={24}>
-                    <Grid.Col span={6}>
+            <div className="bg-gradient-to-b from-gray-400 to-stone-100">
 
-                        <div style={{ margin: 'auto', padding: 50 }}>
-                            <Title order={2}>{this.state.user.name}</Title>
-                            <Image
-                                radius="md"
-                                src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-                                alt="Random unsplash image"
-                            />
-                            <Text>
-                                Bio: Hello my name is username and I love video games! Look at my games list to look at the most trending games.
-                            </Text>
-                        </div>
-                    </Grid.Col>
-                    <Grid.Col span={18}>
-                        <div style={{ margin: 'auto', padding: 50 }}>
-                            <SimpleGrid cols={4}>
-                                <Grid.Col span={4}>
-                                    <Title order={2}>Game List</Title>
-                                </Grid.Col>
-                                <Grid.Col span={4}>
-                                </Grid.Col>
-                                <Grid.Col span={4}>
-                                </Grid.Col>
-                                <Grid.Col span={4}>
+
+
+                {this.state.loggedIn ?
+                    <div>
+                        {this.state.loading ?
+                            <div style={{ margin: 'auto', padding: 50 }}>
+                                <Title order={3}>Loading profile page</Title>
+                                <Loader size="xl" />
+                            </div>
+                            :
+
+
+
+                            <>
+                                {/* All modals */}
+                                {/* Creating List */}
+                                <Modal
+                                    opened={this.state.creatingList}
+                                    onClose={() => this.setState({
+                                        creatingList: false,
+                                        createdListName: '',
+                                    }, () => this.resetErrorMsg())}
+                                    title="Create List"
+                                >
+
+
+                                    <TextInput
+                                        onChange={(evt) => this.setState({
+                                            createdListName: evt.target.value
+                                        }, () => this.resetErrorMsg())}
+                                        placeholder="List name"
+                                        label="Enter Game List name:"
+                                        size="md"
+                                        error={this.state.createListErrorMsg}
+                                        required
+                                    />
+                                    <br></br>
                                     <Button
-                                        style={{ marginRight: 'auto' }}
-                                        onClick={() => this.setState({ creatingList: true })}
+                                        className="bg-gradient-to-b from-blue-700 to-blue-600 hover:from-blue-900 hover:to-blue-800"
+
+                                        radius="sm"
+                                        color="blue"
+                                        variant="filled"
+                                        onClick={this.createList}
                                     >
-                                        Create List
+                                        Create
                                     </Button>
-                                </Grid.Col>
-                            </SimpleGrid>
-                            <Accordion iconPosition="right" >
-                                {this.state.displayLists}
-                            </Accordion>
-                        </div>
-                    </Grid.Col>
-                </Grid>
-            </>
+                                </Modal>
+
+                                {/* Adding Game */}
+                                <Modal
+                                    size="lg"
+                                    opened={this.state.addingGame}
+                                    onClose={() => this.setState({
+                                        addingGame: false,
+                                        currentGameList: '',
+                                        gameToAdd: [],
+                                    }, () => this.resetErrorMsg())}
+                                    title="Add Game"
+                                >
+                                    <Title order={6}>Selected Game:</Title>
+                                    {this.state.gameToAdd.length ?
+                                        <SimpleGrid cols={4}>
+                                            <div>
+                                                <Image
+                                                    width={130}
+                                                    height={130}
+                                                    src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${this.state.gameToAdd[0].image_URL[0]}`}
+                                                    alt="Image failed to load"
+                                                />
+                                            </div>
+                                            <div>
+                                                <Title order={6}>Name:</Title>
+                                                <Text>{this.state.gameToAdd[0].name}</Text>
+                                                <Title order={6}>Console:</Title>
+                                                <Text>{this.state.gameToAdd[0].platform.map((platform) => <Text>{platform}</Text>)}</Text>
+                                                <Title order={6}>Year Released:</Title>
+                                                <Text>{this.state.gameToAdd[0].year}</Text>
+                                            </div>
+                                        </SimpleGrid>
+                                        :
+                                        <SimpleGrid cols={4}>
+                                            <div>
+                                                <Image
+                                                    width={130}
+                                                    height={130}
+                                                    alt="Image failed to load"
+                                                    withPlaceholder
+                                                />
+                                            </div>
+                                            <div>
+                                                <Title order={6}>Name:</Title>
+                                                <Text>None</Text>
+                                                <Title order={6}>Console:</Title>
+                                                <Text>None</Text>
+                                                <Title order={6}>Year Released:</Title>
+                                                <Text>None</Text>
+                                            </div>
+                                        </SimpleGrid>
+                                    }
+                                    {this.state.isGamesLoaded ?
+                                        <>
+                                            <Autocomplete
+                                                onChange={evt => this.updateAddGame(evt)}
+                                                label="Search game:"
+                                                placeholder="Write keyword"
+                                                data={this.state.gameStrings}
+                                                error={this.state.addGameErrorMsg}
+                                            />
+                                            <br></br>
+                                            <Button
+                                                className="bg-gradient-to-b from-green-700 to-green-600 hover:from-green-900 hover:to-green-800"
+
+                                                radius="sm"
+                                                color="green"
+                                                variant="filled"
+                                                onClick={this.addGameToList}
+                                            >
+                                                Add
+                                            </Button>
+                                        </>
+                                        :
+                                        <Loader size="xl" />
+                                    }
+                                </Modal>
+
+                                {/* Deleting List */}
+
+                                <Modal
+                                    opened={this.state.deletingList}
+                                    onClose={() => this.setState({
+                                        deletingList: false,
+                                        currentGameList: '',
+                                    }, () => this.resetErrorMsg())}
+                                    title="Delete List"
+                                >
+                                    <Title order={4}>Are you sure you want to delete this list?</Title>
+                                    <br></br>
+                                    <Text>Deleting the list will remove all games added. <br></br>This action cannot be undone.</Text>
+                                    <br></br>
+                                    <SimpleGrid cols={5}>
+                                        <div>
+                                            <Button
+                                                className="bg-gradient-to-b from-green-700 to-green-600 hover:from-green-900 hover:to-green-800"
+                                                color="green"
+                                                onClick={() => this.setState({
+                                                    deletingList: false
+                                                }, () => this.deleteList())}
+                                            >
+                                                Yes
+                                            </Button>
+                                        </div>
+                                        <div>
+                                            <Button
+                                                className="bg-gradient-to-b from-red-700 to-red-600 hover:from-red-900 hover:to-red-800"
+                                                color="red"
+                                                onClick={() => this.setState({
+                                                    deletingList: false,
+                                                    currentGameList: '',
+                                                })}
+                                            >
+                                                No
+                                            </Button>
+                                        </div>
+                                    </SimpleGrid>
+                                </Modal>
+
+                                {/* Editing Bio */}
+                                <Modal
+                                    size="lg"
+                                    opened={this.state.editingBio}
+                                    onClose={() => this.setState({
+                                        editingBio: false,
+                                    }, () => this.resetErrorMsg())}
+                                    title="Edit Bio"
+                                >
+                                    <Textarea
+                                        defaultValue={this.state.currentUser.bio}
+                                        onChange={(evt) => this.setState({
+                                            bioToUpdate: evt.target.value
+                                        })}
+                                        placeholder="Your Bio"
+                                    />
+                                    <br></br>
+                                    <Button className="bg-gradient-to-b from-lime-700 to-lime-600 hover:from-lime-900 hover:to-lime-800"
+                                        onClick={() => this.editBio()}
+                                    >
+                                        Edit
+                                    </Button>
+
+                                </Modal>
+
+                                {/* End of all modals*/}
+
+                                <Grid columns={24}>
+                                    <Grid.Col span={6}>
+
+                                        <div style={{ margin: 'auto', padding: 50 }}>
+                                            <Title order={2}>{this.state.currentUser.name}'s Profile</Title>
+                                            <br></br>
+                                            <Image
+                                                width="15em"
+                                                height="15em"
+                                                radius="md"
+                                                src={this.state.currentUser.picture}
+                                                alt="Image failed to load"
+                                                withPlaceholder
+                                            />
+                                            <br></br>
+                                            <Group>
+                                                <Title order={3}>
+                                                    Bio
+                                                </Title>
+
+                                                {this.state.editPerms ?
+                                                    <ActionIcon onClick={() => this.setState({
+                                                        editingBio: true,
+                                                    })}
+                                                        className="bg-gradient-to-b from-orange-700 to-orange-600 hover:from-orange-900 hover:to-orange-800"
+                                                        radius="sm"
+                                                        color="orange"
+                                                        variant="filled"
+                                                    >
+                                                        <IconEdit />
+                                                    </ActionIcon>
+                                                    :
+                                                    <></>
+                                                }
+                                            </Group>
+                                            <Space h="md" />
+                                            <Text className="commentText">
+                                                {this.state.currentUser.bio}
+                                            </Text>
+                                        </div>
+
+                                    </Grid.Col>
+                                    <Grid.Col span={18}>
+                                        <div style={{ margin: 'auto', padding: 50 }}>
+                                            <Group>
+                                                <Title order={2}>Game List</Title>
+
+                                                {this.state.editPerms ?
+                                                    <ActionIcon
+                                                        className="bg-gradient-to-b from-sky-700 to-sky-600 hover:from-sky-900 hover:to-sky-800"
+                                                        radius="sm"
+                                                        variant="filled"
+                                                        color="blue"
+                                                        onClick={() => this.setState({ creatingList: true })}
+                                                    >
+                                                        <IconFolderPlus />
+                                                    </ActionIcon>
+                                                    :
+                                                    <></>
+                                                }
+
+                                            </Group>
+                                            <div>
+                                                {this.state.currentUser.lists.length === 0 ?
+                                                    <Text>You have not created any list </Text> : <></>}
+                                            </div>
+
+                                            <Space h="md" />
+                                            <Accordion iconPosition="right" >
+                                                {this.state.displayLists}
+                                            </Accordion>
+                                        </div>
+                                    </Grid.Col>
+                                </Grid>
+                            </>
+                        }
+                    </div>
+                    :
+                    <div>
+                        <Title order={3}>Not logged in. Log in to view your profile.</Title>
+                    </div>
+                }
+            </div>
         );
     }
 }

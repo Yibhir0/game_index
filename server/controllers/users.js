@@ -22,7 +22,6 @@ exports.postUser = async (req, res) => {
                 "name": name,
                 "email": email,
                 "picture": picture,
-                "bio": 'Welcome to my profile!',
             };
 
             const user = await db.createUser(newUser);
@@ -53,21 +52,16 @@ exports.logOutUser = async (req, res) => {
 // get user
 exports.getUser = async (req, res) => {
     try {
-        let query = "user" + req.params.id
-        let response = cache.get(query)
-        if (!response) {
-            const readyState = await db.connectToDB();
-            if (readyState === 1) {
-                response = await db.getUser(req.params.id)
-                cache.put(query, response)
-
-            }
-            else {
-                res.status(404).json({ message: "Could not connect to the database" })
-            }
+        const readyState = await db.connectToDB();
+        if (readyState === 1) {
+            const user = await db.getUser(req.params.id)
+            res.send(user)
+        }
+        else {
+            res.status(404).json({ message: "Could not connect to the database" })
         }
 
-        res.send(response)
+
     }
     catch (error) {
         res.status(404).json({ message: error.message })

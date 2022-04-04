@@ -3,12 +3,17 @@ import GoogleLogin, { GoogleLogout } from 'react-google-login';
 
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
-import { Anchor } from "@mantine/core";
+import {
+    Anchor,
+    Button,
+} from "@mantine/core";
 import './styles.css'
 import { useNavigate } from "react-router-dom";
 export default function SignIn() {
 
     const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('userProfile')));
+    //variable will change later for deployment
+    // const profileUrl = "/profile";
     let navigate = useNavigate();
     /**
  * Handle login with google. This function sends
@@ -17,10 +22,10 @@ export default function SignIn() {
  */
     const handleLogin = async googleData => {
 
-        console.log(googleData);
+        console.log("heLLO ID " + process.env.REACT_APP_GOOGLE_CLIENT_ID);
 
         try {
-            const res = await fetch("/users/login", {
+            const res = await fetch("/api/users/login", {
                 method: "POST",
                 body: JSON.stringify({
                     token: googleData.tokenId
@@ -32,7 +37,7 @@ export default function SignIn() {
             const data = await res.json()
 
             localStorage.setItem('userProfile', JSON.stringify(data));
-            console.log(data);
+
             setUserAccount(data);
 
             navigate(`/profile/${data._id}`, { replace: true });
@@ -47,33 +52,45 @@ export default function SignIn() {
 
 
     }
-
+    // Logout user g
     const handleLogout = async response => {
-        const res = await fetch("/users/logout", {
+        const res = await fetch("/api/users/logout", {
             method: "DELETE",
         })
         const data = await res.json()
 
         localStorage.clear();
         setUserAccount(null);
+
+        // if (window.location.pathname.includes(profileUrl)) {
+        //     window.location.reload(true);
+        // }
+
         alert("You are successfully logged out ")
-        navigate("/home", { replace: true });
+        navigate("/", { replace: true });
 
     }
 
-
+    // Login user
     function UserLogIn() {
 
         return (
-            <div>
-                <Anchor component={Link} to={`/profile/${userAccount._id}`} >
-                    {userAccount.name}
-                </Anchor>
-                <GoogleLogout
-                    clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                    buttonText="Logout"
-                    onLogoutSuccess={handleLogout}
-                />
+            <div className="topnav">
+                <Button className="bg-gradient-to-b from-gray-700 to-gray-600" variant="subtle" radius="xs">
+                    <Anchor className="text-white" component={Link} to={`/profile/${userAccount._id}`} >
+                        Profile
+                    </Anchor>
+                </Button>
+
+                <Button className=" ml-4 ... bg-gradient-to-b from-pink-700 to-pink-600" variant="subtle" radius="xs">
+                    <GoogleLogout
+                        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                        buttonText="Logout"
+                        onLogoutSuccess={handleLogout}
+                    />
+                </Button>
+
+
             </div>
         )
 
@@ -82,16 +99,16 @@ export default function SignIn() {
     function Guest() {
         return (
 
-            <div>
-                <GoogleLogin className='linkbtn'
+            <Button className="bg-gradient-to-b from-green-700 to-green-600" variant="subtle" radius="xs">
+                <GoogleLogin
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                    buttonText="Log in with Google"
+                    buttonText="Log in "
                     onSuccess={handleLogin}
                     onFailure={handleLogin}
                     cookiePolicy={'single_host_origin'}
                 />
+            </Button>
 
-            </div>
         )
     }
 
