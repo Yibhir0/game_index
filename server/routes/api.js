@@ -103,7 +103,7 @@ const user = require('../controllers/user');
  *                   description: The rating attributed to the game by the users.
  *                   example: 3.5                    
  */
-router.get('/games-', games.getGames);
+router.get('/games', games.getGames);
 
 /**
  * @swagger 

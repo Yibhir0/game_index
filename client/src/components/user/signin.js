@@ -25,7 +25,7 @@ export default function SignIn() {
         console.log(googleData);
 
         try {
-            const res = await fetch("/users/login", {
+            const res = await fetch("/api/users/login", {
                 method: "POST",
                 body: JSON.stringify({
                     token: googleData.tokenId
@@ -37,7 +37,7 @@ export default function SignIn() {
             const data = await res.json()
 
             localStorage.setItem('userProfile', JSON.stringify(data));
-            console.log(data);
+
             setUserAccount(data);
 
             navigate(`/profile/${data._id}`, { replace: true });
@@ -54,7 +54,7 @@ export default function SignIn() {
     }
     // Logout user g
     const handleLogout = async response => {
-        const res = await fetch("/users/logout", {
+        const res = await fetch("/api/users/logout", {
             method: "DELETE",
         })
         const data = await res.json()
@@ -67,7 +67,7 @@ export default function SignIn() {
         // }
 
         alert("You are successfully logged out ")
-        navigate("/home", { replace: true });
+        navigate("/", { replace: true });
 
     }
 
@@ -75,18 +75,22 @@ export default function SignIn() {
     function UserLogIn() {
 
         return (
-            <div>
-                <Button variant="subtle" radius="xs">
-                    <Anchor component={Link} to={`/profile/${userAccount._id}`} >
-                        {userAccount.name}
+            <div className="topnav">
+                <Button className="bg-gradient-to-b from-gray-700 to-gray-600" variant="subtle" radius="xs">
+                    <Anchor className="text-white" component={Link} to={`/profile/${userAccount._id}`} >
+                        Profile
                     </Anchor>
                 </Button>
-                <br></br>
-                <GoogleLogout
-                    clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                    buttonText="Logout"
-                    onLogoutSuccess={handleLogout}
-                />
+
+                <Button className=" ml-4 ... bg-gradient-to-b from-pink-700 to-pink-600" variant="subtle" radius="xs">
+                    <GoogleLogout
+                        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                        buttonText="Logout"
+                        onLogoutSuccess={handleLogout}
+                    />
+                </Button>
+
+
             </div>
         )
 
@@ -95,16 +99,16 @@ export default function SignIn() {
     function Guest() {
         return (
 
-            <div>
-                <GoogleLogin className='linkbtn'
+            <Button className="bg-gradient-to-b from-green-700 to-green-600" variant="subtle" radius="xs">
+                <GoogleLogin
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                     buttonText="Log in "
                     onSuccess={handleLogin}
                     onFailure={handleLogin}
                     cookiePolicy={'single_host_origin'}
                 />
+            </Button>
 
-            </div>
         )
     }
 
