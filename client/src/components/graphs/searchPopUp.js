@@ -14,7 +14,7 @@ export default function SearchPopUp(props) {
                 onClose={() => setOpened(false)}
                 title="Visualisation"
             >
-                <SearchGraphs gamesInPage={props.games} />
+                <SearchGraphs gamesInPage={props.games.slice(props.page*10-10, props.page*10)} />
 
             </Modal>
 
