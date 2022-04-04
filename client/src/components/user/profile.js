@@ -24,6 +24,7 @@ import {
 import { showNotification } from "@mantine/notifications";
 import { Link } from 'react-router-dom';
 import {
+    IconPencil,
     IconMinus,
     IconPlus,
     IconCheck,
@@ -140,6 +141,13 @@ class Profile extends Component {
         console.log(response);
 
         await this.fetchUser();
+
+        this.displayNotification(
+            'Bio Edited',
+            'Bio has been successfully edited',
+            'orange',
+            <IconPencil />
+        )
 
         this.setState({
             editingBio: false,
@@ -509,7 +517,8 @@ class Profile extends Component {
             color: color,
             icon: icon,
             style: {
-                backgroundColor: '#374151'
+                backgroundColor: '#374151',
+                borderColor: '#374151'
             },
             styles: (theme) => ({
                 title: { color: theme.white },
