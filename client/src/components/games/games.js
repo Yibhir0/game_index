@@ -1,5 +1,6 @@
 import { Component } from "react";
 import {
+  Tooltip,
   Space,
   Badge,
   Text,
@@ -270,7 +271,7 @@ class Games extends Component {
           </Anchor>
         </td>
         <td><Badge variant="filled" color="cyan">{game.genre}</Badge></td>
-        <td>{game.platform.map((platform, index) => (<Badge variant="filled" key={index + 1}>{platform}</Badge>))}</td>
+        <td>{game.platform.map((platform, index) => (<Badge variant="filled" key={index + 1}>{platformNameUpdate(platform)}</Badge>))}</td>
         <td><Badge variant="filled" color="indigo">{game.publisher}</Badge></td>
         <td><Badge variant="filled" color="violet">{game.year}</Badge></td>
         <td><Badge variant="filled" color="grape">{numberWithCommas(game.globalSales)}</Badge></td>
@@ -517,24 +518,70 @@ class Games extends Component {
 }
 
 function returnCriticData(criticScore) {
-    if (criticScore === 0) {
-        return (<Text className="text-white" >Not Rated</Text>);
-
-    }
-    return (<StarsRating count={5} half={true}
+  let criticText;
+  if (criticScore === 0) {
+    criticText = "Not Rated";
+    return (
+      <Tooltip withArrow label={"Not Rated by Critics"}>
+        <Badge color="gray">{criticText}</Badge>
+        <Space h="md" />
+      </Tooltip>);
+  } else {
+    criticText = (<StarsRating count={5} half={true}
       value={criticScore}
       edit={false}
       size={24}
       color2={"#ffd700"}
     />);
-
+    return (
+      <Tooltip withArrow label={criticScore}>
+        <Badge color="gray">{criticText}</Badge>
+        <Space h="md" />
+      </Tooltip>);
+  }
 }
-
 function numberWithCommas(x) {
   if (x === undefined) {
     return "None on  Record";
   }
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function platformNameUpdate(name) {
+  switch(name) {
+    case "WiiU":
+      return "Wii U";
+    case "GC":
+      return "Game Cube";
+    case "PSV":
+      return "PS Vita";
+    case "XB":
+      return "Xbox";
+    case "X360":
+      return "Xbox 360";
+    case "XOne":
+      return "Xbox One";
+    case "GEN":
+      return "Sega Genesis";
+    case "SCD":
+      return "Sega CD";
+    case "SAT":
+      return "Sega Saturn";
+    case "DC":
+      return "Dreamcast";
+    case "2600":
+      return "Atari 2600";
+    case "NG":
+      return "Neo Geo";
+    case "3DO":
+      return "3DO Interactive Multiplayer";
+    case "PCFX":
+      return "PC-FX";
+    case "WS":
+      return "WonderSwan";
+    default:
+      return name;
+  }
 }
 
 export default Games;

@@ -1,4 +1,3 @@
-
 import { SimpleGrid, Title, Grid } from "@mantine/core";
 import {
   Tooltip,
@@ -93,17 +92,6 @@ const Game = (props) => {
   
   const gameDetails = () => {
 
-    let platforms = "";
-    if (typeof props.game.platform === "object" ) {
-      for (let i = 0; i < props.game.platform.length; i++) {
-        if (i === props.game.platform.length - 1) {
-          platforms += props.game.platform[i];
-        } else {
-          platforms += props.game.platform[i] + ", ";
-        }
-      }
-    }
-
     return (
       <div>
         <Group>
@@ -130,7 +118,7 @@ const Game = (props) => {
             <Badge color="indigo" variant="filled">{props.game.publisher}</Badge>
             <Space h="md" />
             <Title order={4}>Platform:</Title>
-            <Badge variant="filled">{platforms}</Badge>
+            <Badge variant="filled">{platformDataUpdate(props.game.platform)}</Badge>
             <Space h="md" />
             <Title order={4}>Genre:</Title>
             <Badge color="cyan" variant="filled">{props.game.genre}</Badge>
@@ -140,27 +128,26 @@ const Game = (props) => {
             <Badge color="violet" variant="filled">{props.game.year}</Badge>
             <Space h="md" />
             <Title order={4}>Critic Score:</Title>
-            <Badge color="gray">{returnCriticData(props.game.criticScore)}</Badge>
-            <Space h="md" />
+            {returnCriticData(props.game.criticScore)}
             <Title order={4}>ESRB Rating:</Title>
-            <Badge color="teal" variant="filled">{props.game.esrbrating}</Badge>
+            {esrbColour(props.game.esrbrating)}
           </div>
           <div>
             <Title order={4}>North American Sales:</Title>
-            <Badge color="yellow" variant="filled">{numberWithCommas(props.game.naSales)}</Badge>
+            {numberColour(props.game.naSales)}
             <Space h="md" />
             <Title order={4}>European Sales:</Title>
-            <Badge color="orange" variant="filled">{numberWithCommas(props.game.euSales)}</Badge>
+            {numberColour(props.game.euSales)}
             <Space h="md" />
             <Title order={4}>Japanese Sales:</Title>
-            <Badge color="red" variant="filled">{numberWithCommas(props.game.jpSales)}</Badge>
+            {numberColour(props.game.jpSales)}
           </div>
           <div>
             <Title order={4}>Other Sales:</Title>
-            <Badge color="pink" variant="filled">{numberWithCommas(props.game.otherSales)}</Badge>
+            {numberColour(props.game.otherSales)}
             <Space h="md" />
             <Title order={4}>Global Sales:</Title>
-            <Badge color="grape" variant="filled">{numberWithCommas(props.game.globalSales)}</Badge>
+            {numberColour(props.game.globalSales)}
           </div>
         </SimpleGrid>
       </div>
@@ -250,18 +237,67 @@ const Game = (props) => {
   );
 };
 
-function returnCriticData(criticScore) {
+function esrbColour(rating) {
+  if (rating === "E") {
+    return (<Badge color="green" variant="filled">{rating}</Badge>);
 
-  if (criticScore === 0) {
-      return (<Text>Not Rated</Text>);
+  } else if (rating === "E10") {
+    return (<Badge variant="filled">{rating}</Badge>);
+
+  } else if (rating === "T") {
+    return (<Badge color="orange" variant="filled">{rating}</Badge>);
+
+  } else if (rating === "M") {
+    return (<Badge color="red" variant="filled">{rating}</Badge>);
+
+  } else {
+    return (<Badge color="gray" variant="filled">{rating}</Badge>);
+
+  }
+}
+
+function numberColour(number) {
+  if (number >= 10000000) {
+    return (<Badge variant="filled">{numberWithCommas(number)}</Badge>);
+
+  } else if (number >= 1000000) {
+    return (<Badge color="green" variant="filled">{numberWithCommas(number)}</Badge>);
+
+  } else if (number >= 100000) {
+    return (<Badge color="orange" variant="filled">{numberWithCommas(number)}</Badge>);
+
+  } else if (number >= 10000) {
+    return (<Badge color="red" variant="filled">{numberWithCommas(number)}</Badge>);
+
+  } else {
+    return (<Badge color="gray" variant="filled">{numberWithCommas(number)}</Badge>);
+
   }
 
-  return (<StarsRating count={5} half={true}
-    value={criticScore}
-    edit={false}
-    size={24}
-    color2={"#ffd700"}
-  />);
+}
+
+function returnCriticData(criticScore) {
+  let criticText;
+  if (criticScore === 0) {
+    criticText = "Not Rated";
+    return (
+      <Tooltip withArrow label={"Not Rated by Critics"}>
+        <Badge color="gray">{criticText}</Badge>
+        <Space h="md" />
+      </Tooltip>);
+  } else {
+    criticText = (<StarsRating count={5} half={true}
+      value={criticScore}
+      edit={false}
+      size={24}
+      color2={"#ffd700"}
+    />);
+    return (
+      <Tooltip withArrow label={criticScore}>
+        <Badge color="gray">{criticText}</Badge>
+        <Space h="md" />
+      </Tooltip>);
+  }
 }
 
 function numberWithCommas(x) {
@@ -269,6 +305,57 @@ function numberWithCommas(x) {
     return "None on Record";
   }
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function platformDataUpdate(platformList) {
+  let platforms = "";
+  if (typeof platformList === "object" ) {
+    for (let i = 0; i < platformList.length; i++) {
+      if (i === platformList.length - 1) {
+        platforms += platformNameUpdate(platformList[i]);
+      } else {
+        platforms += platformNameUpdate(platformList[i]) + ", ";
+      }
+    }
+  }
+  return platforms;
+}
+
+function platformNameUpdate(name) {
+  switch(name) {
+    case "WiiU":
+      return "Wii U";
+    case "GC":
+      return "Game Cube";
+    case "PSV":
+      return "PS Vita";
+    case "XB":
+      return "Xbox";
+    case "X360":
+      return "Xbox 360";
+    case "XOne":
+      return "Xbox One";
+    case "GEN":
+      return "Sega Genesis";
+    case "SCD":
+      return "Sega CD";
+    case "SAT":
+      return "Sega Saturn";
+    case "DC":
+      return "Dreamcast";
+    case "2600":
+      return "Atari 2600";
+    case "NG":
+      return "Neo Geo";
+    case "3DO":
+      return "3DO Interactive Multiplayer";
+    case "PCFX":
+      return "PC-FX";
+    case "WS":
+      return "WonderSwan";
+    default:
+      return name;
+  }
 }
 
 export default Game;
