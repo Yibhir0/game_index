@@ -264,7 +264,7 @@ class Profile extends Component {
 
     generateList() {
         const lists = this.state.currentUser.lists.map((gameList) => (
-            <Accordion.Item className="border-black" label={gameList.name}>
+            <Accordion.Item className="border-black" label={`(${gameList.games.length}) ${gameList.name}`}>
                 {this.state.editPerms ?
                     <div style={{
                         padding: 10
