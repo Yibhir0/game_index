@@ -1,5 +1,6 @@
 import { Component } from "react";
 import {
+    ThemeIcon,
     ScrollArea,
     Space,
     Badge,
@@ -24,6 +25,12 @@ import {
 import { showNotification } from "@mantine/notifications";
 import { Link } from 'react-router-dom';
 import {
+    IconCalendarTime,
+    IconPacman,
+    IconDeviceGamepad,
+    IconSword,
+    IconWritingSign,
+    IconPhoto,
     IconPencil,
     IconMinus,
     IconPlus,
@@ -64,6 +71,7 @@ class Profile extends Component {
         this.createList = this.createList.bind(this);
         this.addListToDb = this.addListToDb.bind(this);
         this.deleteList = this.deleteList.bind(this);
+        this.generateHeader = this.generateHeader.bind(this);
         this.generateList = this.generateList.bind(this);
         this.listContent = this.listContent.bind(this);
         this.fetchGames = this.fetchGames.bind(this);
@@ -201,6 +209,21 @@ class Profile extends Component {
         }
     }
 
+    generateHeader(header, icon) {
+        return (
+            <Group spacing="xs">
+                <ThemeIcon
+                    sx={(theme) => ({
+                        backgroundColor: "#374151",
+                    })}
+                >
+                    {icon}
+                </ThemeIcon>
+                <Text className="text-white">{header}</Text>
+            </Group>
+        )
+    }
+
     listContent(gameList) {
         return(
             <Table
@@ -212,12 +235,12 @@ class Profile extends Component {
             >
                 <thead>
                     <tr className="bg-gray-700">
-                        <th><Text className="text-white">Cover</Text></th>
-                        <th><Text className="text-white">Title</Text></th>
-                        <th><Text className="text-white">Genre</Text></th>
-                        <th><Text className="text-white">Console</Text></th>
-                        <th><Text className="text-white">Publisher</Text></th>
-                        <th><Text className="text-white">Year</Text></th>
+                        <th>{this.generateHeader('Cover', <IconPhoto />)}</th>
+                        <th>{this.generateHeader('Title', <IconWritingSign />)}</th>
+                        <th>{this.generateHeader('Genre', <IconSword />)}</th>
+                        <th>{this.generateHeader('Platform', <IconDeviceGamepad />)}</th>
+                        <th>{this.generateHeader('Publisher', <IconPacman />)}</th>
+                        <th>{this.generateHeader('Year', <IconCalendarTime />)}</th>
                         <th></th>
                     </tr>
                 </thead>
