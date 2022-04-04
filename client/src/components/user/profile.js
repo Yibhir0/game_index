@@ -19,9 +19,14 @@ import {
     Table,
     Anchor,
     Button,
+    CheckboxIcon,
 } from '@mantine/core';
+import { showNotification } from "@mantine/notifications";
 import { Link } from 'react-router-dom';
 import {
+    IconMinus,
+    IconPlus,
+    IconCheck,
     IconFolderPlus,
     IconEdit,
     IconX,
@@ -68,6 +73,7 @@ class Profile extends Component {
         this.removeGameFromList = this.removeGameFromList.bind(this);
         this.checkPerms = this.checkPerms.bind(this);
         this.editBio = this.editBio.bind(this);
+        this.displayNotification = this.displayNotification.bind(this);
         // this.updateUser = this.updateUser.bind(this);
     }
 
@@ -312,6 +318,14 @@ class Profile extends Component {
                 await this.addListToDb();
                 await this.fetchUser();
                 this.generateList();
+                
+                this.displayNotification(
+                    'List Added',
+                    `${this.state.createdListName} has been successfully created`,
+                    'green',
+                    <IconPlus />,
+                );
+                
 
                 this.setState({
                     creatingList: false,
@@ -360,6 +374,14 @@ class Profile extends Component {
         console.log(response);
 
         await this.fetchUser();
+
+        this.displayNotification(
+            'List Deleted',
+            `${this.state.currentGameList} has been successfully deleted`,
+            'red',
+            <IconMinus />,
+        );
+
         this.generateList();
 
         this.setState({
@@ -395,6 +417,14 @@ class Profile extends Component {
                 console.log(response);
 
                 await this.fetchUser();
+
+                this.displayNotification(
+                    'Game Added',
+                    `${this.state.gameToAdd[0].name} has been successfully added to list`,
+                    'green',
+                    <IconPlus />,
+                );
+
                 this.setState({
                     addingGame: false,
                     gameToAdd: []
@@ -454,6 +484,13 @@ class Profile extends Component {
         let response = await fetch(url, requestOptions);
         console.log(response);
 
+        this.displayNotification(
+            'Game Removed',
+            `${this.state.gameToBeDeleted.name} has been successfully removed from the list`,
+            'red',
+            <IconMinus />,
+        );
+        
         await this.fetchUser();
         this.generateList();
     }
@@ -465,6 +502,26 @@ class Profile extends Component {
             createListErrorMsg: '',
         })
     }
+
+    displayNotification(title, desc, color, icon) {
+        showNotification({
+            title: title,
+            color: color,
+            icon: icon,
+            style: {
+                backgroundColor: '#374151'
+            },
+            styles: (theme) => ({
+                title: { color: theme.white },
+                description: { color: theme.white },
+                closeButton: {
+                    color: theme.colors.red[7]
+                  },
+            }),
+            message: desc,
+        })
+    }
+
     render() {
 
         return (
