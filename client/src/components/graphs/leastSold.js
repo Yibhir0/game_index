@@ -7,6 +7,9 @@ import {
     VerticalBarSeries,
     ChartLabel
 } from 'react-vis';
+/**
+ * Least sold games graph 
+ */
 
 class LeastSold extends Component {
 
