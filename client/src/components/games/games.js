@@ -401,7 +401,7 @@ class Games extends Component {
             />
             <br></br>
             <Button className="bg-gradient-to-b from-gray-700 to-gray-600" onClick={this.search}>Search</Button>
-            <SearchPopUp games={"bruh"}/>
+            <SearchPopUp games={this.state.gamesL} page={this.state.pageNumber }/>
           </Grid.Col>
           <Grid.Col span={4}>
             <Accordion>

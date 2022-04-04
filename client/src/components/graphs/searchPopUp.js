@@ -4,6 +4,7 @@ import SearchGraphs from './searchGraphs';
 
 export default function SearchPopUp(props) {
     const [opened, setOpened] = useState(false);
+    console.log(props.games.slice(props.page*10-10, props.page*10))
 
     return (
         <>
@@ -13,12 +14,12 @@ export default function SearchPopUp(props) {
                 onClose={() => setOpened(false)}
                 title="Visualisation"
             >
-                <SearchGraphs allFeedback={props.games} />
+                <SearchGraphs gamesInPage={props.games} />
 
             </Modal>
 
-            <Group position="center">
-                <Button style={{ margin: "auto" }} variant="gradient" gradient={{ from: 'grape', to: 'pink', deg: 35 }}
+            <Group position="left">
+                <Button className="bg-gradient-to-b from-gray-700 to-gray-600" style={{ margin: "left" }} variant="gradient" gradient={{ from: 'grape', to: 'pink', deg: 35 }}
                     onClick={() => setOpened(true)}
                 >
                     Create Graph
