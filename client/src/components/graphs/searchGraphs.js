@@ -12,6 +12,8 @@ import {
     XAxis,
     YAxis,
     LineSeries,
+    ArcSeries,
+    RadialChart
 } from "react-vis";
 
 class SearchGraphs extends Component {
@@ -21,7 +23,7 @@ class SearchGraphs extends Component {
         this.state = {
             gamesInPage: props.gamesInPage,
             popularGames: [],
-            clusterGames: []
+            clusterGames: [],
         };
     }
 
@@ -39,19 +41,43 @@ class SearchGraphs extends Component {
             .concat(this.state.gamesInPage.reverse())
             .sort((a, b) => a.globalSales > b.globalSales)
             .slice(0, 10);
-
-
+        
         this.setState({
             popularGames: this.getGraphDataFormat(popularGames),
             leastGames: this.getGraphDataFormat(leastGames),
             clusterGames: this.getClusterDataFormat(this.state.gamesInPage),
+            pieGames: this.getRadialDataFormat(this.state.gamesInPage)
         });
-        console.log("after setstate")
-        console.log(this.state.clusterGames)
+   
+    }
+
+    getRadialDataFormat(gamesArray) {
+        let genreCount = {};
+        let formatedForChartGenreCount = {}
+
+        for (let game of gamesArray) {
+            if (!(game.genre in genreCount)) {
+                genreCount[game.genre] = game.globalSales;
+            }
+            else {
+                genreCount[game.genre] += game.globalSales; 
+            }
+        }
+
+        for (const [key, value] of Object.entries(genreCount)) {
+            console.log(key + ":" + value)
+        }
+
+        return genreCount;
+
+        // {
+        //     angle: 23,
+        //     label: 'deck.gl'
+        //   },
+
     }
 
     getClusterDataFormat(gamesArray) {
-        console.log("here")
         let clusterArray = [];
         let jpArray = [];
         let naArray = [];
@@ -66,7 +92,6 @@ class SearchGraphs extends Component {
             euArray.push({ x: game.name, y: game.euSales });
         }
 
-
         for (let game of gamesArray) {
             jpArray.push({ x: game.name, y: game.jpSales });
         }
@@ -74,18 +99,11 @@ class SearchGraphs extends Component {
         for (let game of gamesArray) {
             otherArray.push({ x: game.name, y: game.otherSales });
         }
-        
-        
-        clusterArray.push(naArray);
-        clusterArray.push(euArray);
-        clusterArray.push(jpArray);
-        clusterArray.push(otherArray);
 
-        console.log("Lebrunasf ")
-        console.log(clusterArray)
+        clusterArray.push(naArray, euArray, jpArray, otherArray);
+
 
         return clusterArray;
-
     }
 
     getGraphDataFormat(gamesArray) {
@@ -178,16 +196,17 @@ class SearchGraphs extends Component {
                                     {
                                         title: "Other Sales",
                                         color: "#008C76FF",
-                                    }
+                                    },
                                 ]}
                             />
                             <VerticalGridLines />
                             <HorizontalGridLines />
-                            
+
                             <YAxis
-                            tickSize={1}
-                            tickPadding={2}
-                            tickFormat={(v) => v / 1000000}/>
+                                tickSize={1}
+                                tickPadding={2}
+                                tickFormat={(v) => v / 1000000}
+                            />
                             <VerticalBarSeries
                                 cluster="game"
                                 color="#008C76FF"
@@ -203,19 +222,19 @@ class SearchGraphs extends Component {
                                 tickPadding={-50}
                             />
                             <VerticalBarSeries
-                cluster="game"
-                color="#9ED9CCFF"
-                data={this.state.clusterGames[1]}
-              />
-              <VerticalBarSeries
-                cluster="game"
-                color="#FAA094FF"
-                data={this.state.clusterGames[2]}
+                                cluster="game"
+                                color="#9ED9CCFF"
+                                data={this.state.clusterGames[1]}
                             />
-                <VerticalBarSeries
-                cluster="game"
-                color="#FFDDE2FF"
-                data={this.state.clusterGames[3]}
+                            <VerticalBarSeries
+                                cluster="game"
+                                color="#FAA094FF"
+                                data={this.state.clusterGames[2]}
+                            />
+                            <VerticalBarSeries
+                                cluster="game"
+                                color="#FFDDE2FF"
+                                data={this.state.clusterGames[3]}
                             />
                             <XAxis
                                 tickLabelAngle={90}
@@ -226,7 +245,7 @@ class SearchGraphs extends Component {
                                 tickSize={1}
                                 tickPadding={-50}
                             />
-                             <ChartLabel
+                            <ChartLabel
                                 text="Game"
                                 className="alt-x-label"
                                 includeMargin={false}
@@ -236,7 +255,7 @@ class SearchGraphs extends Component {
                                     textAnchor: "end",
                                 }}
                             />
-                             <ChartLabel
+                            <ChartLabel
                                 text="Global Sales (Millions)"
                                 className="alt-y-label"
                                 includeMargin={false}
@@ -247,6 +266,35 @@ class SearchGraphs extends Component {
                                 }}
                             />
                         </FlexibleXYPlot>
+                    </Grid.Col>
+                    <Grid.Col span={12}>
+                    <RadialChart
+  data={[
+    {
+      angle: 23,
+      label: 'deck.gl'
+    },
+    {
+      angle: 30,
+      label: 'math.gl'
+    },
+    // {
+    //   angle: 17,
+    //   label: 'probe.gl'
+    // },
+    // {
+    //   angle: 18,
+    //   label: 'vis.gl'
+    // },
+    // {
+    //   angle: 34,
+    //   label: 'react-map-gl'
+    // }
+  ]}
+  width={600}
+                            height={300}
+                        showLabels/>
+  
                     </Grid.Col>
                 </Grid>
             </div>
