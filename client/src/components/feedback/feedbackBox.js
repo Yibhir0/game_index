@@ -43,8 +43,8 @@ export default function FeedbackBox(props) {
             color: color,
             icon: icon,
             style: {
-                backgroundColor: '#374151',
-                borderColor: '#374151'
+                backgroundColor: '#18181b',
+                borderColor: '#18181b'
             },
             styles: (theme) => ({
                 title: { color: theme.white },

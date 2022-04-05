@@ -29,8 +29,9 @@ class GraphController extends Component {
         let graph;
         if (this.props.states.graphType === 'Sold-Most') {
             graph =
-                <FlexibleXYPlot margin={{ top: 25 }} xType="ordinal">
+                <FlexibleXYPlot  margin={{ top: 25 }} xType="ordinal">
                     <VerticalBarSeries
+                        color="#ca8a04"
                         data={this.props.states.graphData.popularGames}
                         onValueMouseOver={(datapoint, { event }) => {
                             this.setState({ crossValue: datapoint })
@@ -47,6 +48,7 @@ class GraphController extends Component {
                         tickFormat={v => v / 1000000}
                     />
                     <ChartLabel
+                        color="white"
                         text="Global Sales (Millions)"
                         className="alt-y-label"
                         includeMargin={false}

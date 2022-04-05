@@ -11,7 +11,7 @@ import { MantineProvider } from '@mantine/core';
 
 ReactDOM.render((
   <BrowserRouter>
-    <MantineProvider>
+    <MantineProvider theme={{ colorScheme: 'dark' }} withGlobalStyles>
       <NotificationsProvider>
         <App />
       </NotificationsProvider>

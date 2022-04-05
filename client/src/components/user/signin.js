@@ -4,6 +4,7 @@ import GoogleLogin, { GoogleLogout } from 'react-google-login';
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import {
+    Text,
     Anchor,
     Button,
 } from "@mantine/core";
@@ -76,10 +77,10 @@ export default function SignIn() {
 
         return (
             <div className="topnav">
-                <Button className="bg-gradient-to-b from-gray-700 to-gray-600" variant="subtle" radius="xs">
-                    <Anchor className="text-white" component={Link} to={`/profile/${userAccount._id}`} >
+                <Button className="duration-200 shadow-md hover:scale-125 bg-zinc-900 hover:bg-yellow-600" variant="subtle" radius="xs" component={Link} to={`/profile/${userAccount._id}`}>
+                    <Text color="white">
                         Profile
-                    </Anchor>
+                    </Text>
                 </Button>
 
                 <Button className=" ml-4 ... bg-gradient-to-b from-pink-700 to-pink-600" variant="subtle" radius="xs">

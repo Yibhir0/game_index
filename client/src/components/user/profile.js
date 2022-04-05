@@ -213,9 +213,8 @@ class Profile extends Component {
         return (
             <Group spacing="xs">
                 <ThemeIcon
-                    sx={(theme) => ({
-                        backgroundColor: "#374151",
-                    })}
+                    variant="light"
+                    color="dark"
                 >
                     {icon}
                 </ThemeIcon>
@@ -234,7 +233,7 @@ class Profile extends Component {
                 horizontalSpacing={'xs'}
             >
                 <thead>
-                    <tr className="bg-gray-700">
+                    <tr className="bg-zinc-900">
                         <th>{this.generateHeader('Cover', <IconPhoto />)}</th>
                         <th>{this.generateHeader('Title', <IconWritingSign />)}</th>
                         <th>{this.generateHeader('Genre', <IconSword />)}</th>
@@ -247,7 +246,7 @@ class Profile extends Component {
             
                 <tbody>{
                     gameList.games.map((game) => (
-                        <tr className="bg-gradient-to-b from-gray-700 to-gray-600" key={game.name}>
+                        <tr className="bg-gradient-to-b from-zinc-900 to-zinc-800" key={game.name}>
                             <td>
                                 <Image
                                     radius="sm"
@@ -258,14 +257,13 @@ class Profile extends Component {
                                 />
                             </td>
                             <td><Anchor className="text-white" component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
-                            <td><Badge variant="filled" color="cyan">{game.genre}</Badge></td>
-                            <td>{game.platform.map((platform) => <Badge variant="filled">{platform}</Badge>)}</td>
-                            <td><Badge variant="filled" color="indigo">{game.publisher}</Badge></td>
-                            <td><Badge variant="filled" color="violet">{game.year}</Badge></td>
+                            <td><Badge variant="light" color="cyan">{game.genre}</Badge></td>
+                            <td>{game.platform.map((platform) => <Badge variant="light">{platform}</Badge>)}</td>
+                            <td><Badge variant="light" color="indigo">{game.publisher}</Badge></td>
+                            <td><Badge variant="light" color="violet">{game.year}</Badge></td>
                             <td>
                                 {this.state.editPerms ?
                                     <ActionIcon
-
                                         className="bg-gradient-to-b from-red-700 to-orange-600 hover:from-red-900 hover:to-red-800"
                                         color="red"
                                         onClick={() => this.setState({
@@ -541,8 +539,8 @@ class Profile extends Component {
             color: color,
             icon: icon,
             style: {
-                backgroundColor: '#374151',
-                borderColor: '#374151'
+                backgroundColor: '#18181b',
+                borderColor: '#18181b'
             },
             styles: (theme) => ({
                 title: { color: theme.white },
@@ -558,7 +556,7 @@ class Profile extends Component {
     render() {
 
         return (
-            <div className="bg-gradient-to-b from-gray-400 to-stone-100">
+            <div>
                 {this.state.loggedIn ?
                     <div>
                         {this.state.loading ?
@@ -792,7 +790,11 @@ class Profile extends Component {
                                     <Grid.Col span={18}>
                                         <div style={{ margin: 'auto', padding: 50 }}>
                                             <Group>
-                                                <Title order={2}>Game List</Title>
+                                                <Title
+                                                    order={2}
+                                                >     
+                                                    Game List
+                                                </Title>
                                                 {this.state.editPerms ?
                                                     <ActionIcon
                                                         className="bg-gradient-to-b from-sky-700 to-sky-600 hover:from-sky-900 hover:to-sky-800"
@@ -808,7 +810,27 @@ class Profile extends Component {
                                                 }
                                             </Group>
                                             <Space h="md" />
-                                            <Accordion iconPosition="right" >
+                                            <Accordion
+                                                className="shadow-xl bg-zinc-900"
+                                                styles={(theme) =>({
+                                                    label: {
+                                                        color: '#f8fafc',   
+                                                    },
+                                                    item: {
+                                                        border: '0px solid transparent',
+                                                        borderRadius: theme.radius.sm,
+                                                    },
+                                                    itemTitle: { color: '#f8fafc' },
+                                                    icon: { color: '#fde047'},
+                                                    control: {
+                                                        '&:hover':
+                                                        {
+                                                          backgroundColor: '#18181b',
+                                                          opacity: 0.6,
+                                                        },
+                                                      },
+                                                })}
+                                            >
                                                 {this.state.displayLists}
                                             </Accordion>
                                         </div>

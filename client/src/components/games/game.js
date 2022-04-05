@@ -125,17 +125,13 @@ const Game = (props) => {
       <div>
         <Group spacing="xs">
           <ThemeIcon
-            sx={(theme) => ({
-                backgroundColor: "#374151",
-            })}
+            variant="light"
+            color="dark"
           >
               {icon}
           </ThemeIcon>
           <Title
             order={4}
-            sx={(theme) => ({
-              color: "#374151"
-            })}
           >
             {title}
           </Title>
@@ -151,8 +147,8 @@ const Game = (props) => {
         color: color,
         icon: icon,
         style: {
-            backgroundColor: '#374151',
-            borderColor: '#374151'
+            backgroundColor: '#18181b',
+            borderColor: '#18181b'
         },
         styles: (theme) => ({
             title: { color: theme.white },
@@ -172,13 +168,14 @@ const Game = (props) => {
           <Title
             order={1}
             sx={(theme) => ({
-              color: "#242c38"
+              color: "#f5f6fa"
             })}
           >
             {props.game.name}
           </Title>
           { localStorage.getItem("userProfile") ? 
             <ActionIcon
+              className="text-white bg-gradient-to-b from-yellow-700 to-yellow-500 hover:from-yellow-900 hover:to-yellow-700"
               onClick={() => {
                 setAdd(true)
                 setSelectedList(0);
@@ -193,13 +190,13 @@ const Game = (props) => {
         <br></br>
         <SimpleGrid cols={3}>
           <div>
-            {generateTag('Publisher:', <IconPacman />, <Badge color="indigo" variant="filled">{props.game.publisher}</Badge>)}
+            {generateTag('Genre:', <IconSword />, <Badge color="cyan" variant="light">{props.game.genre}</Badge>)} 
             <Space h="md" />
-            {generateTag('Platform:', <IconDeviceGamepad />, <Badge variant="filled">{platformDataUpdate(props.game.platform)}</Badge>)} 
+            {generateTag('Platform:', <IconDeviceGamepad />, <Badge variant="light">{platformDataUpdate(props.game.platform)}</Badge>)} 
             <Space h="md" />
-            {generateTag('Genre:', <IconSword />, <Badge color="cyan" variant="filled">{props.game.genre}</Badge>)} 
+            {generateTag('Publisher:', <IconPacman />, <Badge color="indigo" variant="light">{props.game.publisher}</Badge>)}
             <Space h="md" />
-            {generateTag('Release Year:', <IconCalendarTime/>, <Badge color="violet" variant="filled">{props.game.year}</Badge>)}
+            {generateTag('Release Year:', <IconCalendarTime/>, <Badge color="violet" variant="light">{props.game.year}</Badge>)}
             <Space h="md" />
             {generateTag('Critic Score:', <IconStar />, returnCriticData(props.game.criticScore))}
             <Space h="md" />
@@ -289,8 +286,8 @@ const Game = (props) => {
         }
 
       </Modal>
-
-      <div className="bg-gradient-to-b from-gray-400 to-stone-100" style={{ margin: "auto", padding: 50 }}>
+      <Space h="md"/>
+      <div className="shadow-md bg-gradient-to-b from-zinc-900 to-zinc-800" style={{ margin: "auto", padding: 50 }}>
         <Grid columns={12}>
           <Grid.Col span={2}>
             <Image radius="sm" src={imageURL} width={200} alt={props.game.name} />
@@ -306,38 +303,38 @@ const Game = (props) => {
 
 function esrbColour(rating) {
   if (rating === "E") {
-    return (<Badge color="green" variant="filled">{rating}</Badge>);
+    return (<Badge color="green" variant="light">{rating}</Badge>);
 
   } else if (rating === "E10") {
-    return (<Badge variant="filled">{rating}</Badge>);
+    return (<Badge variant="light">{rating}</Badge>);
 
   } else if (rating === "T") {
-    return (<Badge color="orange" variant="filled">{rating}</Badge>);
+    return (<Badge color="orange" variant="light">{rating}</Badge>);
 
   } else if (rating === "M") {
-    return (<Badge color="red" variant="filled">{rating}</Badge>);
+    return (<Badge color="red" variant="light">{rating}</Badge>);
 
   } else {
-    return (<Badge color="gray" variant="filled">{rating}</Badge>);
+    return (<Badge color="gray" variant="light">{rating}</Badge>);
 
   }
 }
 
 function numberColour(number) {
   if (number >= 10000000) {
-    return (<Badge variant="filled">{numberWithCommas(number)}</Badge>);
+    return (<Badge variant="light">{numberWithCommas(number)}</Badge>);
 
   } else if (number >= 1000000) {
-    return (<Badge color="green" variant="filled">{numberWithCommas(number)}</Badge>);
+    return (<Badge color="green" variant="light">{numberWithCommas(number)}</Badge>);
 
   } else if (number >= 100000) {
-    return (<Badge color="orange" variant="filled">{numberWithCommas(number)}</Badge>);
+    return (<Badge color="orange" variant="light">{numberWithCommas(number)}</Badge>);
 
   } else if (number >= 10000) {
-    return (<Badge color="red" variant="filled">{numberWithCommas(number)}</Badge>);
+    return (<Badge color="red" variant="light">{numberWithCommas(number)}</Badge>);
 
   } else {
-    return (<Badge color="gray" variant="filled">{numberWithCommas(number)}</Badge>);
+    return (<Badge color="gray" variant="light">{numberWithCommas(number)}</Badge>);
 
   }
 

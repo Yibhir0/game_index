@@ -1,5 +1,6 @@
 import { Component } from "react";
 import {
+  Center,
   ThemeIcon,
   Group,
   Tooltip,
@@ -281,7 +282,7 @@ class Games extends Component {
   async generateRows() {
     console.log(this.state.gamesL);
     const rows = this.state.gamesL.map((game, index) => (
-      <tr className="bg-gradient-to-b from-gray-700 to-gray-600" key={index+1}>
+      <tr className="bg-gradient-to-b from-zinc-900 to-zinc-800" key={index+1}>
         <td><Badge color="dark">{index + 1}</Badge></td>
         <td>
           <Avatar
@@ -294,11 +295,11 @@ class Games extends Component {
             {game.name}
           </Anchor>
         </td>
-        <td><Badge variant="filled" color="cyan">{game.genre}</Badge></td>
-        <td>{game.platform.map((platform, index) => (<Badge variant="filled" key={index + 1}>{platformNameUpdate(platform)}</Badge>))}</td>
-        <td><Badge variant="filled" color="indigo">{game.publisher}</Badge></td>
-        <td><Badge variant="filled" color="violet">{game.year}</Badge></td>
-        <td><Badge variant="filled" color="grape">{numberWithCommas(game.globalSales)}</Badge></td>
+        <td><Badge variant="light" color="cyan">{game.genre}</Badge></td>
+        <td>{game.platform.map((platform, index) => (<Badge variant="light" key={index + 1}>{platformNameUpdate(platform)}</Badge>))}</td>
+        <td><Badge variant="light" color="indigo">{game.publisher}</Badge></td>
+        <td><Badge variant="light" color="violet">{game.year}</Badge></td>
+        <td><Badge variant="light" color="grape">{numberWithCommas(game.globalSales)}</Badge></td>
         <td>{returnCriticData(game.criticScore)}</td>
       </tr>
     ));
@@ -395,13 +396,12 @@ class Games extends Component {
     }
   }
 
-  generateHeader(header, icon) {
+  generateHeader(header, icon, color) {
     return (
         <Group spacing="xs">
             <ThemeIcon
-                sx={(theme) => ({
-                    backgroundColor: "#374151",
-                })}
+                variant="light"
+                color={color}
             >
                 {icon}
             </ThemeIcon>
@@ -422,9 +422,21 @@ class Games extends Component {
   render() {
     return (
       <>
-        <SimpleGrid cols={3}>
-          <Grid.Col span={4}>
+        <SimpleGrid spacing="xl" cols={3}>
+          <Grid.Col  span={4}>
             <TextInput
+              styles={{
+                
+                label: { color: '#f8fafc'},
+                input: {
+                    border: 0,
+                    '&:focus-visible':
+                    {
+                        color: '#fde047',
+                    },
+                    backgroundColor: '#18181b',
+                },
+              }}
               onChange={(evt) => this.updateKeywords(evt)}
               onKeyPress={(ev) => {
                 if (ev.key === "Enter") {
@@ -438,15 +450,46 @@ class Games extends Component {
               radius="lg"
               size="md"
             />
-            <br></br>
-            <Button className="bg-gradient-to-b from-gray-700 to-gray-600" onClick={this.search}>Search</Button>
+            <Space h="md"/>
+            <Button className="shadow-md text-white bg-gradient-to-b from-yellow-700 to-yellow-500 hover:from-yellow-900 hover:to-yellow-700" onClick={this.search}>Search</Button>
           </Grid.Col>
           <Grid.Col span={4}>
-            <Accordion>
+          <Accordion
+            className="shadow-xl bg-zinc-900"
+            styles={(theme) =>({
+                label: {
+                    color: '#f8fafc',   
+                },
+                item: {
+                    border: '1px solid transparent',
+                    borderRadius: theme.radius.sm,
+                },
+                itemTitle: { color: '#f8fafc' },
+                icon: { color: '#fde047'},
+                control: {
+                    '&:hover':
+                    {
+                      backgroundColor: '#18181b',
+                      opacity: 0.6,
+                    },
+                  },
+            })}
+          >
               <Accordion.Item label="Filter">
                 <SimpleGrid cols={2}>
                   <Grid.Col span={4}>
                     <TextInput
+                      styles={{
+                        label: { color: '#f8fafc'},
+                        backgroundColor: { color: '#334155'},
+                        input: {
+                            border: 0,
+                            '&:focus-visible':
+                            {
+                                color: '#fde047',
+                            },
+                        }
+                      }}  
                       onChange={(evt) => this.updatePublisher(evt)}
                       onKeyPress={(ev) => {
                         if (ev.key === "Enter") {
@@ -460,6 +503,16 @@ class Games extends Component {
                   </Grid.Col>
                   <Grid.Col span={4}>
                     <NumberInput
+                      styles={{
+                        label: { color: '#f8fafc'},
+                        input: {
+                            border: 0,
+                            '&:focus-visible':
+                            {
+                                color: '#fde047',
+                            },
+                        }        
+                      }}
                       onChange={(evt) => this.updateYear(evt)}
                       onKeyPress={(ev) => {
                         if (ev.key === "Enter") {
@@ -475,6 +528,12 @@ class Games extends Component {
                   </Grid.Col>
                   <Grid.Col span={4}>
                     <NativeSelect
+                      styles={{
+                        label: { color: '#f8fafc'},
+                        input: {
+                            border: 0,
+                        }
+                      }}
                       onChange={(evt) => this.updateGenre(evt)}
                       data={this.genres}
                       label="Genre"
@@ -483,6 +542,12 @@ class Games extends Component {
                   </Grid.Col>
                   <Grid.Col span={4}>
                     <NativeSelect
+                      styles={{
+                        label: { color: '#f8fafc'},
+                        input: {
+                            border: 0,
+                        }
+                      }}
                       onChange={(evt) => this.updatePlatform(evt)}
                       data={this.platforms}
                       label="Platform"
@@ -494,17 +559,48 @@ class Games extends Component {
             </Accordion>
           </Grid.Col>
           <Grid.Col span={4}>
-            <Accordion>
+            <Accordion
+                className="shadow-xl bg-zinc-900"
+                styles={(theme) =>({
+                    label: {
+                        color: '#f8fafc',   
+                    },
+                    item: {
+                        border: '1px solid transparent',
+                        borderRadius: theme.radius.sm,
+                    },
+                    itemTitle: { color: '#f8fafc' },
+                    icon: { color: '#fde047'},
+                    control: {
+                        '&:hover':
+                        {
+                          backgroundColor: '#18181b',
+                          opacity: 0.6,
+                        },
+                      },
+                })}
+            >
               <Accordion.Item label="Sort">
                 <RadioGroup
+                  styles={{
+                    label: { color: '#f8fafc'},
+                  }}
                   onChange={(evt) => this.updateSort(evt)}
                   defaultValue="gs"
                   label="Sort by:"
+                  color="yellow"
                 >
                   <Radio value="gs">Global Sales</Radio>
                   <Radio value="cs">Critic Score</Radio>
                 </RadioGroup>
+                <br />
                 <NativeSelect
+                  styles={{
+                    label: { color: '#f8fafc'},
+                    input: {
+                        border: 0,
+                    }
+                  }}
                   onChange={(evt) => this.updateOrdering(evt)}
                   defaultValue="desc"
                   label="Order by:"
@@ -514,8 +610,8 @@ class Games extends Component {
                     { value: "asc", label: "Ascending" },
                   ]}
                 />
-                <br></br>
-                <Button className="bg-gradient-to-b from-gray-700 to-gray-600" onClick={this.sortGames}>Sort</Button>
+                <br />
+                <Button className="text-white bg-gradient-to-b from-yellow-700 to-yellow-500 hover:from-yellow-900 hover:to-yellow-700" onClick={this.sortGames}>Sort</Button>
               </Accordion.Item>
             </Accordion>
           </Grid.Col>
@@ -528,27 +624,36 @@ class Games extends Component {
           </div>
         ) : (
           <div>
-            <Table verticalSpacing="md" striped highlightOnHover>
+            <Table className="shadow-xl" verticalSpacing="md" striped highlightOnHover>
               <thead>
-                <tr className="bg-gray-700">
-                  <th>{this.generateHeader('', <IconListNumbers />)}</th>
-                  <th>{this.generateHeader('Cover', <IconPhoto />)}</th>
-                  <th>{this.generateHeader('Title', <IconWritingSign />)}</th>
-                  <th>{this.generateHeader('Genre', <IconSword />)}</th>
-                  <th>{this.generateHeader('Platform', <IconDeviceGamepad />)}</th>
-                  <th>{this.generateHeader('Publisher', <IconPacman />)}</th>
-                  <th>{this.generateHeader('Year', <IconCalendarTime />)}</th>
-                  <th>{this.generateHeader('Global Sales', <IconWorld />)}</th>
-                  <th>{this.generateHeader('Critic Score', <IconStar />)}</th>
+                <tr className="bg-zinc-900">
+                  <th>{this.generateHeader('', <IconListNumbers />, 'dark')}</th>
+                  <th>{this.generateHeader('Cover', <IconPhoto />, 'dark')}</th>
+                  <th>{this.generateHeader('Title', <IconWritingSign />, 'dark')}</th>
+                  <th>{this.generateHeader('Genre', <IconSword />, 'dark')}</th>
+                  <th>{this.generateHeader('Platform', <IconDeviceGamepad />, 'dark')}</th>
+                  <th>{this.generateHeader('Publisher', <IconPacman />, 'dark')}</th>
+                  <th>{this.generateHeader('Year', <IconCalendarTime />, 'dark')}</th>
+                  <th>{this.generateHeader('Global Sales', <IconWorld />, 'dark')}</th>
+                  <th>{this.generateHeader('Critic Score', <IconStar />, 'dark')}</th>
                 </tr>
               </thead>
               <tbody>{this.state.rows}</tbody>
             </Table>
-            <Pagination
-              total={this.state.totalPages}
-              page={this.state.pageNumber}
-              onChange={(evt) => this.changePage(evt)}
-            />
+            <Center>
+                <Pagination
+                className="bg-zinc-900"
+                styles={{
+                    item: { 
+                        backgroundColor: '#18181b'
+                        },
+                    active: {color: '#ca8a04'}
+                }}
+                total={this.state.totalPages}
+                page={this.state.pageNumber}
+                onChange={(evt) => this.changePage(evt)}
+                />
+            </Center>
           </div>
         )}
       </>
