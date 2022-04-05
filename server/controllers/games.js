@@ -13,7 +13,7 @@ exports.getGames = async (req, res) => {
 
             }
             else {
-                res.status(404).json({ message: "Could not connect to the database" })
+                res.status(404)
             }
         }
         res.send(response);
@@ -41,7 +41,7 @@ exports.getGame = async (req, res) => {
 
         }
         else {
-            res.status(404).json({ message: "Could not connect to the database" })
+            res.status(404)
         }
         // }
 
@@ -71,7 +71,7 @@ exports.getGamesByFilter = async (req, res) => {
 
         }
         else {
-            res.status(404).json({ message: "Could not connect to the database" })
+            res.status(404)
         }
     }
     catch (error) {
