@@ -59,7 +59,15 @@ app.use(express.static(path.join(__dirname, "../client/build")));
 //     res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 // });
 
+//Error handler
+app.use((err, req, res, next) => {
+    // send error status
+    res.status(500).json(err.message);
+});
+
 // Start listening
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}!`);
 });
+
+module.exports = app

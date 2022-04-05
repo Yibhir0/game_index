@@ -15,8 +15,7 @@ const gameSchema = new mongoose.Schema({
     globalsales: { type: Number },
     name: { type: String },
     genre: { type: String },
-    image_URL: [],
-    userrating: { type: Number }
+    image_URL: []
 })
 
 const model = mongoose.model("GameModels", gameSchema, "gamedata");
