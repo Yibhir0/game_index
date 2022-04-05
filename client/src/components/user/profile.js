@@ -188,9 +188,17 @@ class Profile extends Component {
     }
 
     listContent(gameList) {
-        return(
+
+        if (gameList.games.length === 0) {
+            return <Text>You have not Added games to this list</Text>
+        }
+
+        return (
+
+
+
             <Table
-            
+
                 dir={"ltr"}
                 striped highlightOnHover
                 verticalSpacing={'xl'}
@@ -207,7 +215,7 @@ class Profile extends Component {
                         <th></th>
                     </tr>
                 </thead>
-            
+
                 <tbody>{
                     gameList.games.map((game) => (
                         <tr className="bg-gradient-to-b from-gray-700 to-gray-600" key={game.name}>
@@ -289,8 +297,8 @@ class Profile extends Component {
                     </ScrollArea>
                     :
                     <>
-                        {this.listContent(gameList)}     
-                    </>    
+                        {this.listContent(gameList)}
+                    </>
                 }
             </Accordion.Item>
         ));
@@ -469,6 +477,9 @@ class Profile extends Component {
 
         return (
             <div className="bg-gradient-to-b from-gray-400 to-stone-100">
+
+
+
                 {this.state.loggedIn ?
                     <div>
                         {this.state.loading ?
@@ -477,6 +488,8 @@ class Profile extends Component {
                                 <Loader size="xl" />
                             </div>
                             :
+
+
 
                             <>
                                 {/* All modals */}
@@ -489,6 +502,8 @@ class Profile extends Component {
                                     }, () => this.resetErrorMsg())}
                                     title="Create List"
                                 >
+
+
                                     <TextInput
                                         onChange={(evt) => this.setState({
                                             createdListName: evt.target.value
@@ -703,6 +718,7 @@ class Profile extends Component {
                                         <div style={{ margin: 'auto', padding: 50 }}>
                                             <Group>
                                                 <Title order={2}>Game List</Title>
+
                                                 {this.state.editPerms ?
                                                     <ActionIcon
                                                         className="bg-gradient-to-b from-sky-700 to-sky-600 hover:from-sky-900 hover:to-sky-800"
@@ -716,7 +732,13 @@ class Profile extends Component {
                                                     :
                                                     <></>
                                                 }
+
                                             </Group>
+                                            <div>
+                                                {this.state.currentUser.lists.length === 0 ?
+                                                    <Text>You have not created any list </Text> : <></>}
+                                            </div>
+
                                             <Space h="md" />
                                             <Accordion iconPosition="right" >
                                                 {this.state.displayLists}
