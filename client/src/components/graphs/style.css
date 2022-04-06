@@ -1,3 +1,9 @@
-.rv-xy-plot__axis__title text, .rv-xy-plot__axis__tick__text{
+.rv-xy-plot__axis__title text, 
+.rv-xy-plot__axis__tick__text, 
+.rv-discrete-color-legend-item{
     fill: white;
+}
+
+.rv-discrete-color-legend-item{
+    color: white;
 }

@@ -9,7 +9,7 @@ export default function SearchPopUp(props) {
     return (
         <>
             <Modal
-                size="50%"
+                size="35%"
                 opened={opened}
                 onClose={() => setOpened(false)}
                 title="Visualisation"
@@ -18,13 +18,11 @@ export default function SearchPopUp(props) {
 
             </Modal>
 
-            <Group position="left">
-                <Button className="shadow-md text-white bg-gradient-to-b from-yellow-700 to-yellow-500 hover:from-yellow-900 hover:to-yellow-700" style={{ margin: "left" }} variant="gradient" gradient={{ from: 'grape', to: 'pink', deg: 35 }}
-                    onClick={() => setOpened(true)}
-                >
-                    Create Graph
-                </Button>
-            </Group>
+            <Button className="duration-200 shadow-md hover:scale-110 bg-zinc-900 hover:bg-yellow-600"  variant="gradient" gradient={{ from: 'grape', to: 'pink', deg: 35 }}
+                onClick={() => setOpened(true)}
+            >
+                Create Graph
+            </Button>
         </>
     );
 }

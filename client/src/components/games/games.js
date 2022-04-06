@@ -451,9 +451,11 @@ class Games extends Component {
               radius="lg"
               size="md"
             />
-            <Space h="md"/>
-            <Button className="shadow-md text-white bg-gradient-to-b from-yellow-700 to-yellow-500 hover:from-yellow-900 hover:to-yellow-700" onClick={this.search}>Search</Button>
-            <SearchPopUp games={this.state.gamesL} page={this.state.pageNumber }/>
+            <Space h="md" />
+            <Group>
+              <Button className="duration-200 shadow-md hover:scale-110 bg-zinc-900 hover:bg-yellow-600" onClick={this.search}>Search</Button>
+              <SearchPopUp games={this.state.gamesL} page={this.state.pageNumber }/>
+            </Group>
           </Grid.Col>
           <Grid.Col span={4}>
           <Accordion

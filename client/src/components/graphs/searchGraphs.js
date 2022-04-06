@@ -120,34 +120,35 @@ class SearchGraphs extends Component {
                 <Grid>
                     <Grid.Col span={12}>
                     <ChartLabel
-                                text="Global Sales of current 10 games in list"
-                                includeMargin={false}
-                                xPercent={0.25}
-                                yPercent={0.55}
-                                style={{
-                                    textAnchor: "end",
-                                }}
-                            />
+                        text="Global Sales of Top 10 Games in Current List"
+
+                        includeMargin={false}
+                        xPercent={0.25}
+                        yPercent={0.55}
+                        style={{
+                            textAnchor: "end",
+                        }}
+                    />
                         <XYPlot
                             margin={{ top: 25 }}
                             xType="ordinal"
                             height={300}
                             width={600}
                         >
-                            <VerticalBarSeries data={this.state.popularGames} />
+                            <VerticalBarSeries opacity="0.5" color="#fde047" data={this.state.popularGames} />
                             <XAxis
                                 tickLabelAngle={90}
                                 style={{
-                                    line: { stroke: "red" },
-                                    text: { fill: "red" },
+                                    line: { stroke: "white" },
+                                    text: { fill: "white" },
                                 }}
                                 tickSize={1}
                                 tickPadding={-20}
                             />
                             <YAxis
                                 style={{
-                                    line: { stroke: "red" },
-                                    text: { fill: "red" },
+                                    line: { stroke: "white" },
+                                    text: { fill: "white" },
                                 }}
                                 tickSize={1}
                                 tickPadding={2}
@@ -176,14 +177,14 @@ class SearchGraphs extends Component {
 
                     <Grid.Col span={12}>
                     <ChartLabel
-                                text="Sales relative to region"
-                                includeMargin={false}
-                                xPercent={0.25}
-                                yPercent={0.55}
-                                style={{
-                                    textAnchor: "end",
-                                }}
-                            />
+                        text="Sales Relative to Region"
+                        includeMargin={false}
+                        xPercent={0.25}
+                        yPercent={0.55}
+                        style={{
+                            textAnchor: "end",
+                        }}
+                    />
                         <FlexibleXYPlot
                             xType="ordinal"
                             stackBy="y"
@@ -200,19 +201,19 @@ class SearchGraphs extends Component {
                                 items={[
                                     {
                                         title: "NA Sales",
-                                        color: "#FFDDE2FF",
+                                        color: "#fca5a5",
                                     },
                                     {
                                         title: "EU Sales",
-                                        color: "#FAA094FF",
+                                        color: "#fdba74",
                                     },
                                     {
                                         title: "JP Sales",
-                                        color: "#9ED9CCFF",
+                                        color: "#fef08a",
                                     },
                                     {
                                         title: "Other Sales",
-                                        color: "#008C76FF",
+                                        color: "#d9f99d",
                                     },
                                 ]}
                             />
@@ -222,44 +223,48 @@ class SearchGraphs extends Component {
                                 tickPadding={2}
                                 tickFormat={(v) => v / 1000000}
                                 style={{
-                                    line: { stroke: "red" },
-                                    text: { fill: "red" },
+                                    line: { stroke: "white" },
+                                    text: { fill: "white" },
                                 }}
                             />
                             <VerticalBarSeries
                                 cluster="game"
-                                color="#008C76FF"
+                                opacity="0.6"
+                                color="#fca5a5"
                                 data={this.state.clusterGames[0]}
                             />
                             <XAxis
                                 tickLabelAngle={90}
                                 style={{
-                                    line: { stroke: "red" },
-                                    text: { fill: "red" },
+                                    line: { stroke: "white" },
+                                    text: { fill: "white" },
                                 }}
                                 tickSize={1}
                                 tickPadding={-50}
                             />
                             <VerticalBarSeries
                                 cluster="game"
-                                color="#9ED9CCFF"
+                                opacity="0.6"
+                                color="#fdba74"
                                 data={this.state.clusterGames[1]}
                             />
                             <VerticalBarSeries
                                 cluster="game"
-                                color="#FAA094FF"
+                                opacity="0.6"
+                                color="#fef08a"
                                 data={this.state.clusterGames[2]}
                             />
                             <VerticalBarSeries
                                 cluster="game"
-                                color="#FFDDE2FF"
+                                opacity="0.6"
+                                color="#d9f99d"
                                 data={this.state.clusterGames[3]}
                             />
                             <XAxis
                                 tickLabelAngle={90}
                                 style={{
-                                    line: { stroke: "red" },
-                                    text: { fill: "red" },
+                                    line: { stroke: "white" },
+                                    text: { fill: "white" },
                                 }}
                                 tickSize={1}
                                 tickPadding={-50}
@@ -295,12 +300,13 @@ class SearchGraphs extends Component {
                                 }}
                             />
                         <RadialChart
-                            colorRange={[ "yellow", "#89CFF0", "pink", "orange", "green", "red"]}
+                            opacity="0.5"
+                            colorRange={[ "#fca5a5", "#fdba74", "#fde047", "#bef264", "#5eead4", "#93c5fd"]}
                             data={this.state.pieGames}
                             width={600}
                             height={300}
                             showLabels
-                            labelsStyle={{fill:"purple", fontSize:"18"}}
+                            labelsStyle={{fill:"white", fontSize:"14"}}
                             margin={{left: 40, right: 40, top: 10, bottom: 10}}
                         />
                     </Grid.Col>

@@ -18,6 +18,7 @@ class LeastSold extends Component {
         return (
             <FlexibleXYPlot margin={{ top: 25 }} xType="ordinal">
                 <VerticalBarSeries
+                    opacity="0.5"
                     color='#eab308'
                     data={this.props.leastGames}
 
