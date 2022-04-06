@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://gitlab.com/Yassine_Ibhir/game_index/issues"
   },
-  "homepage": "https://gitlab.com/Yassine_Ibhir/game_index#readme"
+  "homepage": "https://gitlab.com/Yassine_Ibhir/game_index#readme",
+  "dependencies": {
+    "@mantine/notifications": "^4.1.2"
+  }
 }

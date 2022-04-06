@@ -1,5 +1,6 @@
 import { Component } from "react";
 import {
+    ThemeIcon,
     ScrollArea,
     Space,
     Badge,
@@ -19,9 +20,22 @@ import {
     Table,
     Anchor,
     Button,
+    CheckboxIcon,
 } from '@mantine/core';
+import { showNotification } from "@mantine/notifications";
 import { Link } from 'react-router-dom';
 import {
+    IconMoodSad,
+    IconCalendarTime,
+    IconPacman,
+    IconDeviceGamepad,
+    IconSword,
+    IconWritingSign,
+    IconPhoto,
+    IconPencil,
+    IconMinus,
+    IconPlus,
+    IconCheck,
     IconFolderPlus,
     IconEdit,
     IconX,
@@ -58,6 +72,7 @@ class Profile extends Component {
         this.createList = this.createList.bind(this);
         this.addListToDb = this.addListToDb.bind(this);
         this.deleteList = this.deleteList.bind(this);
+        this.generateHeader = this.generateHeader.bind(this);
         this.generateList = this.generateList.bind(this);
         this.listContent = this.listContent.bind(this);
         this.fetchGames = this.fetchGames.bind(this);
@@ -68,6 +83,7 @@ class Profile extends Component {
         this.removeGameFromList = this.removeGameFromList.bind(this);
         this.checkPerms = this.checkPerms.bind(this);
         this.editBio = this.editBio.bind(this);
+        this.displayNotification = this.displayNotification.bind(this);
         // this.updateUser = this.updateUser.bind(this);
     }
 
@@ -135,6 +151,13 @@ class Profile extends Component {
 
         await this.fetchUser();
 
+        this.displayNotification(
+            'Bio Edited',
+            'Bio has been successfully edited',
+            'orange',
+            <IconPencil />
+        )
+
         this.setState({
             editingBio: false,
             bioToUpdate: this.state.currentUser.bio
@@ -187,10 +210,24 @@ class Profile extends Component {
         }
     }
 
+    generateHeader(header, icon) {
+        return (
+            <Group spacing="xs">
+                <ThemeIcon
+                    variant="light"
+                    color="dark"
+                >
+                    {icon}
+                </ThemeIcon>
+                <Text className="text-white">{header}</Text>
+            </Group>
+        )
+    }
+
     listContent(gameList) {
 
         if (gameList.games.length === 0) {
-            return <Text>You have not Added games to this list</Text>
+            return <Text>No games has been added to this list.</Text>
         }
 
         return (
@@ -205,22 +242,23 @@ class Profile extends Component {
                 horizontalSpacing={'xs'}
             >
                 <thead>
-                    <tr className="bg-gray-700">
-                        <th><Text className="text-white">Cover</Text></th>
-                        <th><Text className="text-white">Title</Text></th>
-                        <th><Text className="text-white">Genre</Text></th>
-                        <th><Text className="text-white">Console</Text></th>
-                        <th><Text className="text-white">Publisher</Text></th>
-                        <th><Text className="text-white">Year</Text></th>
+                    <tr className="bg-zinc-900">
+                        <th>{this.generateHeader('Cover', <IconPhoto />)}</th>
+                        <th>{this.generateHeader('Title', <IconWritingSign />)}</th>
+                        <th>{this.generateHeader('Genre', <IconSword />)}</th>
+                        <th>{this.generateHeader('Platform', <IconDeviceGamepad />)}</th>
+                        <th>{this.generateHeader('Publisher', <IconPacman />)}</th>
+                        <th>{this.generateHeader('Year', <IconCalendarTime />)}</th>
                         <th></th>
                     </tr>
                 </thead>
 
                 <tbody>{
                     gameList.games.map((game) => (
-                        <tr className="bg-gradient-to-b from-gray-700 to-gray-600" key={game.name}>
+                        <tr className="bg-gradient-to-b from-zinc-900 to-zinc-800" key={game.name}>
                             <td>
                                 <Image
+                                    radius="sm"
                                     width={80}
                                     height={80}
                                     src={`https://thelemongamerindex.blob.core.windows.net/imagedata/src/main/resources/json_data/image_data/${game.image_URL[0]}`}
@@ -228,14 +266,13 @@ class Profile extends Component {
                                 />
                             </td>
                             <td><Anchor className="text-white" component={Link} to={`/games/${game._id}`}  >{game.name}</Anchor></td>
-                            <td><Badge variant="filled" color="cyan">{game.genre}</Badge></td>
-                            <td>{game.platform.map((platform) => <Badge variant="filled">{platform}</Badge>)}</td>
-                            <td><Badge variant="filled" color="indigo">{game.publisher}</Badge></td>
-                            <td><Badge variant="filled" color="violet">{game.year}</Badge></td>
+                            <td><Badge variant="light" color="cyan">{game.genre}</Badge></td>
+                            <td>{game.platform.map((platform) => <Badge variant="light">{platform}</Badge>)}</td>
+                            <td><Badge variant="light" color="indigo">{game.publisher}</Badge></td>
+                            <td><Badge variant="light" color="violet">{game.year}</Badge></td>
                             <td>
                                 {this.state.editPerms ?
                                     <ActionIcon
-
                                         className="bg-gradient-to-b from-red-700 to-orange-600 hover:from-red-900 hover:to-red-800"
                                         color="red"
                                         onClick={() => this.setState({
@@ -258,7 +295,7 @@ class Profile extends Component {
 
     generateList() {
         const lists = this.state.currentUser.lists.map((gameList) => (
-            <Accordion.Item className="border-black" label={gameList.name}>
+            <Accordion.Item className="border-black" label={`(${gameList.games.length}) ${gameList.name}`}>
                 {this.state.editPerms ?
                     <div style={{
                         padding: 10
@@ -320,6 +357,14 @@ class Profile extends Component {
                 await this.addListToDb();
                 await this.fetchUser();
                 this.generateList();
+                
+                this.displayNotification(
+                    'List Added',
+                    `${this.state.createdListName} has been successfully created`,
+                    'green',
+                    <IconPlus />,
+                );
+                
 
                 this.setState({
                     creatingList: false,
@@ -368,6 +413,14 @@ class Profile extends Component {
         console.log(response);
 
         await this.fetchUser();
+
+        this.displayNotification(
+            'List Deleted',
+            `${this.state.currentGameList} has been successfully deleted`,
+            'red',
+            <IconMinus />,
+        );
+
         this.generateList();
 
         this.setState({
@@ -403,6 +456,14 @@ class Profile extends Component {
                 console.log(response);
 
                 await this.fetchUser();
+
+                this.displayNotification(
+                    'Game Added',
+                    `${this.state.gameToAdd[0].name} has been successfully added to list`,
+                    'green',
+                    <IconPlus />,
+                );
+
                 this.setState({
                     addingGame: false,
                     gameToAdd: []
@@ -462,6 +523,13 @@ class Profile extends Component {
         let response = await fetch(url, requestOptions);
         console.log(response);
 
+        this.displayNotification(
+            'Game Removed',
+            `${this.state.gameToBeDeleted.name} has been successfully removed from the list`,
+            'red',
+            <IconMinus />,
+        );
+        
         await this.fetchUser();
         this.generateList();
     }
@@ -473,13 +541,31 @@ class Profile extends Component {
             createListErrorMsg: '',
         })
     }
+
+    displayNotification(title, desc, color, icon) {
+        showNotification({
+            title: title,
+            color: color,
+            icon: icon,
+            style: {
+                backgroundColor: '#18181b',
+                borderColor: '#18181b'
+            },
+            styles: (theme) => ({
+                title: { color: theme.white },
+                description: { color: theme.white },
+                closeButton: {
+                    color: theme.colors.red[7]
+                  },
+            }),
+            message: desc,
+        })
+    }
+
     render() {
 
         return (
-            <div className="bg-gradient-to-b from-gray-400 to-stone-100">
-
-
-
+            <div>
                 {this.state.loggedIn ?
                     <div>
                         {this.state.loading ?
@@ -717,8 +803,11 @@ class Profile extends Component {
                                     <Grid.Col span={18}>
                                         <div style={{ margin: 'auto', padding: 50 }}>
                                             <Group>
-                                                <Title order={2}>Game List</Title>
-
+                                                <Title
+                                                    order={2}
+                                                >     
+                                                    Game List
+                                                </Title>
                                                 {this.state.editPerms ?
                                                     <ActionIcon
                                                         className="bg-gradient-to-b from-sky-700 to-sky-600 hover:from-sky-900 hover:to-sky-800"
@@ -736,11 +825,40 @@ class Profile extends Component {
                                             </Group>
                                             <div>
                                                 {this.state.currentUser.lists.length === 0 ?
-                                                    <Text>You have not created any list </Text> : <></>}
+                                                    <div>
+                                                        <Space h="md" />
+                                                        <Group>
+                                                            <ThemeIcon variant="light" color="dark">
+                                                                <IconMoodSad/>
+                                                            </ThemeIcon>
+                                                            <Text weight={500}>User has not created any list yet </Text>
+                                                        </Group>
+                                                    </div>
+                                                    : <></>}
                                             </div>
 
                                             <Space h="md" />
-                                            <Accordion iconPosition="right" >
+                                            <Accordion
+                                                className="shadow-xl bg-zinc-900"
+                                                styles={(theme) =>({
+                                                    label: {
+                                                        color: '#f8fafc',   
+                                                    },
+                                                    item: {
+                                                        border: '0px solid transparent',
+                                                        borderRadius: theme.radius.sm,
+                                                    },
+                                                    itemTitle: { color: '#f8fafc' },
+                                                    icon: { color: '#fde047'},
+                                                    control: {
+                                                        '&:hover':
+                                                        {
+                                                          backgroundColor: '#18181b',
+                                                          opacity: 0.6,
+                                                        },
+                                                      },
+                                                })}
+                                            >
                                                 {this.state.displayLists}
                                             </Accordion>
                                         </div>
