@@ -33,20 +33,12 @@ import {
   IconSword,
   IconWritingSign,
   IconPhoto,
-  IconPencil,
-  IconMinus,
-  IconPlus,
-  IconCheck,
-  IconFolderPlus,
-  IconEdit,
-  IconX,
+
 } from '@tabler/icons';
 import StarsRating from "stars-rating";
 import { Link } from 'react-router-dom';
 import SearchPopUp from "../graphs/searchPopUp";
-import {
-  generateHeader
-} from '../user/profile.js'
+
 
 /**
  * This component renders all the games and 
@@ -240,50 +232,50 @@ class Games extends Component {
     );
   }
 
-    sortGames() {
-        //sort by global sales
-        if (this.state.sort === "gs") {
-            const sortedGames = []
-                .concat(this.state.gamesL)
-                .sort((a, b) =>
-                    a.globalSales > b.globalSales
-                        ? this.state.ordering[0]
-                        : this.state.ordering[1]
-                );
-            this.setState(
-                {
-                    pageNumber: 1,
-                    gamesL: sortedGames,
-                },
-                () => {
-                    this.generateRows();
-                }
-            );
-            //sort by critic score
-        } else if (this.state.sort === "cs") {
-            const sortedGames = []
-                .concat(this.state.gamesL)
-                .sort((a, b) =>
-                    a.criticScore > b.criticScore
-                        ? this.state.ordering[0]
-                        : this.state.ordering[1]
-            );
-            this.setState({
-                    pageNumber: 1,
-                    gamesL: sortedGames,
-                },
-                () => {
-                    this.generateRows();
-                });
-        } 
+  sortGames() {
+    //sort by global sales
+    if (this.state.sort === "gs") {
+      const sortedGames = []
+        .concat(this.state.gamesL)
+        .sort((a, b) =>
+          a.globalSales > b.globalSales
+            ? this.state.ordering[0]
+            : this.state.ordering[1]
+        );
+      this.setState(
+        {
+          pageNumber: 1,
+          gamesL: sortedGames,
+        },
+        () => {
+          this.generateRows();
+        }
+      );
+      //sort by critic score
+    } else if (this.state.sort === "cs") {
+      const sortedGames = []
+        .concat(this.state.gamesL)
+        .sort((a, b) =>
+          a.criticScore > b.criticScore
+            ? this.state.ordering[0]
+            : this.state.ordering[1]
+        );
+      this.setState({
+        pageNumber: 1,
+        gamesL: sortedGames,
+      },
+        () => {
+          this.generateRows();
+        });
     }
+  }
 
-            
+
   //Generates rows for the games in the list
   async generateRows() {
     console.log(this.state.gamesL);
     const rows = this.state.gamesL.map((game, index) => (
-      <tr className="bg-gradient-to-b from-zinc-900 to-zinc-800" key={index+1}>
+      <tr className="bg-gradient-to-b from-zinc-900 to-zinc-800" key={index + 1}>
         <td><Badge color="dark">{index + 1}</Badge></td>
         <td>
           <Avatar
@@ -399,17 +391,17 @@ class Games extends Component {
 
   generateHeader(header, icon, color) {
     return (
-        <Group spacing="xs">
-            <ThemeIcon
-                variant="light"
-                color={color}
-            >
-                {icon}
-            </ThemeIcon>
-            <Text className="text-white">{header}</Text>
-        </Group>
+      <Group spacing="xs">
+        <ThemeIcon
+          variant="light"
+          color={color}
+        >
+          {icon}
+        </ThemeIcon>
+        <Text className="text-white">{header}</Text>
+      </Group>
     )
-}
+  }
 
   //print the current state of the filter
   printFilters() {
@@ -424,18 +416,19 @@ class Games extends Component {
     return (
       <>
         <SimpleGrid spacing="xl" cols={3}>
-          <Grid.Col  span={4}>
+          <Grid.Col span={4}>
             <TextInput
+              size="xl"
               styles={{
-                
-                label: { color: '#f8fafc'},
+
+                label: { color: '#f8fafc' },
                 input: {
-                    border: 0,
-                    '&:focus-visible':
-                    {
-                        color: '#fde047',
-                    },
-                    backgroundColor: '#18181b',
+                  border: 0,
+                  '&:focus-visible':
+                  {
+                    color: '#fde047',
+                  },
+                  backgroundColor: '#18181b',
                 },
               }}
               onChange={(evt) => this.updateKeywords(evt)}
@@ -445,55 +438,53 @@ class Games extends Component {
                   this.search();
                 }
               }}
-              placeholder="Keywords"
-              label="Search:"
+              placeholder="Search by Keyword"
               variant="filled"
-              radius="lg"
-              size="md"
+
             />
             <Space h="md" />
             <Group>
               <Button className="duration-200 shadow-md hover:scale-110 bg-zinc-900 hover:bg-yellow-600" onClick={this.search}>Search</Button>
-              <SearchPopUp games={this.state.gamesL} page={this.state.pageNumber }/>
+              <SearchPopUp games={this.state.gamesL} page={this.state.pageNumber} />
             </Group>
           </Grid.Col>
           <Grid.Col span={4}>
-          <Accordion
-            className="shadow-xl bg-zinc-900"
-            styles={(theme) =>({
+            <Accordion
+              className="shadow-xl bg-zinc-900"
+              styles={(theme) => ({
                 label: {
-                    color: '#f8fafc',   
+                  color: '#f8fafc',
                 },
                 item: {
-                    border: '1px solid transparent',
-                    borderRadius: theme.radius.sm,
+                  border: '1px solid transparent',
+                  borderRadius: theme.radius.sm,
                 },
                 itemTitle: { color: '#f8fafc' },
-                icon: { color: '#fde047'},
+                icon: { color: '#fde047' },
                 control: {
-                    '&:hover':
-                    {
-                      backgroundColor: '#18181b',
-                      opacity: 0.6,
-                    },
+                  '&:hover':
+                  {
+                    backgroundColor: '#18181b',
+                    opacity: 0.6,
                   },
-            })}
-          >
+                },
+              })}
+            >
               <Accordion.Item label="Filter">
                 <SimpleGrid cols={2}>
                   <Grid.Col span={4}>
                     <TextInput
                       styles={{
-                        label: { color: '#f8fafc'},
-                        backgroundColor: { color: '#334155'},
+                        label: { color: '#f8fafc' },
+                        backgroundColor: { color: '#334155' },
                         input: {
-                            border: 0,
-                            '&:focus-visible':
-                            {
-                                color: '#fde047',
-                            },
+                          border: 0,
+                          '&:focus-visible':
+                          {
+                            color: '#fde047',
+                          },
                         }
-                      }}  
+                      }}
                       onChange={(evt) => this.updatePublisher(evt)}
                       onKeyPress={(ev) => {
                         if (ev.key === "Enter") {
@@ -508,14 +499,14 @@ class Games extends Component {
                   <Grid.Col span={4}>
                     <NumberInput
                       styles={{
-                        label: { color: '#f8fafc'},
+                        label: { color: '#f8fafc' },
                         input: {
-                            border: 0,
-                            '&:focus-visible':
-                            {
-                                color: '#fde047',
-                            },
-                        }        
+                          border: 0,
+                          '&:focus-visible':
+                          {
+                            color: '#fde047',
+                          },
+                        }
                       }}
                       onChange={(evt) => this.updateYear(evt)}
                       onKeyPress={(ev) => {
@@ -533,9 +524,9 @@ class Games extends Component {
                   <Grid.Col span={4}>
                     <NativeSelect
                       styles={{
-                        label: { color: '#f8fafc'},
+                        label: { color: '#f8fafc' },
                         input: {
-                            border: 0,
+                          border: 0,
                         }
                       }}
                       onChange={(evt) => this.updateGenre(evt)}
@@ -547,15 +538,15 @@ class Games extends Component {
                   <Grid.Col span={4}>
                     <NativeSelect
                       styles={{
-                        label: { color: '#f8fafc'},
+                        label: { color: '#f8fafc' },
                         input: {
-                            border: 0,
+                          border: 0,
                         }
                       }}
                       onChange={(evt) => this.updatePlatform(evt)}
                       data={this.platforms}
                       label="Platform"
-                      placeholder="Filter by Platform"s
+                      placeholder="Filter by Platform" s
                     />
                   </Grid.Col>
                 </SimpleGrid>
@@ -564,30 +555,30 @@ class Games extends Component {
           </Grid.Col>
           <Grid.Col span={4}>
             <Accordion
-                className="shadow-xl bg-zinc-900"
-                styles={(theme) =>({
-                    label: {
-                        color: '#f8fafc',   
-                    },
-                    item: {
-                        border: '1px solid transparent',
-                        borderRadius: theme.radius.sm,
-                    },
-                    itemTitle: { color: '#f8fafc' },
-                    icon: { color: '#fde047'},
-                    control: {
-                        '&:hover':
-                        {
-                          backgroundColor: '#18181b',
-                          opacity: 0.6,
-                        },
-                      },
-                })}
+              className="shadow-xl bg-zinc-900"
+              styles={(theme) => ({
+                label: {
+                  color: '#f8fafc',
+                },
+                item: {
+                  border: '1px solid transparent',
+                  borderRadius: theme.radius.sm,
+                },
+                itemTitle: { color: '#f8fafc' },
+                icon: { color: '#fde047' },
+                control: {
+                  '&:hover':
+                  {
+                    backgroundColor: '#18181b',
+                    opacity: 0.6,
+                  },
+                },
+              })}
             >
               <Accordion.Item label="Sort">
                 <RadioGroup
                   styles={{
-                    label: { color: '#f8fafc'},
+                    label: { color: '#f8fafc' },
                   }}
                   onChange={(evt) => this.updateSort(evt)}
                   defaultValue="gs"
@@ -600,9 +591,9 @@ class Games extends Component {
                 <br />
                 <NativeSelect
                   styles={{
-                    label: { color: '#f8fafc'},
+                    label: { color: '#f8fafc' },
                     input: {
-                        border: 0,
+                      border: 0,
                     }
                   }}
                   onChange={(evt) => this.updateOrdering(evt)}
@@ -645,18 +636,18 @@ class Games extends Component {
               <tbody>{this.state.rows}</tbody>
             </Table>
             <Center>
-                <Pagination
+              <Pagination
                 className="bg-zinc-900"
                 styles={{
-                    item: { 
-                        backgroundColor: '#18181b'
-                        },
-                    active: {color: '#ca8a04'}
+                  item: {
+                    backgroundColor: '#18181b'
+                  },
+                  active: { color: '#ca8a04' }
                 }}
                 total={this.state.totalPages}
                 page={this.state.pageNumber}
                 onChange={(evt) => this.changePage(evt)}
-                />
+              />
             </Center>
           </div>
         )}
@@ -694,7 +685,7 @@ function numberWithCommas(x) {
 }
 
 function platformNameUpdate(name) {
-  switch(name) {
+  switch (name) {
     case "WiiU":
       return "Wii U";
     case "GC":

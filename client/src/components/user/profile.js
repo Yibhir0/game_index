@@ -20,7 +20,6 @@ import {
     Table,
     Anchor,
     Button,
-    CheckboxIcon,
 } from '@mantine/core';
 import { showNotification } from "@mantine/notifications";
 import { Link } from 'react-router-dom';
@@ -35,7 +34,6 @@ import {
     IconPencil,
     IconMinus,
     IconPlus,
-    IconCheck,
     IconFolderPlus,
     IconEdit,
     IconX,
