@@ -3,12 +3,19 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import { NotificationsProvider } from '@mantine/notifications';
+import { MantineProvider } from '@mantine/core';
+
 
 
 
 ReactDOM.render((
   <BrowserRouter>
-    <App />
+    <MantineProvider theme={{ colorScheme: 'dark' }} withGlobalStyles>
+      <NotificationsProvider>
+        <App />
+      </NotificationsProvider>
+    </MantineProvider>
   </BrowserRouter>),
   document.getElementById('root')
 );

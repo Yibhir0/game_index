@@ -2,6 +2,10 @@ import { Textarea, Button, Grid, Center } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
 import RatingBox from '../feedback/rating';
 import React, { useState } from "react";
+import {
+    IconMessagePlus,
+} from '@tabler/icons';
+import { showNotification } from "@mantine/notifications";
 
 /**
  * This component allow user to add a comment/feedback
@@ -33,6 +37,26 @@ export default function FeedbackBox(props) {
         setRating(value);
     }
 
+    const displayNotification = (title, desc, color, icon) => {
+        showNotification({
+            title: title,
+            color: color,
+            icon: icon,
+            style: {
+                backgroundColor: '#18181b',
+                borderColor: '#18181b'
+            },
+            styles: (theme) => ({
+                title: { color: theme.white },
+                description: { color: theme.white },
+                closeButton: {
+                    color: theme.colors.red[7]
+                  },
+            }),
+            message: desc,
+        })
+    }
+    
     return (
 
         <Center>
@@ -47,7 +71,15 @@ export default function FeedbackBox(props) {
                         /></Grid.Col>
                     <Grid.Col style={{ minHeight: 80 }} span={2}>
                         <RatingBox rating={rating} dis={false} getRating={getRating} />
-                        <Button className="bg-gradient-to-b from-gray-700 to-gray-600" type="submit">Comment/Rate</Button>
+                        <Button onClick={() => {
+                            displayNotification(
+                                'Comment Added',
+                                `Comment has been successfully added to the game page`,
+                                'green',
+                                <IconMessagePlus />,
+                            )
+                        }}
+                            className="bg-gradient-to-b from-gray-700 to-gray-600" type="submit">Comment/Rate</Button>
                     </Grid.Col>
 
                 </Grid>

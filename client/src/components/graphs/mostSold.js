@@ -19,7 +19,7 @@ class MostSold extends Component {
             <FlexibleXYPlot margin={{ top: 25 }} xType="ordinal">
                 <VerticalBarSeries
                     data={this.props.popularGames}
-
+                    color="#eab308"
                     onValueClick={(datapoint, event) => {
                         this.props.changeId(datapoint.id)
                     }}
