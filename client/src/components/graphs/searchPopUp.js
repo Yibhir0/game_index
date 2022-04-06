@@ -21,7 +21,7 @@ export default function SearchPopUp(props) {
             <Button className="duration-200 shadow-md hover:scale-110 bg-zinc-900 hover:bg-yellow-600"  variant="gradient" gradient={{ from: 'grape', to: 'pink', deg: 35 }}
                 onClick={() => setOpened(true)}
             >
-                Create Graph
+                Visualize Graph
             </Button>
         </>
     );
