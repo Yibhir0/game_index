@@ -1,4 +1,4 @@
-import { Textarea, Button, Grid } from '@mantine/core';
+import { Textarea, Button, Grid, Center } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
 import RatingBox from '../feedback/rating';
 import React, { useState } from "react";
@@ -59,32 +59,33 @@ export default function FeedbackBox(props) {
     
     return (
 
+        <Center>
+            <form onSubmit={form.onSubmit((values) => submitComment(values))}>
+                <Grid justify="space-between" >
+                    <Grid.Col span={10} >
+                        <Textarea size="xl"
+                            required
+                            placeholder="Your comment"
 
-        <form onSubmit={form.onSubmit((values) => submitComment(values))}>
+                            {...form.getInputProps('comment')}
+                        /></Grid.Col>
+                    <Grid.Col style={{ minHeight: 80 }} span={2}>
+                        <RatingBox rating={rating} dis={false} getRating={getRating} />
+                        <Button onClick={() => {
+                            displayNotification(
+                                'Comment Added',
+                                `Comment has been successfully added to the game page`,
+                                'green',
+                                <IconMessagePlus />,
+                            )
+                        }}
+                            className="bg-gradient-to-b from-gray-700 to-gray-600" type="submit">Comment/Rate</Button>
+                    </Grid.Col>
 
-            <Grid justify="space-between" >
-                <Grid.Col span={10} >
-                    <Textarea size="xl"
-                        required
-                        placeholder="Your comment"
+                </Grid>
+            </form>
 
-                        {...form.getInputProps('comment')}
-                    /></Grid.Col>
-                <Grid.Col style={{ minHeight: 80 }} span={2}>
-                    <RatingBox rating={rating} dis={false} getRating={getRating} />
-                    <Button onClick={() => {
-                        displayNotification(
-                            'Comment Added',
-                            `Comment has been successfully added to the game page`,
-                            'green',
-                            <IconMessagePlus />,
-                        )
-                    }}
-                        className="bg-gradient-to-b from-gray-700 to-gray-600" type="submit">Comment/Rate</Button>
-                </Grid.Col>
-
-            </Grid>
-        </form>
+        </Center>
 
 
     );

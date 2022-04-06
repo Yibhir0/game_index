@@ -224,9 +224,17 @@ class Profile extends Component {
     }
 
     listContent(gameList) {
-        return(
+
+        if (gameList.games.length === 0) {
+            return <Text>You have not Added games to this list</Text>
+        }
+
+        return (
+
+
+
             <Table
-            
+
                 dir={"ltr"}
                 striped highlightOnHover
                 verticalSpacing={'xl'}
@@ -243,7 +251,7 @@ class Profile extends Component {
                         <th></th>
                     </tr>
                 </thead>
-            
+
                 <tbody>{
                     gameList.games.map((game) => (
                         <tr className="bg-gradient-to-b from-zinc-900 to-zinc-800" key={game.name}>
@@ -325,8 +333,8 @@ class Profile extends Component {
                     </ScrollArea>
                     :
                     <>
-                        {this.listContent(gameList)}     
-                    </>    
+                        {this.listContent(gameList)}
+                    </>
                 }
             </Accordion.Item>
         ));
@@ -566,6 +574,8 @@ class Profile extends Component {
                             </div>
                             :
 
+
+
                             <>
                                 {/* All modals */}
                                 {/* Creating List */}
@@ -577,6 +587,8 @@ class Profile extends Component {
                                     }, () => this.resetErrorMsg())}
                                     title="Create List"
                                 >
+
+
                                     <TextInput
                                         onChange={(evt) => this.setState({
                                             createdListName: evt.target.value
@@ -808,7 +820,13 @@ class Profile extends Component {
                                                     :
                                                     <></>
                                                 }
+
                                             </Group>
+                                            <div>
+                                                {this.state.currentUser.lists.length === 0 ?
+                                                    <Text>You have not created any list </Text> : <></>}
+                                            </div>
+
                                             <Space h="md" />
                                             <Accordion
                                                 className="shadow-xl bg-zinc-900"

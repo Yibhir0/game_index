@@ -8,6 +8,9 @@ import {
     ChartLabel
 } from 'react-vis';
 
+/**
+ * Most Sold game graph component
+ */
 class MostSold extends Component {
 
     render() {

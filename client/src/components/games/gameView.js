@@ -79,7 +79,9 @@ const GameView = (props) => {
         }
     };
 
-    const fetchFeedback = async () => {
+    const fetchFeedback = async (data) => {
+
+        console.log(data)
         const feedbackUrl = `/api/games/${id}/feedback`;
         try {
             const response = await fetch(feedbackUrl);
@@ -117,7 +119,7 @@ const GameView = (props) => {
 
         fetch(feedbackUrl, requestOptions)
             .then(response => response.json())
-            .then(data => fetchFeedback());
+            .then(data => fetchFeedback(data));
 
     }
 
