@@ -43,6 +43,7 @@ import {
 } from '@tabler/icons';
 import StarsRating from "stars-rating";
 import { Link } from 'react-router-dom';
+import SearchPopUp from "../graphs/searchPopUp";
 import {
   generateHeader
 } from '../user/profile.js'
@@ -452,6 +453,7 @@ class Games extends Component {
             />
             <Space h="md"/>
             <Button className="shadow-md text-white bg-gradient-to-b from-yellow-700 to-yellow-500 hover:from-yellow-900 hover:to-yellow-700" onClick={this.search}>Search</Button>
+            <SearchPopUp games={this.state.gamesL} page={this.state.pageNumber }/>
           </Grid.Col>
           <Grid.Col span={4}>
           <Accordion
