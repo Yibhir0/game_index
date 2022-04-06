@@ -145,7 +145,10 @@ class SearchGraphs extends Component {
                                 tickPadding={-20}
                             />
                             <YAxis
-                                style={{ line: { stroke: "red" } }}
+                                style={{
+                                    line: { stroke: "red" },
+                                    text: { fill: "red" },
+                                }}
                                 tickSize={1}
                                 tickPadding={2}
                                 tickFormat={(v) => v / 1000000}
