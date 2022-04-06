@@ -7,8 +7,10 @@ import {
     Text,
     Button,
 } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import './styles.css'
 import { useNavigate } from "react-router-dom";
+import { IconLogout, IconLogin } from "@tabler/icons";
 export default function SignIn() {
 
     const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('userProfile')));
@@ -42,7 +44,12 @@ export default function SignIn() {
 
             navigate(`/profile/${data._id}`, { replace: true });
 
-            alert("You are successfully logged in ")
+            displayNotification(
+                'Logged in',
+                "You have successfully logged in",
+                'green',
+                <IconLogin />
+            )
 
             //Logged in
         }
@@ -66,9 +73,35 @@ export default function SignIn() {
         //     window.location.reload(true);
         // }
 
-        alert("You are successfully logged out ")
+        displayNotification(
+            'Logged out',
+            "You have successfully logged out",
+            'orange',
+            <IconLogout />
+        )
+
         navigate("/", { replace: true });
 
+    }
+
+    function displayNotification(title, desc, color, icon){
+        showNotification({
+            title: title,
+            color: color,
+            icon: icon,
+            style: {
+                backgroundColor: '#18181b',
+                borderColor: '#18181b'
+            },
+            styles: (theme) => ({
+                title: { color: theme.white },
+                description: { color: theme.white },
+                closeButton: {
+                    color: theme.colors.red[7]
+                  },
+            }),
+            message: desc,
+        })
     }
 
     // Login user
