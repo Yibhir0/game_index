@@ -5,7 +5,7 @@ import FeedbackBox from '../feedback/feedbackBox';
 import Game from './game';
 import '../feedback/styles.css'
 import RatingPopUp from '../graphs/ratingPopUp'
-import {Space} from '@mantine/core'
+import { Space } from '@mantine/core'
 
 /**
  * This component renders all components
@@ -23,14 +23,14 @@ const GameView = (props) => {
     let { id } = useParams()
 
     useEffect(() => {
-        
+
         fetchUser();
         fetchGame();
         fetchFeedback();
 
     }, []);
 
-    
+
     const hasCommented = () => {
 
         let isCommented = feedback.find(item => item.userID === JSON.parse(localStorage.getItem("userProfile"))._id);
@@ -86,7 +86,13 @@ const GameView = (props) => {
         try {
             const response = await fetch(feedbackUrl);
             const json = await response.json();
-            setFeedBack(json);
+            if (json.lenght === 0) {
+                setFeedBack(data);
+            }
+            else {
+                setFeedBack(json);
+            }
+
         } catch (error) {
             console.log("error", error);
         }
@@ -127,7 +133,7 @@ const GameView = (props) => {
         <div className="v_flex ">
             <Game game={game} user={currentUser} fetchUser={fetchUser} />
             <Space h="lg" />
-            { localStorage.getItem("userProfile") && !hasCommented() ?
+            {localStorage.getItem("userProfile") && !hasCommented() ?
                 <FeedbackBox addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />
                 :
                 <></>
