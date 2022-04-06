@@ -66,7 +66,7 @@ class RatingGraph extends Component {
                             textAnchor: 'end'
                         }}
                     />
-                    <VerticalBarSeries data={this.state.ratings} />
+                    <VerticalBarSeries color="#eab308" data={this.state.ratings} />
                 </XYPlot>
             </div>
         );

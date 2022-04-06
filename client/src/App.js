@@ -19,7 +19,7 @@ export default function App() {
         <Route exact path="/" element={<Home />} />
         <Route path="/games" element={<Games />} />
         <Route path="/games/:id" element={<GameView />} />
-        <Route path="/Profile/:id" element={<UserProfile />} />
+        <Route exact path="/profile/:id" element={<UserProfile />} />
         <Route path="/users/login" element={<SignIn />} />
       </Routes>
     </div>

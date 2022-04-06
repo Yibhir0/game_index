@@ -38,7 +38,7 @@ class RatingSales extends Component {
                             stroke: '#125C77',
                             strokeLinejoin: 'round'
                         }}
-                        colorRange={['#79C7E3', '#FF9833']}
+                        colorRange={['#fbbf24', '#b45309']}
                         data={this.props.ratingSalesGames}
                     />
                     <MarkSeries onValueClick={(datapoint, event) => {
@@ -53,7 +53,7 @@ class RatingSales extends Component {
                             this.setState({ opened: false, gameName: "" })
                         }}
                         data={this.props.ratingSalesGames} size={2} color={'#125C77'} />
-                    <Borders style={{ all: { fill: '#fff' } }} />
+                    <Borders style={{ all: { fill: '#18181b' } }} />
                     <XAxis tickFormat={v => v / 1000000} style={{ line: { stroke: 'black' } }} />
                     <YAxis style={{ line: { stroke: 'black' } }} />
 
