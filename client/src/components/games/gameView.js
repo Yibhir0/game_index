@@ -5,6 +5,7 @@ import FeedbackBox from '../feedback/feedbackBox';
 import Game from './game';
 import '../feedback/styles.css'
 import RatingPopUp from '../graphs/ratingPopUp'
+import {Space} from '@mantine/core'
 
 /**
  * This component renders all components
@@ -78,7 +79,9 @@ const GameView = (props) => {
         }
     };
 
-    const fetchFeedback = async () => {
+    const fetchFeedback = async (data) => {
+
+        console.log(data)
         const feedbackUrl = `/api/games/${id}/feedback`;
         try {
             const response = await fetch(feedbackUrl);
@@ -116,14 +119,14 @@ const GameView = (props) => {
 
         fetch(feedbackUrl, requestOptions)
             .then(response => response.json())
-            .then(data => fetchFeedback());
+            .then(data => fetchFeedback(data));
 
     }
 
     return (
-        <div className="v_flex bg-stone-100">
+        <div className="v_flex ">
             <Game game={game} user={currentUser} fetchUser={fetchUser} />
-            <br />
+            <Space h="lg" />
             { localStorage.getItem("userProfile") && !hasCommented() ?
                 <FeedbackBox addComment={addComment} id={id} user={JSON.parse(localStorage.getItem("userProfile"))} />
                 :
@@ -133,6 +136,7 @@ const GameView = (props) => {
             <RatingPopUp allFeedback={feedback} />
             <br />
             <Allfeedback allFeedback={feedback} />
+            <Space h="lg" />
         </div>
     );
 };
