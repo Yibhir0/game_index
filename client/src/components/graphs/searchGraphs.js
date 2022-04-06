@@ -11,9 +11,7 @@ import {
     HorizontalGridLines,
     XAxis,
     YAxis,
-    LineSeries,
-    ArcSeries,
-    RadialChart
+    RadialChart,
 } from "react-vis";
 
 class SearchGraphs extends Component {
@@ -24,6 +22,8 @@ class SearchGraphs extends Component {
             gamesInPage: props.gamesInPage,
             popularGames: [],
             clusterGames: [],
+            pieGames: [],
+            piePercentage: [],
         };
     }
 
@@ -41,40 +41,45 @@ class SearchGraphs extends Component {
             .concat(this.state.gamesInPage.reverse())
             .sort((a, b) => a.globalSales > b.globalSales)
             .slice(0, 10);
-        
+
         this.setState({
             popularGames: this.getGraphDataFormat(popularGames),
             leastGames: this.getGraphDataFormat(leastGames),
             clusterGames: this.getClusterDataFormat(this.state.gamesInPage),
-            pieGames: this.getRadialDataFormat(this.state.gamesInPage)
+            pieGames: this.getRadialDataFormat(this.state.gamesInPage),
         });
-   
+
+        console.log(this.state.clusterGames);
+        console.log(this.state.pieGames);
     }
 
     getRadialDataFormat(gamesArray) {
         let genreCount = {};
-        let formatedForChartGenreCount = {}
+        let formatedForChartGenreCount = [];
 
         for (let game of gamesArray) {
             if (!(game.genre in genreCount)) {
                 genreCount[game.genre] = game.globalSales;
-            }
-            else {
-                genreCount[game.genre] += game.globalSales; 
+            } else {
+                genreCount[game.genre] += game.globalSales;
             }
         }
 
-        for (const [key, value] of Object.entries(genreCount)) {
-            console.log(key + ":" + value)
+        for (const [gameGenre, globalSales] of Object.entries(genreCount)) {
+            formatedForChartGenreCount.push({
+                angle: globalSales,
+                label: gameGenre,
+            });
         }
 
-        return genreCount;
+        console.log(formatedForChartGenreCount);
+
+        return formatedForChartGenreCount;
 
         // {
         //     angle: 23,
         //     label: 'deck.gl'
         //   },
-
     }
 
     getClusterDataFormat(gamesArray) {
@@ -102,7 +107,6 @@ class SearchGraphs extends Component {
 
         clusterArray.push(naArray, euArray, jpArray, otherArray);
 
-
         return clusterArray;
     }
 
@@ -121,6 +125,15 @@ class SearchGraphs extends Component {
             <div className="App">
                 <Grid>
                     <Grid.Col span={12}>
+                    <ChartLabel
+                                text="Global Sales of current 10 games in list"
+                                includeMargin={false}
+                                xPercent={0.25}
+                                yPercent={0.55}
+                                style={{
+                                    textAnchor: "end",
+                                }}
+                            />
                         <XYPlot
                             margin={{ top: 25 }}
                             xType="ordinal"
@@ -167,6 +180,15 @@ class SearchGraphs extends Component {
                     </Grid.Col>
 
                     <Grid.Col span={12}>
+                    <ChartLabel
+                                text="Sales relative to region"
+                                includeMargin={false}
+                                xPercent={0.25}
+                                yPercent={0.55}
+                                style={{
+                                    textAnchor: "end",
+                                }}
+                            />
                         <FlexibleXYPlot
                             xType="ordinal"
                             stackBy="y"
@@ -268,33 +290,22 @@ class SearchGraphs extends Component {
                         </FlexibleXYPlot>
                     </Grid.Col>
                     <Grid.Col span={12}>
-                    <RadialChart
-  data={[
-    {
-      angle: 23,
-      label: 'deck.gl'
-    },
-    {
-      angle: 30,
-      label: 'math.gl'
-    },
-    // {
-    //   angle: 17,
-    //   label: 'probe.gl'
-    // },
-    // {
-    //   angle: 18,
-    //   label: 'vis.gl'
-    // },
-    // {
-    //   angle: 34,
-    //   label: 'react-map-gl'
-    // }
-  ]}
-  width={600}
+                        <ChartLabel
+                                text="Sales relative to game Genre"
+                                includeMargin={false}
+                                xPercent={0.25}
+                                yPercent={0.55}
+                                style={{
+                                    textAnchor: "end",
+                                }}
+                            />
+                        <RadialChart
+                            colorRange={[ "yellow", "#89CFF0", "pink", "orange", "green", "red"]}
+                            data={this.state.pieGames}
+                            width={600}
                             height={300}
-                        showLabels/>
-  
+                            showLabels
+                        />
                     </Grid.Col>
                 </Grid>
             </div>
