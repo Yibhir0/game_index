@@ -84,7 +84,7 @@ export default function SignIn() {
 
     }
 
-    function displayNotification(title, desc, color, icon){
+    function displayNotification(title, desc, color, icon) {
         showNotification({
             title: title,
             color: color,
@@ -98,7 +98,7 @@ export default function SignIn() {
                 description: { color: theme.white },
                 closeButton: {
                     color: theme.colors.red[7]
-                  },
+                },
             }),
             message: desc,
         })
@@ -149,6 +149,6 @@ export default function SignIn() {
     }
     return <Guest />
 
-
+    //dynos
 }
 
