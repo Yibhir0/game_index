@@ -21,10 +21,10 @@ import logo from "./images/logo.png";
 class TopNav extends Component {
   render() {
     return (
-        <div style={{ paddingLeft: "50px", paddingRight:"50px"}}>
+        <div style={{ paddingLeft: "50px", paddingRight:"50px", paddingTop:"15px"}}>
         <nav>
           <Group className="topnav">
-          <Title className="mr-auto"><Image src={logo} width= {200} component={Link} to={"/"}></Image></Title>
+          <Title className="duration-200 mr-auto hover:scale-110"><Image src={logo} width= {200} component={Link} to={"/"}></Image></Title>
             <Button
               className="duration-200 shadow-md hover:scale-125 bg-zinc-900 hover:bg-yellow-600"
               variant="subtle"

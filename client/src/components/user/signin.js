@@ -82,7 +82,7 @@ export default function SignIn() {
                     </Text>
                 </Button>
 
-                <Button className=" ml-4 ... bg-gradient-to-b from-pink-700 to-pink-600" variant="subtle" radius="xs">
+                <Button className="bg-transparent hover:bg-transparent" variant="subtle" radius="xs">
                     <GoogleLogout
                         clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                         buttonText="Logout"
@@ -99,7 +99,7 @@ export default function SignIn() {
     function Guest() {
         return (
 
-            <Button className="bg-gradient-to-b from-green-700 to-green-600" variant="subtle" radius="xs">
+            <Button className="bg-transparent hover:bg-transparent" variant="subtle" radius="xs">
                 <GoogleLogin
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                     buttonText="Log in "
