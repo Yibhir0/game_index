@@ -25,6 +25,7 @@ import {
 import { showNotification } from "@mantine/notifications";
 import { Link } from 'react-router-dom';
 import {
+    IconMoodSad,
     IconCalendarTime,
     IconPacman,
     IconDeviceGamepad,
@@ -226,7 +227,7 @@ class Profile extends Component {
     listContent(gameList) {
 
         if (gameList.games.length === 0) {
-            return <Text>You have not Added games to this list</Text>
+            return <Text>No games has been added to this list.</Text>
         }
 
         return (
@@ -824,7 +825,16 @@ class Profile extends Component {
                                             </Group>
                                             <div>
                                                 {this.state.currentUser.lists.length === 0 ?
-                                                    <Text>You have not created any list </Text> : <></>}
+                                                    <div>
+                                                        <Space h="md" />
+                                                        <Group>
+                                                            <ThemeIcon variant="light" color="dark">
+                                                                <IconMoodSad/>
+                                                            </ThemeIcon>
+                                                            <Text weight={500}>User has not created any list yet </Text>
+                                                        </Group>
+                                                    </div>
+                                                    : <></>}
                                             </div>
 
                                             <Space h="md" />
