@@ -56,6 +56,7 @@ class SearchGraphs extends Component {
     getRadialDataFormat(gamesArray) {
         let genreCount = {};
         let formatedForChartGenreCount = [];
+        let totalGameSales = 0;
 
         for (let game of gamesArray) {
             if (!(game.genre in genreCount)) {
@@ -63,23 +64,18 @@ class SearchGraphs extends Component {
             } else {
                 genreCount[game.genre] += game.globalSales;
             }
+            totalGameSales += game.globalSales;
         }
 
-        for (const [gameGenre, globalSales] of Object.entries(genreCount)) {
+        for (const [gameGenre, totalGameGlobalSales] of Object.entries(genreCount)) {
+            let piePercentage = Math.round(totalGameGlobalSales * 100 / totalGameSales)
             formatedForChartGenreCount.push({
-                angle: globalSales,
-                label: gameGenre,
+                angle: totalGameGlobalSales,
+                label: gameGenre + " " + piePercentage + "%",
             });
         }
 
-        console.log(formatedForChartGenreCount);
-
         return formatedForChartGenreCount;
-
-        // {
-        //     angle: 23,
-        //     label: 'deck.gl'
-        //   },
     }
 
     getClusterDataFormat(gamesArray) {
@@ -305,6 +301,7 @@ class SearchGraphs extends Component {
                             width={600}
                             height={300}
                             showLabels
+                            margin={{left: 40, right: 40, top: 10, bottom: 10}}
                         />
                     </Grid.Col>
                 </Grid>
