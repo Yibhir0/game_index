@@ -99,7 +99,9 @@ class Profile extends Component {
 
     async componentDidUpdate(prevProps) {
         if (this.props.id !== prevProps.id) {
+            this.checkPerms();
             await this.fetchUser();
+            this.generateList();
         }
     }
 
@@ -804,6 +806,7 @@ class Profile extends Component {
                                             </Group>
                                             <Space h="md" />
                                             <Text className="commentText">
+                                                <Space h="sm"/>
                                                 {this.state.currentUser.bio}
                                             </Text>
                                         </div>

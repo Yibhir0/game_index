@@ -116,8 +116,7 @@ class Home extends Component {
           <Space h="md"/>
         </div> 
         <Divider variant="dashed" />
-
-        <GraphDash></GraphDash>
+        <GraphDash ></GraphDash>
       </div>
     );
   }
