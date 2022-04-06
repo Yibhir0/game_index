@@ -74,7 +74,6 @@ export default function SignIn() {
 
     // Login user
     function UserLogIn() {
-
         return (
             <div className="topnav">
                 <Button className="duration-200 shadow-md hover:scale-125 bg-zinc-900 hover:bg-yellow-600" variant="subtle" radius="xs" component={Link} to={`/profile/${userAccount._id}`}>

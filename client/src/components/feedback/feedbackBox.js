@@ -79,7 +79,7 @@ export default function FeedbackBox(props) {
                                 <IconMessagePlus />,
                             )
                         }}
-                            className="bg-gradient-to-b from-gray-700 to-gray-600" type="submit">Comment/Rate</Button>
+                            className="duration-200 shadow-md hover:scale-110 bg-zinc-900 hover:bg-yellow-600" type="submit">Comment/Rate</Button>
                     </Grid.Col>
 
                 </Grid>

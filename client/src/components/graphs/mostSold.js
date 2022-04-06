@@ -7,6 +7,7 @@ import {
     VerticalBarSeries,
     ChartLabel
 } from 'react-vis';
+import './style.css'
 
 /**
  * Most Sold game graph component
@@ -19,7 +20,7 @@ class MostSold extends Component {
             <FlexibleXYPlot margin={{ top: 25 }} xType="ordinal">
                 <VerticalBarSeries
                     data={this.props.popularGames}
-                    color="#eab308"
+                    color="#e0b326"
                     onValueClick={(datapoint, event) => {
                         this.props.changeId(datapoint.id)
                     }}
@@ -37,7 +38,7 @@ class MostSold extends Component {
                     xPercent={0.09}
                     yPercent={0.035}
                     style={{
-                        textAnchor: 'end'
+                        textAnchor: 'end',
                     }}
                 />
                 <ChartLabel

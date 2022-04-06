@@ -795,6 +795,7 @@ class Profile extends Component {
                                             </Group>
                                             <Space h="md" />
                                             <Text className="commentText">
+                                                <Space h="sm"/>
                                                 {this.state.currentUser.bio}
                                             </Text>
                                         </div>
