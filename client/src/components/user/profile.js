@@ -90,10 +90,19 @@ class Profile extends Component {
 
 
     async componentDidMount() {
+
         this.checkPerms();
         await this.fetchUser()
         this.generateList();
         await this.fetchGames();
+    }
+
+    async componentDidUpdate(prevProps) {
+        if (this.props.id !== prevProps.id) {
+            this.checkPerms();
+            await this.fetchUser();
+            this.generateList();
+        }
     }
 
     checkPerms() {
@@ -123,6 +132,8 @@ class Profile extends Component {
         });
 
         let user = await response.json();
+
+        console.log(user)
 
         this.setState({
             currentUser: user,
@@ -795,6 +806,7 @@ class Profile extends Component {
                                             </Group>
                                             <Space h="md" />
                                             <Text className="commentText">
+                                                <Space h="sm"/>
                                                 {this.state.currentUser.bio}
                                             </Text>
                                         </div>
