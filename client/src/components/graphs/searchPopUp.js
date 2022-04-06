@@ -14,12 +14,12 @@ export default function SearchPopUp(props) {
                 onClose={() => setOpened(false)}
                 title="Visualisation"
             >
-                <SearchGraphs gamesInPage={props.games.slice(props.page*10-10, props.page*10)} />
+                <SearchGraphs  gamesInPage={props.games.slice(props.page*10-10, props.page*10)} />
 
             </Modal>
 
             <Group position="left">
-                <Button className="bg-gradient-to-b from-gray-700 to-gray-600" style={{ margin: "left" }} variant="gradient" gradient={{ from: 'grape', to: 'pink', deg: 35 }}
+                <Button className="shadow-md text-white bg-gradient-to-b from-yellow-700 to-yellow-500 hover:from-yellow-900 hover:to-yellow-700" style={{ margin: "left" }} variant="gradient" gradient={{ from: 'grape', to: 'pink', deg: 35 }}
                     onClick={() => setOpened(true)}
                 >
                     Create Graph

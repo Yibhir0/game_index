@@ -286,7 +286,7 @@ class SearchGraphs extends Component {
                     </Grid.Col>
                     <Grid.Col span={12}>
                         <ChartLabel
-                                text="Sales relative to game Genre"
+                                text="Sales Relative to Genre"
                                 includeMargin={false}
                                 xPercent={0.25}
                                 yPercent={0.55}
