@@ -24,24 +24,26 @@ class TopNav extends Component {
         <div style={{ paddingLeft: "50px", paddingRight:"50px"}}>
         <nav>
           <Group className="topnav">
-          <Title  className="mr-auto"><img src={logo} id="logo"></img></Title>
+          <Title className="mr-auto"><Image src={logo} width= {200} component={Link} to={"/"}></Image></Title>
             <Button
-              className="bg-gradient-to-b from-gray-700 to-gray-600"
+              className="duration-200 shadow-md hover:scale-125 bg-zinc-900 hover:bg-yellow-600"
               variant="subtle"
               radius="xs"
+              component={Link} to={"/"}
             >
-              <Anchor className="text-white" component={Link} to={"/"}>
+              <Text color="white">
                 Home
-              </Anchor>
+              </Text>
             </Button>
             <Button
-              className="bg-gradient-to-b from-gray-700 to-gray-600"
+              className="duration-200 shadow-md hover:scale-125 bg-zinc-900 hover:bg-yellow-600"
               variant="subtle"
               radius="xs"
+              component={Link} to={"/games"}
             >
-              <Anchor className="text-white" component={Link} to={"/games"}>
+              <Text color="white">
                 Games
-              </Anchor>
+                </Text>
             </Button>
             <SignIn className="content-end" />
           </Group>

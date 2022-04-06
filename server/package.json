@@ -24,5 +24,9 @@
     "mongoose": "^6.2.3",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.3.0"
+  },
+  "devDependencies": {
+    "mockingoose": "^2.15.2",
+    "supertest": "^6.2.2"
   }
 }

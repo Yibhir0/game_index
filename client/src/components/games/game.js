@@ -1,6 +1,7 @@
-
 import { SimpleGrid, Title, Grid } from "@mantine/core";
 import {
+  Paper,
+  ThemeIcon,
   Tooltip,
   Center,
   Loader,
@@ -18,8 +19,29 @@ import {
 import StarsRating from "stars-rating";
 import { React, useEffect, useState } from "react";
 import {
-  IconPlus
+  IconCashBanknote,
+  IconCurrencyYen,
+  IconCurrencyEuro,
+  IconCurrencyDollar,
+  IconMoodKid,
+  IconStar,
+  IconWorld,
+  IconListNumbers,
+  IconCalendarTime,
+  IconPacman,
+  IconDeviceGamepad,
+  IconSword,
+  IconWritingSign,
+  IconPhoto,
+  IconPencil,
+  IconMinus,
+  IconPlus,
+  IconCheck,
+  IconFolderPlus,
+  IconEdit,
+  IconX,
 } from '@tabler/icons';
+import { showNotification } from "@mantine/notifications";
 
 /**
  * This component renders all games details.
@@ -76,7 +98,14 @@ const Game = (props) => {
 
       setAdd(false);
 
+      displayNotification(
+        'Game Added',
+        `${props.game.name} has been successfully added to list`,
+        'green',
+        <IconPlus />,
+      );
       await props.fetchUser();
+      
     } else {
       setErrMessage("Game is already added to the selected list.");
       console.log("List already contains games");
@@ -91,27 +120,62 @@ const Game = (props) => {
     }
   }
   
+  const generateTag = (title, icon, badge) => {
+    return (
+      <div>
+        <Group spacing="xs">
+          <ThemeIcon
+            variant="light"
+            color="dark"
+          >
+              {icon}
+          </ThemeIcon>
+          <Title
+            order={4}
+          >
+            {title}
+          </Title>
+          {badge}
+        <Space h="xs" />
+        </ Group>
+      </div>
+    )
+  }
+  const displayNotification = (title, desc, color, icon) => {
+    showNotification({
+        title: title,
+        color: color,
+        icon: icon,
+        style: {
+            backgroundColor: '#18181b',
+            borderColor: '#18181b'
+        },
+        styles: (theme) => ({
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+                color: theme.colors.red[7]
+              },
+        }),
+        message: desc,
+    })
+  }
   const gameDetails = () => {
-
-    let platforms = "";
-    if (typeof props.game.platform === "object" ) {
-      for (let i = 0; i < props.game.platform.length; i++) {
-        if (i === props.game.platform.length - 1) {
-          platforms += props.game.platform[i];
-        } else {
-          platforms += props.game.platform[i] + ", ";
-        }
-      }
-    }
 
     return (
       <div>
         <Group>
-          <Title order={1}>
+          <Title
+            order={1}
+            sx={(theme) => ({
+              color: "#f5f6fa"
+            })}
+          >
             {props.game.name}
           </Title>
           { localStorage.getItem("userProfile") ? 
             <ActionIcon
+              className="text-white bg-gradient-to-b from-yellow-700 to-yellow-500 hover:from-yellow-900 hover:to-yellow-700"
               onClick={() => {
                 setAdd(true)
                 setSelectedList(0);
@@ -124,43 +188,30 @@ const Game = (props) => {
           }
         </Group>
         <br></br>
-        <SimpleGrid cols={4}>
+        <SimpleGrid cols={3}>
           <div>
-            <Title order={4}>Publisher:</Title>
-            <Badge color="indigo" variant="filled">{props.game.publisher}</Badge>
+            {generateTag('Genre:', <IconSword />, <Badge color="cyan" variant="light">{props.game.genre}</Badge>)} 
             <Space h="md" />
-            <Title order={4}>Platform:</Title>
-            <Badge variant="filled">{platforms}</Badge>
+            {generateTag('Platform:', <IconDeviceGamepad />, <Badge variant="light">{platformDataUpdate(props.game.platform)}</Badge>)} 
             <Space h="md" />
-            <Title order={4}>Genre:</Title>
-            <Badge color="cyan" variant="filled">{props.game.genre}</Badge>
+            {generateTag('Publisher:', <IconPacman />, <Badge color="indigo" variant="light">{props.game.publisher}</Badge>)}
+            <Space h="md" />
+            {generateTag('Release Year:', <IconCalendarTime/>, <Badge color="violet" variant="light">{props.game.year}</Badge>)}
+            <Space h="md" />
+            {generateTag('Critic Score:', <IconStar />, returnCriticData(props.game.criticScore))}
+            <Space h="md" />
+            {generateTag('ESRB Rating:', <IconMoodKid/>, esrbColour(props.game.esrbrating))}
           </div>
           <div>
-            <Title order={4}>Release Year:</Title>
-            <Badge color="violet" variant="filled">{props.game.year}</Badge>
+            {generateTag('North American Sales:', <IconCurrencyDollar/>, numberColour(props.game.naSales))}
             <Space h="md" />
-            <Title order={4}>Critic Score:</Title>
-            <Badge color="gray">{returnCriticData(props.game.criticScore)}</Badge>
+            {generateTag('European Sales:', <IconCurrencyEuro/>, numberColour(props.game.euSales))}
             <Space h="md" />
-            <Title order={4}>ESRB Rating:</Title>
-            <Badge color="teal" variant="filled">{props.game.esrbrating}</Badge>
-          </div>
-          <div>
-            <Title order={4}>North American Sales:</Title>
-            <Badge color="yellow" variant="filled">{numberWithCommas(props.game.naSales)}</Badge>
+            {generateTag('Japanese Sales:', <IconCurrencyYen/>, numberColour(props.game.jpSales))}
             <Space h="md" />
-            <Title order={4}>European Sales:</Title>
-            <Badge color="orange" variant="filled">{numberWithCommas(props.game.euSales)}</Badge>
+            {generateTag('Other Sales:', <IconCashBanknote/>, numberColour(props.game.otherSales))}
             <Space h="md" />
-            <Title order={4}>Japanese Sales:</Title>
-            <Badge color="red" variant="filled">{numberWithCommas(props.game.jpSales)}</Badge>
-          </div>
-          <div>
-            <Title order={4}>Other Sales:</Title>
-            <Badge color="pink" variant="filled">{numberWithCommas(props.game.otherSales)}</Badge>
-            <Space h="md" />
-            <Title order={4}>Global Sales:</Title>
-            <Badge color="grape" variant="filled">{numberWithCommas(props.game.globalSales)}</Badge>
+            {generateTag('Global Sales:', <IconWorld/>, numberColour(props.game.globalSales))}
           </div>
         </SimpleGrid>
       </div>
@@ -235,11 +286,11 @@ const Game = (props) => {
         }
 
       </Modal>
-
-      <div className="bg-gradient-to-b from-gray-400 to-stone-100" style={{ margin: "auto", padding: 50 }}>
+      <Space h="md"/>
+      <div className="shadow-md bg-gradient-to-b from-zinc-900 to-zinc-800" style={{ margin: "auto", padding: 50 }}>
         <Grid columns={12}>
           <Grid.Col span={2}>
-            <Image src={imageURL} width={200} alt={props.game.name} />
+            <Image radius="sm" src={imageURL} width={200} alt={props.game.name} />
           </Grid.Col>
           <Grid.Col span={10}>
             <Text size="sm">{gameDetails()}</Text>
@@ -250,18 +301,65 @@ const Game = (props) => {
   );
 };
 
-function returnCriticData(criticScore) {
+function esrbColour(rating) {
+  if (rating === "E") {
+    return (<Badge color="green" variant="light">{rating}</Badge>);
 
-  if (criticScore === 0) {
-      return (<Text>Not Rated</Text>);
+  } else if (rating === "E10") {
+    return (<Badge variant="light">{rating}</Badge>);
+
+  } else if (rating === "T") {
+    return (<Badge color="orange" variant="light">{rating}</Badge>);
+
+  } else if (rating === "M") {
+    return (<Badge color="red" variant="light">{rating}</Badge>);
+
+  } else {
+    return (<Badge color="gray" variant="light">{rating}</Badge>);
+
+  }
+}
+
+function numberColour(number) {
+  if (number >= 10000000) {
+    return (<Badge variant="light">{numberWithCommas(number)}</Badge>);
+
+  } else if (number >= 1000000) {
+    return (<Badge color="green" variant="light">{numberWithCommas(number)}</Badge>);
+
+  } else if (number >= 100000) {
+    return (<Badge color="orange" variant="light">{numberWithCommas(number)}</Badge>);
+
+  } else if (number >= 10000) {
+    return (<Badge color="red" variant="light">{numberWithCommas(number)}</Badge>);
+
+  } else {
+    return (<Badge color="gray" variant="light">{numberWithCommas(number)}</Badge>);
+
   }
 
-  return (<StarsRating count={5} half={true}
-    value={criticScore}
-    edit={false}
-    size={24}
-    color2={"#ffd700"}
-  />);
+}
+
+function returnCriticData(criticScore) {
+  let criticText;
+  if (criticScore === 0) {
+    criticText = "Not Rated";
+    return (
+      <Tooltip withArrow label={"Not Rated by Critics"}>
+        <Badge color="gray">{criticText}</Badge>
+      </Tooltip>);
+  } else {
+    criticText = (<StarsRating count={5} half={true}
+      value={criticScore}
+      edit={false}
+      size={24}
+      color2={"#ffd700"}
+    />);
+    return (
+      <Tooltip withArrow label={criticScore}>
+          {criticText}
+      </Tooltip>);
+  }
 }
 
 function numberWithCommas(x) {
@@ -269,6 +367,57 @@ function numberWithCommas(x) {
     return "None on Record";
   }
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function platformDataUpdate(platformList) {
+  let platforms = "";
+  if (typeof platformList === "object" ) {
+    for (let i = 0; i < platformList.length; i++) {
+      if (i === platformList.length - 1) {
+        platforms += platformNameUpdate(platformList[i]);
+      } else {
+        platforms += platformNameUpdate(platformList[i]) + ", ";
+      }
+    }
+  }
+  return platforms;
+}
+
+function platformNameUpdate(name) {
+  switch(name) {
+    case "WiiU":
+      return "Wii U";
+    case "GC":
+      return "Game Cube";
+    case "PSV":
+      return "PS Vita";
+    case "XB":
+      return "Xbox";
+    case "X360":
+      return "Xbox 360";
+    case "XOne":
+      return "Xbox One";
+    case "GEN":
+      return "Sega Genesis";
+    case "SCD":
+      return "Sega CD";
+    case "SAT":
+      return "Sega Saturn";
+    case "DC":
+      return "Dreamcast";
+    case "2600":
+      return "Atari 2600";
+    case "NG":
+      return "Neo Geo";
+    case "3DO":
+      return "3DO Interactive Multiplayer";
+    case "PCFX":
+      return "PC-FX";
+    case "WS":
+      return "WonderSwan";
+    default:
+      return name;
+  }
 }
 
 export default Game;

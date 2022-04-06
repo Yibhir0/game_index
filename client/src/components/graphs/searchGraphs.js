@@ -7,8 +7,6 @@ import {
     VerticalBarSeries,
     DiscreteColorLegend,
     XYPlot,
-    VerticalGridLines,
-    HorizontalGridLines,
     XAxis,
     YAxis,
     RadialChart,
@@ -140,21 +138,20 @@ class SearchGraphs extends Component {
                             <XAxis
                                 tickLabelAngle={90}
                                 style={{
-                                    line: { stroke: "black" },
-                                    text: { fill: "black" },
+                                    line: { stroke: "red" },
+                                    text: { fill: "red" },
                                 }}
                                 tickSize={1}
                                 tickPadding={-20}
                             />
                             <YAxis
-                                style={{ line: { stroke: "black" } }}
+                                style={{ line: { stroke: "red" } }}
                                 tickSize={1}
                                 tickPadding={2}
                                 tickFormat={(v) => v / 1000000}
                             />
                             <ChartLabel
                                 text="Global Sales (Millions)"
-                                className="alt-y-label"
                                 includeMargin={false}
                                 xPercent={0.25}
                                 yPercent={0.035}
@@ -164,7 +161,6 @@ class SearchGraphs extends Component {
                             />
                             <ChartLabel
                                 text="Game"
-                                className="alt-x-label"
                                 includeMargin={false}
                                 xPercent={1}
                                 yPercent={1.155}
@@ -217,13 +213,15 @@ class SearchGraphs extends Component {
                                     },
                                 ]}
                             />
-                            <VerticalGridLines />
-                            <HorizontalGridLines />
 
                             <YAxis
                                 tickSize={1}
                                 tickPadding={2}
                                 tickFormat={(v) => v / 1000000}
+                                style={{
+                                    line: { stroke: "red" },
+                                    text: { fill: "red" },
+                                }}
                             />
                             <VerticalBarSeries
                                 cluster="game"
@@ -233,8 +231,8 @@ class SearchGraphs extends Component {
                             <XAxis
                                 tickLabelAngle={90}
                                 style={{
-                                    line: { stroke: "black" },
-                                    text: { fill: "black" },
+                                    line: { stroke: "red" },
+                                    text: { fill: "red" },
                                 }}
                                 tickSize={1}
                                 tickPadding={-50}
@@ -257,15 +255,14 @@ class SearchGraphs extends Component {
                             <XAxis
                                 tickLabelAngle={90}
                                 style={{
-                                    line: { stroke: "black" },
-                                    text: { fill: "black" },
+                                    line: { stroke: "red" },
+                                    text: { fill: "red" },
                                 }}
                                 tickSize={1}
                                 tickPadding={-50}
                             />
                             <ChartLabel
                                 text="Game"
-                                className="alt-x-label"
                                 includeMargin={false}
                                 xPercent={1}
                                 yPercent={1.155}
@@ -275,7 +272,6 @@ class SearchGraphs extends Component {
                             />
                             <ChartLabel
                                 text="Global Sales (Millions)"
-                                className="alt-y-label"
                                 includeMargin={false}
                                 xPercent={0.25}
                                 yPercent={0.035}
@@ -301,6 +297,7 @@ class SearchGraphs extends Component {
                             width={600}
                             height={300}
                             showLabels
+                            labelsStyle={{fill:"purple", fontSize:"18"}}
                             margin={{left: 40, right: 40, top: 10, bottom: 10}}
                         />
                     </Grid.Col>

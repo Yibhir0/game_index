@@ -12,7 +12,7 @@ import UserProfile from './components/user/userProfile'
 import SignIn from './components/user/signin'
 export default function App() {
   return (
-    <div className="bg-gray-400">
+    <div className="bg-gradient-to-b from-zinc-800 to-zinc-600">
       <TopNav />
       <Routes>
 
