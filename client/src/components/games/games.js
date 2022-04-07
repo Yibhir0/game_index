@@ -46,8 +46,15 @@ import SearchPopUp from "../graphs/searchPopUp";
  */
 
 class Games extends Component {
+
+  /**
+   * Constructor that sets up all the values required for game list to function
+   * @param {*} props 
+   */
   constructor(props) {
     super(props);
+
+    // Variable that converts all the values of the genres to labels
     this.genres = [
       { value: "", label: "All" },
       { value: "shooter", label: "Shooter" },
@@ -69,6 +76,7 @@ class Games extends Component {
       { value: "sports", label: "Sports" },
     ];
 
+    // Variable that converts all the values of platforms to labels
     this.platforms = [
       { value: "", label: "All" },
       { value: "PC", label: "Personal Computer (PC)" },
@@ -105,7 +113,6 @@ class Games extends Component {
     this.state = {
       loading: true,
       gamesL: [], //contains all the games for the current list, will be changed every time a new query is made
-      previousL: [], //contains all the games for the previous list, used to revert sorting
       pageNumber: 1, //current page
       gamesPerPage: 10, //number of games to display per page
       filters: {
@@ -116,8 +123,8 @@ class Games extends Component {
         genre: "", //genre for the video game
         platform: "", //platform for the video game
       },
-      sort: "gs",
-      ordering: [-1, 1],
+      sort: "gs", //gs = global sales, cs = critic score, determines how to sort the list
+      ordering: [-1, 1], // -1,1 = descending, 1,-1 = ascending
     };
 
     this.search = this.search.bind(this);
@@ -125,18 +132,23 @@ class Games extends Component {
     this.generateRows = this.generateRows.bind(this);
     this.changePage = this.changePage.bind(this);
     this.setupPagination = this.setupPagination.bind(this);
-    this.printFilters = this.printFilters.bind(this);
     this.generateHeader = this.generateHeader.bind(this);
   }
 
+  /**
+   * When component has been mounted, fetches all games, sets up pagination and automatically sorts all games by global sales descending
+   */
   async componentDidMount() {
-    //fetch game, then setup pagination and then generate the rows to be displayed
     await this.fetchGames();
     this.setupPagination();
     this.sortGames();
   }
 
+  /**
+   * setupPagination sets up the pagination on the client side
+   */
   async setupPagination() {
+
     //sets the total number of page for pagination
     this.setState(
       {
@@ -150,28 +162,38 @@ class Games extends Component {
     );
   }
 
+  /**
+   * fetchGames fetches all games from the database
+   */
   async fetchGames() {
+
+    //when loading is true, a loading spinner will appear
     this.setState({
       loading: true,
     });
+
     //fetch all games
-    console.log("game fetched");
     let gameUrl = "/api/games";
     let response = await fetch(gameUrl);
-    console.log(response);
     let games = await response.json();
+
+    //after all games are fetched, the data is stored in a state
     this.setState({
       gamesL: games,
-      previousL: games,
     });
   }
 
+  /**
+   * fetchGamesByFilter fetches all games corresponding to the filters the user has used
+   */
   async fetchGamesByFilter() {
+
+    //when loading is true, a loading spinner will appear
     this.setState({
       loading: true,
     });
+
     //fetch all games by filters
-    console.log("game fetched by filters");
     let gameUrl =
       "/api/games/filter?" +
       "keywords=" +
@@ -184,16 +206,21 @@ class Games extends Component {
       this.state.filters.genre +
       "&platform=" +
       this.state.filters.platform;
+    
     let response = await fetch(gameUrl);
-    console.log(response);
     let games = await response.json();
+
+    //after all results are fetched, the data is stored in a state
     this.setState({
       gamesL: games,
-      previousL: games,
     });
   }
 
+  /**
+   * search starts searching from the database based on what type of search the user wants to do
+   */
   async search() {
+
     //verifies if the keywords are empty or not
     if (
       this.state.filters.keywords === "" ||
@@ -206,7 +233,7 @@ class Games extends Component {
       ) {
         //if filter toggle is on, then it will do a filtered search with no keywords
         //this means that the user has toggled a filtered search by inputting a year of release value
-        //or selecting a genre
+        //or selecting a genre. if its not a filtered search then it will just fetch all games
         if (this.state.filters.toggle === true) {
           await this.fetchGamesByFilter();
         } else {
@@ -220,37 +247,47 @@ class Games extends Component {
       await this.fetchGamesByFilter();
     }
 
+    //after searching, the page number is set back to 1, pagination is setup and rows are generated
     this.setState(
       {
         pageNumber: 1,
       },
       () => {
-        this.printFilters();
         this.setupPagination();
         this.generateRows();
       }
     );
   }
 
+  /**
+   * sortGames sort the game list depending on what option the user has chosen
+   */
   sortGames() {
+
     //sort by global sales
     if (this.state.sort === "gs") {
+
       const sortedGames = []
         .concat(this.state.gamesL)
         .sort((a, b) =>
           a.globalSales > b.globalSales
             ? this.state.ordering[0]
             : this.state.ordering[1]
-        );
+      );
+      
+      //after sorting, page number is resetted back to 1 and the sorted list is stored in a state
       this.setState(
         {
           pageNumber: 1,
           gamesL: sortedGames,
         },
         () => {
+
+          //rows gets generated after sortings
           this.generateRows();
         }
       );
+
       //sort by critic score
     } else if (this.state.sort === "cs") {
       const sortedGames = []
@@ -260,20 +297,26 @@ class Games extends Component {
             ? this.state.ordering[0]
             : this.state.ordering[1]
         );
+      //after sorting, page number is resetted back to 1 and the sorted list is stored in a state
       this.setState({
         pageNumber: 1,
         gamesL: sortedGames,
       },
         () => {
+
+          //rows gets generated after sortings
           this.generateRows();
         });
     }
   }
 
 
-  //Generates rows for the games in the list
+  /**
+   * generateRows generates the rows for the game listing
+   */
   async generateRows() {
-    console.log(this.state.gamesL);
+
+    //state containing the data to display the games is being mapped
     const rows = this.state.gamesL.map((game, index) => (
       <tr className="bg-gradient-to-b from-zinc-900 to-zinc-800" key={index + 1}>
         <td><Badge color="dark">{index + 1}</Badge></td>
@@ -296,6 +339,8 @@ class Games extends Component {
         <td>{returnCriticData(game.criticScore)}</td>
       </tr>
     ));
+
+    // rows are then split into 10 results per page, loading is set to false since the rows have been loaded
     this.setState({
       rows: rows.slice(
         (this.state.pageNumber - 1) * 10,
@@ -305,17 +350,29 @@ class Games extends Component {
     });
   }
 
-  //update current keyword value
+  
+  /**
+   * updateKeywords update the keywords the user has inputted
+   * @param {*} evt event
+   */
   updateKeywords(evt) {
+
+    //retrieve filters and clone, keywords from that filter is updated and then update the state filter
     const filters = { ...this.state.filters };
     filters.keywords = evt.target.value;
     this.setState({ filters });
   }
 
-  //update current year value
+  /**
+   * updateYear update the year the user has inputted
+   * @param {*} evt event
+   */
   updateYear(evt) {
+
+    //retrieve filters and clone, year from that filter is updated and then update the state filter
     const filters = { ...this.state.filters };
     filters.toggle = true;
+    
     if (evt === undefined) {
       filters.year = "";
     } else {
@@ -325,53 +382,84 @@ class Games extends Component {
     this.setState({ filters });
   }
 
+  /**
+   * updatePublisher updates the publisher the user has inputted
+   * @param {*} evt event
+   */
   updatePublisher(evt) {
+    
+    // retrieve filters and clone, publisher from that filter is updated and then update the state filter
     const filters = { ...this.state.filters };
     filters.publisher = evt.target.value;
     this.setState({ filters });
   }
 
+  /**
+   * updateGenre updates the genre the user has inputted
+   * @param {*} evt event
+   */
   updateGenre(evt) {
+
+    // retrieve filters and clone, genre from that filter is updated and then update the state filter
     const filters = { ...this.state.filters };
     filters.genre = evt.target.value;
     filters.toggle = true;
     this.setState({ filters });
   }
+
+  /**
+   * updatePlatform updates the platform the user has inputted
+   * @param {*} evt event
+   */
   updatePlatform(evt) {
+
+    // retrieve filters and clone, platform from that filter is updated and then update the state filter
     const filters = { ...this.state.filters };
     filters.platform = evt.target.value;
     filters.toggle = true;
     this.setState({ filters });
   }
+
+  /**
+   * updateSort updates the sorting algorithm used that the user has chosen
+   * @param {*} evt event
+   */
   updateSort(evt) {
     this.setState({
       sort: evt,
     });
   }
 
+  /**
+   * updateOrdering updates the ordering of the sorting
+   * @param {*} evt event
+   */
   updateOrdering(evt) {
+
+    // order by descending
     if (evt.target.value === "desc") {
       this.setState(
         {
           ordering: [-1, 1],
-        },
-        () => {
-          console.log(this.state.ordering);
         }
       );
+    
+    //order by ascending
     } else if (evt.target.value === "asc") {
       this.setState(
         {
           ordering: [1, -1],
-        },
-        () => {
-          console.log(this.state.ordering);
         }
       );
     }
   }
 
+  /**
+   * changePage changes the page number when the user clicks on a page number
+   * @param {*} evt event
+   */
   changePage(evt) {
+
     //if statement to prevent users from clicking on the same page button
     if (this.state.pageNumber !== evt) {
       //if user clicks on a different page number, the page number will change and then regenerate the new rows
@@ -381,14 +469,20 @@ class Games extends Component {
           pageNumber: page,
         },
         () => {
+          //generates the new rows when page number has changed
           this.generateRows();
         }
       );
-    } else {
-      console.log("same page");
     }
   }
 
+  /**
+   * generateHeader generates table headers
+   * @param {*} header The header text
+   * @param {*} icon The header icon
+   * @param {*} color The header color
+   * @returns header with icon
+   */
   generateHeader(header, icon, color) {
     return (
       <Group spacing="xs">
@@ -403,15 +497,10 @@ class Games extends Component {
     )
   }
 
-  //print the current state of the filter
-  printFilters() {
-    console.log("Filter toggle: " + this.state.filters.toggle);
-    console.log("Keyword value: " + this.state.filters.keywords);
-    console.log("Year value: " + this.state.filters.year);
-    console.log("Publisher value: " + this.state.filters.publisher);
-    console.log("Genre value: " + this.state.filters.genre);
-    console.log("Platform value: " + this.state.filters.platform);
-  }
+  /**
+   * renders the component
+   * @returns rendered component
+   */
   render() {
     return (
       <>
@@ -420,7 +509,6 @@ class Games extends Component {
             <TextInput
               size="xl"
               styles={{
-
                 label: { color: '#f8fafc' },
                 input: {
                   border: 0,
@@ -431,20 +519,26 @@ class Games extends Component {
                   backgroundColor: '#18181b',
                 },
               }}
+
+              // updates keyword whenever user writes in the search input
               onChange={(evt) => this.updateKeywords(evt)}
+              // if user presses the enter button, it will automatically search
               onKeyPress={(ev) => {
                 if (ev.key === "Enter") {
                   ev.preventDefault();
                   this.search();
                 }
               }}
+
               placeholder="Search by Keyword"
               variant="filled"
 
             />
             <Space h="md" />
             <Group>
+              {/*  starts searching when button has been pressed */}
               <Button className="duration-200 shadow-md hover:scale-110 bg-zinc-900 hover:bg-yellow-600" onClick={this.search}>Search</Button>
+              {/* pop up for displaying graphs based on the current game listing */}
               <SearchPopUp games={this.state.gamesL} page={this.state.pageNumber} />
             </Group>
           </Grid.Col>
@@ -485,7 +579,9 @@ class Games extends Component {
                           },
                         }
                       }}
+                      // updates publisher value when user changes publisher input
                       onChange={(evt) => this.updatePublisher(evt)}
+                      // pressing enter button searches automatically
                       onKeyPress={(ev) => {
                         if (ev.key === "Enter") {
                           ev.preventDefault();
@@ -508,7 +604,9 @@ class Games extends Component {
                           },
                         }
                       }}
+                      // updates year value when user changes year input
                       onChange={(evt) => this.updateYear(evt)}
+                      // pressing enter button searches automatically
                       onKeyPress={(ev) => {
                         if (ev.key === "Enter") {
                           ev.preventDefault();
@@ -529,6 +627,7 @@ class Games extends Component {
                           border: 0,
                         }
                       }}
+                      // updates genre value when user changes genre input
                       onChange={(evt) => this.updateGenre(evt)}
                       data={this.genres}
                       label="Genre"
@@ -543,6 +642,7 @@ class Games extends Component {
                           border: 0,
                         }
                       }}
+                      // updates platform value when user changes platform input
                       onChange={(evt) => this.updatePlatform(evt)}
                       data={this.platforms}
                       label="Platform"
@@ -580,6 +680,7 @@ class Games extends Component {
                   styles={{
                     label: { color: '#f8fafc' },
                   }}
+                  // updates sorting algorithm when user changes sorting algorithm
                   onChange={(evt) => this.updateSort(evt)}
                   defaultValue="gs"
                   label="Sort by:"
@@ -612,6 +713,7 @@ class Games extends Component {
           </Grid.Col>
         </SimpleGrid>
         <Space h="md" />
+        {/* load spinner when loading, otherwise display the table with all the data */}
         {this.state.loading ? (
           <div style={{ margin: "auto", padding: 50 }}>
             <Title order={3}>Fetching All Games</Title>
@@ -656,14 +758,22 @@ class Games extends Component {
   }
 }
 
+/**
+ * returnCriticData returns critic value under the form of stars
+ * @param {*} criticScore the critic score
+ * @returns a star representation of the critic score
+ */
 function returnCriticData(criticScore) {
   let criticText;
+
+  // critic score with 0 is unrated
   if (criticScore === 0) {
     criticText = "Not Rated";
     return (
       <Tooltip withArrow label={"Not Rated by Critics"}>
         <Badge color="gray">{criticText}</Badge>
       </Tooltip>);
+  // else makes a star rating with critic score
   } else {
     criticText = (<StarsRating count={5} half={true}
       value={criticScore}
@@ -677,6 +787,7 @@ function returnCriticData(criticScore) {
       </Tooltip>);
   }
 }
+
 function numberWithCommas(x) {
   if (x === undefined) {
     return "None on  Record";
@@ -684,6 +795,11 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+/**
+ * platformNameUpdate changes the name of platforms to be a lot more user friendly
+ * @param {*} name name of the platform
+ * @returns returns reformatted platform name
+ */
 function platformNameUpdate(name) {
   switch (name) {
     case "WiiU":
