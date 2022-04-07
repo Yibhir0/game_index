@@ -46,17 +46,20 @@ import { showNotification } from "@mantine/notifications";
 /**
  * This component renders all games details.
  */
-
 const Game = (props) => {
-
+  
+  //sets the variables for adding games, selecting list and displaying error messages
   const [addingGame, setAdd] = useState(true);
   const [selectedList, setSelectedList] = useState(0);
   const [errorMessage, setErrMessage] = useState('');
   
+  //addingGame is set to false
   useEffect(() => {
     setAdd(false);
   }, [])
 
+  //verifies if image_URL is not an object, if not then assign the variable
+  //else, it is an array, then the first index needs to be added
   let imageURL;
   if (typeof props.game.image_URL !== "object") {
     imageURL =
@@ -68,21 +71,32 @@ const Game = (props) => {
       props.game.image_URL[0];
   }
 
+  //verifies if user exist, then make an array of strings with list names
   let listString;
   if (Object.keys(props.user).length !== 0) {
     listString = props.user.lists.map((list) => list.name);
   }
 
   
+  /**
+   * update the selected list whenever a user selects a list
+   * @param {*} evt event
+   */
   const updateSelectedList = (evt) => {
+
+    //verifies if the array of list strings is not empty
     if (listString.length !== 0) {
       let index = listString.indexOf(evt.currentTarget.value)
       setSelectedList(index)
     }
   }
 
+  /**
+   * add game to specific list to database
+   */
   const addGameToList = async () => {
 
+    //verifies if list contains duplicates
     if (!checkDuplicatesInList()) {
       const requestOptions = {
         method: 'POST',
@@ -91,27 +105,35 @@ const Game = (props) => {
             'Accept': 'application/json'
         },
       }
-
+      
+      //add game to specific list in database
       let url = "/api/users/" + props.user._id + "/list/addGame?gameId=" + props.game._id + "&index=" + selectedList;
       let response = await fetch(url, requestOptions);
-      console.log(response);
 
+      //close add game window
       setAdd(false);
-
+      
+      //display notification that game has been succesfully added to list
       displayNotification(
         'Game Added',
         `${props.game.name} has been successfully added to list`,
         'green',
         <IconPlus />,
       );
+      
+      //fetch user information to update the view
       await props.fetchUser();
       
     } else {
+      //display error message if game is already added to selected list
       setErrMessage("Game is already added to the selected list.");
-      console.log("List already contains games");
     }
   }
 
+  /**
+   * check game duplicates in list
+   * @returns if list contain game duplicates
+   */
   const checkDuplicatesInList = () => {
     if (props.user.lists[selectedList].games.findIndex((game) => game._id === props.game._id) >= 0) {
       return true
@@ -120,6 +142,13 @@ const Game = (props) => {
     }
   }
   
+  /**
+   * generateTag generate tags containing game information with icon
+   * @param {*} title game property
+   * @param {*} icon icon
+   * @param {*} badge mantine badge 
+   * @returns game information with icon
+   */
   const generateTag = (title, icon, badge) => {
     return (
       <div>
@@ -141,7 +170,17 @@ const Game = (props) => {
       </div>
     )
   }
+
+  /**
+   * displayNotification creates a notification
+   * @param {*} title notification title
+   * @param {*} desc notification description
+   * @param {*} color icon color
+   * @param {*} icon notification icon
+   */
   const displayNotification = (title, desc, color, icon) => {
+
+    //function from mantine to show notifications
     showNotification({
         title: title,
         color: color,
@@ -160,8 +199,12 @@ const Game = (props) => {
         message: desc,
     })
   }
-  const gameDetails = () => {
 
+  /**
+   * gameDetails renders the details of the game, this includes all the details of a game as well as the image
+   * @returns rendered component of the game details
+   */
+  const gameDetails = () => {
     return (
       <div>
         <Group>
@@ -188,6 +231,7 @@ const Game = (props) => {
           }
         </Group>
         <br></br>
+        {/* Generate all the game data for the view */}
         <SimpleGrid cols={3}>
           <div>
             {generateTag('Genre:', <IconSword />, <Badge color="cyan" variant="light">{props.game.genre}</Badge>)} 
@@ -218,8 +262,10 @@ const Game = (props) => {
     );
   };
 
+  //the data the game component returns
   return (
     <div>
+      {/* Pop up for adding game to a specific list*/}
       <Modal
         size="lg"
         opened={addingGame}
@@ -234,8 +280,10 @@ const Game = (props) => {
             <Text size="sm" weight={500}>Selected List: {props.user.lists[selectedList].name}</Text>
             <Space h="md"/>
             <ScrollArea style={{ height: 175 }}>
+              {/* verifies if list is not empty, if it is then display no games in list to user */}
               {props.user.lists[selectedList].games.length >= 1 ?
                 <Group>
+                  {/* map all of the games in the selected list to display the content to the user */}
                     {props.user.lists[selectedList].games.map((game, i) => (
                       <Tooltip withArrow label={game.name} key={i}>
                         <Image
@@ -268,9 +316,12 @@ const Game = (props) => {
           :
           <Text>It appears you do not have any list.</Text>
         }
+        
         {Object.keys(props.user).length !== 0 ?
           <div>
-            <Space h="md"/>
+            <Space h="md" />
+            
+            {/* Button to add game to specific list */}
             <Button
               disabled={props.user.lists.length < 1}
               className="bg-gradient-to-b from-green-700 to-green-600 hover:from-green-900 hover:to-green-800"
@@ -284,9 +335,10 @@ const Game = (props) => {
           :
           <></>
         }
-
       </Modal>
-      <Space h="md"/>
+      <Space h="md" />
+      
+      {/* Container containg game details and the image */}
       <div className="shadow-md bg-gradient-to-b from-zinc-900 to-zinc-800" style={{ margin: "auto", padding: 50 }}>
         <Grid columns={12}>
           <Grid.Col span={2}>
@@ -301,6 +353,11 @@ const Game = (props) => {
   );
 };
 
+/**
+ * Function used to stylise the rating values.
+ * Different colours were chosen to highlight rating's
+ * age group splits accordingly.
+ **/
 function esrbColour(rating) {
   if (rating === "E") {
     return (<Badge color="green" variant="light">{rating}</Badge>);
@@ -320,6 +377,10 @@ function esrbColour(rating) {
   }
 }
 
+/**
+ * Function used to stylise the sale values.
+ * Different colours were chosen to highlight sales acheivements.
+ **/
 function numberColour(number) {
   if (number >= 10000000) {
     return (<Badge variant="light">{numberWithCommas(number)}</Badge>);
@@ -340,6 +401,11 @@ function numberColour(number) {
 
 }
 
+/**
+ * Function used to stylise cirtic score data.
+ * Converts a numerical score into a five-star rating system.
+ * Adds a tooltip to show the numerical score to the user upon hover. 
+ **/
 function returnCriticData(criticScore) {
   let criticText;
   if (criticScore === 0) {
@@ -362,6 +428,10 @@ function returnCriticData(criticScore) {
   }
 }
 
+/**
+ * Function used to make the large numbers display with commas separating 
+ * the numbers positions (1000000 => 1,000,000) 
+ **/
 function numberWithCommas(x) {
   if (x === undefined || x === 0) {
     return "None on Record";
@@ -369,6 +439,9 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+/**
+ * Function used to display the platforms in a comma separated string
+ **/
 function platformDataUpdate(platformList) {
   let platforms = "";
   if (typeof platformList === "object" ) {
@@ -383,6 +456,9 @@ function platformDataUpdate(platformList) {
   return platforms;
 }
 
+/**
+ * Function used to make some of the platform names prettier to users 
+ **/
 function platformNameUpdate(name) {
   switch(name) {
     case "WiiU":
