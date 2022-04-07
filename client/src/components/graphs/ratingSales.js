@@ -12,12 +12,17 @@ import {
 
 import { Tooltip } from '@mantine/core';
 
+/**
+ * This component contains the React-vis graph contructed with the ratingSalesGames list from the parent component (GraphController)
+ * It displays a Contour (heat) graph with the 1000 most sold games of all time, grouped by rating.
+ * It maps the onto the contour map as dots.
+ */
 class RatingSales extends Component {
     constructor(props) {
         super(props);
         this.state = {
             opened: false,
-            gameName: ''
+            gameName: '' // Name of the game 
         }
     }
     render() {
@@ -78,6 +83,7 @@ class RatingSales extends Component {
                         }}
                     />
                 </XYPlot>
+                {/* ToolTip component allows for the game name to appear over dot when hovered over. */}
                 <Tooltip label={this.state.gameName} opened={this.state.opened}>
 
                 </Tooltip>

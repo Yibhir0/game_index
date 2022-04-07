@@ -8,7 +8,8 @@ import {
     ChartLabel
 } from 'react-vis';
 /**
- * Least sold games graph 
+ * This component contains the React-vis graph contructed with the leastGames list from the parent component (GraphController)
+ * It displays a bar graph with the 10 least sold games of all time.
  */
 
 class LeastSold extends Component {

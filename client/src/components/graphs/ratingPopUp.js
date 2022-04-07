@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { Modal, Button, Group } from '@mantine/core';
 import RatingGraph from './ratingGraph';
 
+// This component holds the Modal popup which will hold the RatingGraph
 export default function RatingPopUp(props) {
+    // Click handler for when the button is clicked
     const [opened, setOpened] = useState(false);
 
     return (

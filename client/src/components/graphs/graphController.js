@@ -9,10 +9,9 @@ import LeastSold from './leastSold';
 import RatingSales from './ratingSales'
 
 /**
- * This component displays the associated graphed that
- * the user requested
+ * This component displays the associated graph that
+ * the user requested in the home page
  */
-
 class GraphController extends Component {
 
     constructor(props) {
@@ -23,21 +22,27 @@ class GraphController extends Component {
         this.setId = this.setId.bind(this);
     }
 
-
+    /**
+     * Sets the gameId state to the passed parameter
+     * @param {ObjectID} id 
+     */
     setId(id) {
-        console.log(id + " kekek")
         this.setState({ gameId: id })
     }
 
+    /**
+     * 
+     * @returns Div containing a centered graph
+     */
     render() {
         let graph;
+        // Build the appropriate graph component according to the graphType value
         if (this.props.states.graphType === 'Sold-Most') {
             graph =
                 <MostSold popularGames={this.props.states.graphData.popularGames} changeId={this.setId} />
 
         }
         else if (this.props.states.graphType === 'Sold-Least') {
-
             graph =
                 <LeastSold leastGames={this.props.states.graphData.leastGames} changeId={this.setId} />
         }
@@ -46,11 +51,10 @@ class GraphController extends Component {
                 <RatingSales ratingSalesGames={this.props.states.graphData.ratingSalesGames} changeId={this.setId} />
         }
 
-
+        // Pass the game id to the Navigate component to allow the page to redirect to the clicked game page
         if (this.state.gameId) {
-            console.log(this.state.gameId)
-            let r = 'games/' + this.state.gameId
-            return <Navigate to={r} replace={true} />
+            let url = 'games/' + this.state.gameId
+            return <Navigate to={url} replace={true} />
 
         }
 
