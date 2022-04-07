@@ -26,7 +26,7 @@ const options = {
 
 const swaggerSpec = swaggerJSDoc(options);
 
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 const session = require('express-session');
 
