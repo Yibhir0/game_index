@@ -23,27 +23,24 @@ const GameView = (props) => {
     let { id } = useParams()
 
     useEffect(() => {
-
         fetchUser();
         fetchGame();
         fetchFeedback();
 
     }, []);
 
-
+    // Used to determine if a user has already commented on a game.
     const hasCommented = () => {
-
         let isCommented = feedback.find(item => item.userID === JSON.parse(localStorage.getItem("userProfile"))._id);
-
         return isCommented ? true : false;
     }
 
+    // Used to fetch a specific game according to its ID and then set it.
     const fetchGame = async () => {
         if (props.id) {
             id = props.id
         }
         const url = `/api/games/${id}`;
-        console.log(url);
         try {
             const response = await fetch(url, {
                 headers: {
@@ -57,12 +54,12 @@ const GameView = (props) => {
         }
     };
 
+    // Used to fetch a specific user and set them if they're logged in
     const fetchUser = async () => {
         if (localStorage.getItem("userProfile")) {
             let userId = JSON.parse(localStorage.getItem("userProfile"))._id;
 
             const url = `/api/users/${userId}`;
-            console.log(url);
             try {
                 const response = await fetch(url, {
                     headers: {
@@ -70,23 +67,19 @@ const GameView = (props) => {
                     }
                 });
                 setCurrentUser(await response.json());
-                console.log("logged in");
             } catch (error) {
                 console.log("error", error);
             }
-        } else {
-            console.log("not logged in");
         }
     };
 
+    // Used to get feedback for a specific game using the game's id
     const fetchFeedback = async (data) => {
-
-        console.log(data)
         const feedbackUrl = `/api/games/${id}/feedback`;
         try {
             const response = await fetch(feedbackUrl);
             const json = await response.json();
-            if (json.lenght === 0) {
+            if (json.length === 0) {
                 setFeedBack(data);
             }
             else {
@@ -98,16 +91,16 @@ const GameView = (props) => {
         }
     };
 
+    // Used to add a comment to a specifc game using the user's id
+    // returns the created tags and data for the comment
     const addComment = async (values) => {
-
-        // // Get the value of the comment box
+        // Get the value of the comment box
         const comment = values.comment;
 
         const user = JSON.parse(localStorage.getItem("userProfile"));
 
         const userid = user._id;
-        // // Get the current time.
-        // const timestamp = Date.now();
+        // Get the current time.
         const newComment = {
             gameID: id,
             userID: userid,
