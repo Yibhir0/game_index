@@ -34,13 +34,6 @@ exports.getGames = async (req, res) => {
 // Response for a specific page
 exports.getGame = async (req, res) => {
     try {
-        // let query = "game" + req.params.id
-
-        //get the cache
-        // let response = cache.get(query)
-
-        //If there is not instance of cache
-        // if (!response) {
         //Connect to db
         const readyState = await db.connectToDB();
         //If the connection is successful
@@ -48,17 +41,11 @@ exports.getGame = async (req, res) => {
             //Get the specific game from the db using the id in request and return that game
             response = await db.getGame(req.params.id)
             res.send(response);
-            //put that response in cache
-            // cache.put(query, response)
-
         }
         //Else set the status to 404
         else {
             res.status(404)
         }
-        // }
-
-        // res.send(response)
     }
     catch (error) {
         res.status(404).json({ message: error.message })
