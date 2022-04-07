@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "cd client && npm install && npm run build && cd ../server && npm install",
+    "start": "node server/app.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,7 +22,11 @@
     "jest": "^27.5.1",
     "memory-cache": "^0.2.0",
     "mongoose": "^6.2.3",
-    "swagger-jsdoc": "5.0.1",
+    "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.3.0"
+  },
+  "devDependencies": {
+    "mockingoose": "^2.15.2",
+    "supertest": "^6.2.2"
   }
 }

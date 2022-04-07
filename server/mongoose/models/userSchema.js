@@ -11,7 +11,6 @@ const userSchema = new mongoose.Schema({
     // last_login: {type: String},
     bio: { type: String },
     lists: [{
-        id: { type: Number },
         name: { type: String },
         games: []
     }]

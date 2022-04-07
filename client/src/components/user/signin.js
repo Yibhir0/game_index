@@ -3,12 +3,19 @@ import GoogleLogin, { GoogleLogout } from 'react-google-login';
 
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
-import { Anchor } from "@mantine/core";
+import {
+    Text,
+    Button,
+} from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import './styles.css'
 import { useNavigate } from "react-router-dom";
+import { IconLogout, IconLogin } from "@tabler/icons";
 export default function SignIn() {
 
     const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('userProfile')));
+    //variable will change later for deployment
+    // const profileUrl = "/profile";
     let navigate = useNavigate();
     /**
  * Handle login with google. This function sends
@@ -17,10 +24,8 @@ export default function SignIn() {
  */
     const handleLogin = async googleData => {
 
-        console.log(googleData);
-
         try {
-            const res = await fetch("/users/login", {
+            const res = await fetch("/api/users/login", {
                 method: "POST",
                 body: JSON.stringify({
                     token: googleData.tokenId
@@ -32,12 +37,17 @@ export default function SignIn() {
             const data = await res.json()
 
             localStorage.setItem('userProfile', JSON.stringify(data));
-            console.log(data);
+
             setUserAccount(data);
 
             navigate(`/profile/${data._id}`, { replace: true });
 
-            alert("You are successfully logged in ")
+            displayNotification(
+                'Logged in',
+                "You have successfully logged in",
+                'green',
+                <IconLogin />
+            )
 
             //Logged in
         }
@@ -47,33 +57,70 @@ export default function SignIn() {
 
 
     }
-
+    // Logout user g
     const handleLogout = async response => {
-        const res = await fetch("/users/logout", {
+        const res = await fetch("/api/users/logout", {
             method: "DELETE",
         })
         const data = await res.json()
 
         localStorage.clear();
         setUserAccount(null);
-        alert("You are successfully logged out ")
-        navigate("/home", { replace: true });
+
+        // if (window.location.pathname.includes(profileUrl)) {
+        //     window.location.reload(true);
+        // }
+
+        displayNotification(
+            'Logged out',
+            "You have successfully logged out",
+            'orange',
+            <IconLogout />
+        )
+
+        navigate("/", { replace: true });
 
     }
 
+    function displayNotification(title, desc, color, icon) {
+        showNotification({
+            title: title,
+            color: color,
+            icon: icon,
+            style: {
+                backgroundColor: '#18181b',
+                borderColor: '#18181b'
+            },
+            styles: (theme) => ({
+                title: { color: theme.white },
+                description: { color: theme.white },
+                closeButton: {
+                    color: theme.colors.red[7]
+                },
+            }),
+            message: desc,
+        })
+    }
 
+    // Login user
     function UserLogIn() {
-
         return (
-            <div>
-                <Anchor component={Link} to={`/profile/${userAccount._id}`} >
-                    {userAccount.name}
-                </Anchor>
-                <GoogleLogout
-                    clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                    buttonText="Logout"
-                    onLogoutSuccess={handleLogout}
-                />
+            <div className="topnav">
+                <Button className="duration-200 shadow-md hover:scale-125 bg-zinc-900 hover:bg-yellow-600" variant="subtle" radius="xs" component={Link} to={`/profile/${userAccount._id}`}>
+                    <Text color="white">
+                        Profile
+                    </Text>
+                </Button>
+
+                <Button className="bg-transparent hover:bg-transparent" variant="subtle" radius="xs">
+                    <GoogleLogout
+                        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                        buttonText="Logout"
+                        onLogoutSuccess={handleLogout}
+                    />
+                </Button>
+
+
             </div>
         )
 
@@ -82,16 +129,16 @@ export default function SignIn() {
     function Guest() {
         return (
 
-            <div>
-                <GoogleLogin className='linkbtn'
+            <Button className="bg-transparent hover:bg-transparent" variant="subtle" radius="xs">
+                <GoogleLogin
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                    buttonText="Log in with Google"
+                    buttonText="Log in "
                     onSuccess={handleLogin}
                     onFailure={handleLogin}
                     cookiePolicy={'single_host_origin'}
                 />
+            </Button>
 
-            </div>
         )
     }
 
@@ -100,6 +147,6 @@ export default function SignIn() {
     }
     return <Guest />
 
-
+    //dynos
 }
 

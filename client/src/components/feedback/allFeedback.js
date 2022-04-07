@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import Feedback from './feedback'
 
+/**
+ * Component renders all feedback
+ */
 class Allfeedback extends Component {
   render() {
     return (

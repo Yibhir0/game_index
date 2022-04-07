@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 const path = require("path");
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3001;
 const cors = require("cors");
 const bodyParser = require("body-parser");
 //Swagger
@@ -26,7 +26,7 @@ const options = {
 
 const swaggerSpec = swaggerJSDoc(options);
 
-app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 const session = require('express-session');
 
@@ -46,14 +46,28 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const api = require('./routes/api.js');
 
-app.use('/', api);
+app.use('/api', api);
 
 app.use(cors());
 
+app.use(express.static(path.resolve(__dirname, "../client")));
+
 //app.use(express.static(path.resolve(__dirname, "../client")));
 app.use(express.static(path.join(__dirname, "../client/build")));
+
+// app.get('*', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+// });
+
+//Error handler
+app.use((err, req, res, next) => {
+    // send error status
+    res.status(500).json(err.message);
+});
 
 // Start listening
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}!`);
 });
+
+module.exports = app

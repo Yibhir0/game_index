@@ -4,18 +4,26 @@ const cache = require("memory-cache");
 // Response for endpoint /games
 exports.getGames = async (req, res) => {
     try {
+        //Get the cache 
         let response = cache.get("allGames")
+        //If there's no instance of cache 
         if (!response) {
+            //Connect to the db
             const readyState = await db.connectToDB();
+            //If the connection is successful
             if (readyState === 1) {
+                //Get all the games from the db
                 response = await db.getGames();
+                //Put the response in cache
                 cache.put("allGames", response)
 
             }
+            //Else set status to 404
             else {
-                res.status(404).json({ message: "Could not connect to the database" })
+                res.status(404)
             }
         }
+        //Send the response 
         res.send(response);
     }
     catch (error) {
@@ -26,26 +34,18 @@ exports.getGames = async (req, res) => {
 // Response for a specific page
 exports.getGame = async (req, res) => {
     try {
-        let query = "game" + req.params.id
-        let response = cache.get(query)
-       
-        if (!response) {
-
-            const readyState = await db.connectToDB();
-
-            if (readyState === 1) {
-
-                response = await db.getGame(req.params.id)
-
-                cache.put(query, response)
-
-            }
-            else {
-                res.status(404).json({ message: "Could not connect to the database" })
-            }
+        //Connect to db
+        const readyState = await db.connectToDB();
+        //If the connection is successful
+        if (readyState === 1) {
+            //Get the specific game from the db using the id in request and return that game
+            response = await db.getGame(req.params.id)
+            res.send(response);
         }
-
-        res.send(response)
+        //Else set the status to 404
+        else {
+            res.status(404)
+        }
     }
     catch (error) {
         res.status(404).json({ message: error.message })
@@ -55,31 +55,26 @@ exports.getGame = async (req, res) => {
 // Response for filtering games
 exports.getGamesByFilter = async (req, res) => {
     try {
-        let query = "games" + req.query.keywords + req.query.year + req.query.publisher + req.query.genre + req.query.platform
-        let response = cache.get(query)
-        if (!response) {
-            const readyState = await db.connectToDB();
-            if (readyState === 1) {
+        const readyState = await db.connectToDB();
+        if (readyState === 1) {
 
-                let filters = {
-                    keywords: req.query.keywords,
-                    year: req.query.year,
-                    publisher: req.query.publisher,
-                    genre: req.query.genre,
-                    platform: req.query.platform
-                };
+            //Create the filters from the request
+            let filters = {
+                keywords: req.query.keywords,
+                year: req.query.year,
+                publisher: req.query.publisher,
+                genre: req.query.genre,
+                platform: req.query.platform
+            };
 
-                //console.log(filters);
-                response = await db.getGamesByFilter(filters)
-                cache.put(query, games)
+            //Fetch the games that are true to the filters and send it back
+            const games = await db.getGamesByFilter(filters);
+            res.send(games);
 
-            }
         }
         else {
-            res.status(404).json({ message: "Could not connect to the database" })
+            res.status(404)
         }
-
-        res.send(response)
     }
     catch (error) {
         res.status(404).json({ message: error.message })
