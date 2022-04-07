@@ -21,10 +21,16 @@ public class DataTransformerTest {
     
     private final DataTransformer DT;
     
+    /**
+     * Default constructor used to instantiate a new DataTransformer object
+     */
     public DataTransformerTest() {
         DT = new DataTransformer();
     }
     
+    /**
+     * Test to determine if na sales data is properly transformed.
+     */
     @Test
     public void testTransformDataNASales() {
         LOG.info("testTransformDataNASales");
@@ -42,6 +48,9 @@ public class DataTransformerTest {
         );
     }
     
+    /**
+     * Test to determine if eu sales data is properly transformed.
+     */
     @Test
     public void testTransformDataEUSales() {
         LOG.info("testTransformDataEUSales");
@@ -59,6 +68,9 @@ public class DataTransformerTest {
         );
     }
     
+    /**
+     * Test to determine if jp sales data is properly transformed.
+     */
     @Test
     public void testTransformDataJPSales() {
         LOG.info("testTransformDataJPSales");
@@ -76,6 +88,9 @@ public class DataTransformerTest {
         );
     }
     
+    /**
+     * Test to determine if other sales data is properly transformed.
+     */
     @Test
     public void testTransformDataOtherSales() {
         LOG.info("testTransformDataOtherSales");
@@ -93,6 +108,9 @@ public class DataTransformerTest {
         );
     }
     
+    /**
+     * Test to determine if global sales data is properly transformed.
+     */
     @Test
     public void testTransformDataGlobalSales() {
         LOG.info("testTransformDataGlobalSales");
@@ -132,6 +150,9 @@ public class DataTransformerTest {
         );
     }
     
+    /**
+     * Test to determine if esrb data is properly transformed.
+     */
     @Test
     public void testTransformDataESRBRating() {
         LOG.info("testTransformDataESRBRating");
@@ -147,11 +168,13 @@ public class DataTransformerTest {
         );
     }
     
+    // copied method for correcting esrb ratings
     private String correctESRBRating(String esrbRating) {
         if (esrbRating.equals("")) return "Unknown";
         else return esrbRating;
     }
     
+    // copied method for correcting GlobalSales
     private double correctGlobalSales(double totalShipped,
             double naSales,
             double euSales,
@@ -193,6 +216,7 @@ public class DataTransformerTest {
             return 0;
     }
     
+    // copied method for correcting double values
     private double correctDoubleValues(double dataOne,
             double dataTwo) {
         if (dataOne != 0 && dataTwo != 0) 
@@ -202,6 +226,9 @@ public class DataTransformerTest {
         else return 0;
     }
     
+    /**
+     * Test method for determining if two "matching games" actually match
+     */
     @Test
     public void testFindMatchingGame() {
         LOG.info("testFindMatchingGame");
@@ -216,6 +243,7 @@ public class DataTransformerTest {
         Assert.assertTrue(testStatus);
     }
     
+    // Method used to create random GameData entries in a list
     private List<GameData> generateGameDataList(int amount) {
         Random rand = new Random();
         List<GameData> gd = new ArrayList<>();
