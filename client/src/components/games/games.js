@@ -157,7 +157,6 @@ class Games extends Component {
         ),
       },
       () => {
-        console.log(this.state.totalPages);
       }
     );
   }

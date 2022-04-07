@@ -7,7 +7,5 @@ const Games = require('./models/gameSchema')
     //Is never ran, was used to test the connection to db
     (async () => {
         let mng = await mongoose.connect(dbUri)
-            .then(() => { console.log("Connected to MongoDB") })
-
-        console.log(typeof (mongoose.connection.readyState))
+            .then(() => {})
     })()
