@@ -24,10 +24,18 @@ public class DataConverterTest {
             = LoggerFactory.getLogger(DataConverterTest.class);
     private final DataConverter DC;
     
+    /**
+     * Default constructor used to instantiate a new DataConverter object
+     */
     public DataConverterTest() {
         DC = new DataConverter();
     }
     
+    /**
+     * Test method used to determine if the amount of entries generated equals the
+     * expected amount of 55792.
+     * @throws IOException
+     */
     @Test
     public void testParseCSVDataSetOne() throws IOException {
         LOG.info("testParseCSVDataSetOne: ");
@@ -35,6 +43,11 @@ public class DataConverterTest {
         Assert.assertEquals(55792, DC.getGameDataList().size());
     }
     
+    /**
+     * Test method used to determine if the amount of entries generated equals the
+     * expected amount of 16598.
+     * @throws IOException
+     */
     @Test
     public void testParseCSVDataSetTwo() throws IOException {
         LOG.info("testParseCSVDataSetTwo: ");
@@ -42,6 +55,11 @@ public class DataConverterTest {
         Assert.assertEquals(16598, DC.getGameDataList().size());
     }
     
+    /**
+     * Test method used to determine if data written to a file is the same as the
+     * original data provided.
+     * @throws IOException
+     */
     @Test
     public void testWriteListDataToFile() throws IOException {
         LOG.info("testWriteListDataToFileSetOne: ");
@@ -70,6 +88,8 @@ public class DataConverterTest {
         Assert.assertTrue(areEqual);
     }
     
+    // Method used to parse a json file and create objects according to the
+    // created json file.
     private List<TransformedGameData> readTransformedGameData() throws IOException {
         List<TransformedGameData> tgd = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
@@ -96,10 +116,11 @@ public class DataConverterTest {
         return tgd;
     }
     
+    // Method used to create random TransformedGameData entries in a list
     private List<TransformedGameData> generateTransformedGameDataList(int amount) {
         Random rand = new Random();
         List<TransformedGameData> tgd = new ArrayList<>();
-        for (int i = 0; i < 10; i-=-1) {
+        for (int i = 0; i < amount; i-=-1) {
             tgd.add(new TransformedGameData(""+i,
                     ""+i,
                     ""+i,

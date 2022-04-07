@@ -44,6 +44,7 @@ public class DataConverter {
         LOG.info("Done");
     }
 
+    // Simple method used for deleting a directory as well as the files within
     private boolean deleteDirectory(File directoryToBeDeleted) {
         File[] allContents = directoryToBeDeleted.listFiles();
         if (allContents != null) {
@@ -79,6 +80,7 @@ public class DataConverter {
         String line = br.readLine();
         while ((line = br.readLine()) != null) {
             String[] columnData = line.split(",");
+            // only two valid files present in directory.
             if (fileName.equals("vgsales-12-4-2019")) {
                 GAMEDATALIST.add(
                         new GameData(columnData[1],
