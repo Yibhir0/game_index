@@ -4,18 +4,26 @@ const cache = require("memory-cache");
 // Response for endpoint /games
 exports.getGames = async (req, res) => {
     try {
+        //Get the cache 
         let response = cache.get("allGames")
+        //If there's no instance of cache 
         if (!response) {
+            //Connect to the db
             const readyState = await db.connectToDB();
+            //If the connection is successful
             if (readyState === 1) {
+                //Get all the games from the db
                 response = await db.getGames();
+                //Put the response in cache
                 cache.put("allGames", response)
 
             }
+            //Else set status to 404
             else {
                 res.status(404)
             }
         }
+        //Send the response 
         res.send(response);
     }
     catch (error) {
@@ -27,19 +35,24 @@ exports.getGames = async (req, res) => {
 exports.getGame = async (req, res) => {
     try {
         // let query = "game" + req.params.id
+
+        //get the cache
         // let response = cache.get(query)
 
+        //If there is not instance of cache
         // if (!response) {
-
+        //Connect to db
         const readyState = await db.connectToDB();
-
+        //If the connection is successful
         if (readyState === 1) {
-
+            //Get the specific game from the db using the id in request and return that game
             response = await db.getGame(req.params.id)
             res.send(response);
+            //put that response in cache
             // cache.put(query, response)
 
         }
+        //Else set the status to 404
         else {
             res.status(404)
         }
@@ -58,6 +71,7 @@ exports.getGamesByFilter = async (req, res) => {
         const readyState = await db.connectToDB();
         if (readyState === 1) {
 
+            //Create the filters from the request
             let filters = {
                 keywords: req.query.keywords,
                 year: req.query.year,
@@ -66,6 +80,7 @@ exports.getGamesByFilter = async (req, res) => {
                 platform: req.query.platform
             };
 
+            //Fetch the games that are true to the filters and send it back
             const games = await db.getGamesByFilter(filters);
             res.send(games);
 
