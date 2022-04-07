@@ -48,10 +48,10 @@ test('Delete a specific document', async () => {
   expect(await FeedBack.exists({ _id: feedbackTest._id })).toBe(null)
 })
 
-test('Get all games from the DB', async () => {
-  const result = await db.getGames();
-  expect(result.length).toBe(11133);
-});
+// test('Get all games from the DB', async () => {
+//   const result = await db.getGames();
+//   expect(result.length).toBe(11133);
+// });
 
 test('Get a specific game from the DB', async () => {
   const result = await db.getGame('623ca8d6daa8ca47ebf7a681')

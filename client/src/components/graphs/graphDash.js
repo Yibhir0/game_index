@@ -3,7 +3,7 @@ import { Component } from "react";
 import GraphController from "./graphController";
 
 /**
- * This
+ * This renders the graph dash
  */
 class GraphDash extends Component {
   constructor(props) {

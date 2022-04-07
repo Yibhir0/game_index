@@ -4,11 +4,13 @@ import GoogleLogin, { GoogleLogout } from 'react-google-login';
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import {
-    Anchor,
+    Text,
     Button,
 } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import './styles.css'
 import { useNavigate } from "react-router-dom";
+import { IconLogout, IconLogin } from "@tabler/icons";
 export default function SignIn() {
 
     const [userAccount, setUserAccount] = useState(JSON.parse(localStorage.getItem('userProfile')));
@@ -22,7 +24,7 @@ export default function SignIn() {
  */
     const handleLogin = async googleData => {
 
-        console.log(googleData);
+        console.log("heLLO ID " + process.env.REACT_APP_GOOGLE_CLIENT_ID);
 
         try {
             const res = await fetch("/api/users/login", {
@@ -42,7 +44,12 @@ export default function SignIn() {
 
             navigate(`/profile/${data._id}`, { replace: true });
 
-            alert("You are successfully logged in ")
+            displayNotification(
+                'Logged in',
+                "You have successfully logged in",
+                'green',
+                <IconLogin />
+            )
 
             //Logged in
         }
@@ -66,23 +73,48 @@ export default function SignIn() {
         //     window.location.reload(true);
         // }
 
-        alert("You are successfully logged out ")
+        displayNotification(
+            'Logged out',
+            "You have successfully logged out",
+            'orange',
+            <IconLogout />
+        )
+
         navigate("/", { replace: true });
 
     }
 
+    function displayNotification(title, desc, color, icon) {
+        showNotification({
+            title: title,
+            color: color,
+            icon: icon,
+            style: {
+                backgroundColor: '#18181b',
+                borderColor: '#18181b'
+            },
+            styles: (theme) => ({
+                title: { color: theme.white },
+                description: { color: theme.white },
+                closeButton: {
+                    color: theme.colors.red[7]
+                },
+            }),
+            message: desc,
+        })
+    }
+
     // Login user
     function UserLogIn() {
-
         return (
             <div className="topnav">
-                <Button className="bg-gradient-to-b from-gray-700 to-gray-600" variant="subtle" radius="xs">
-                    <Anchor className="text-white" component={Link} to={`/profile/${userAccount._id}`} >
+                <Button className="duration-200 shadow-md hover:scale-125 bg-zinc-900 hover:bg-yellow-600" variant="subtle" radius="xs" component={Link} to={`/profile/${userAccount._id}`}>
+                    <Text color="white">
                         Profile
-                    </Anchor>
+                    </Text>
                 </Button>
 
-                <Button className=" ml-4 ... bg-gradient-to-b from-pink-700 to-pink-600" variant="subtle" radius="xs">
+                <Button className="bg-transparent hover:bg-transparent" variant="subtle" radius="xs">
                     <GoogleLogout
                         clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                         buttonText="Logout"
@@ -99,7 +131,7 @@ export default function SignIn() {
     function Guest() {
         return (
 
-            <Button className="bg-gradient-to-b from-green-700 to-green-600" variant="subtle" radius="xs">
+            <Button className="bg-transparent hover:bg-transparent" variant="subtle" radius="xs">
                 <GoogleLogin
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                     buttonText="Log in "
@@ -117,6 +149,6 @@ export default function SignIn() {
     }
     return <Guest />
 
-
+    //dynos
 }
 
