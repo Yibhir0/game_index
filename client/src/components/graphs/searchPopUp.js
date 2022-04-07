@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { Modal, Button } from '@mantine/core';
 import SearchGraphs from './searchGraphs';
 
+// This component holds the Modal popup which will hold the SearchGraphs component in the Search page.
 export default function SearchPopUp(props) {
+    // Click handler for when the button is clicked.
     const [opened, setOpened] = useState(false);
-    console.log(props.games.slice(props.page * 10 - 10, props.page * 10))
 
     return (
         <>
