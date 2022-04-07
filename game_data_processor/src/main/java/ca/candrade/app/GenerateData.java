@@ -30,6 +30,7 @@ public class GenerateData {
     private static final List<ImageData> imageDataList 
             = new ArrayList<>();
 
+    // Main method to run the program
     public static void main(String[] args) {
         assignDataSets();
         try {
@@ -45,6 +46,7 @@ public class GenerateData {
         LOG.info("Perform image conversion.");
         ImageProcessor processImages = new ImageProcessor();
         for (int i = 0; i < imageDataList.size(); i++) {
+            // simple percentage calulator for determining how much work is left.
             if (i % (imageDataList.size() / 100) == 0) {
                 LOG.info("Image Processing: "
                         + i / (imageDataList.size() / 100) + "% complete.");
@@ -53,9 +55,12 @@ public class GenerateData {
         }
     }
 
+    // Compares data from the two datasets and using that finds an entry in both
+    // and merges the data into one entry.
     private static void performTransformation() {
         LOG.info("Perform data transformation.");
         for (int i = 0; i < smallSet.size(); i++) {
+            // simple percentage calulator for determining how much work is left.
             if (i % (smallSet.size() / 100) == 0) {
                 LOG.info("Data Transformation: "
                         + i / (smallSet.size() / 100) + "% complete.");
@@ -66,6 +71,7 @@ public class GenerateData {
                 if (!largeSet.get(foundIndex)
                         .getIMAGEURL()
                         .equals("/games/boxart/default.jpg")) {
+                    // Once a match is found, creates an element in the imageDataList
                     imageDataList.add(
                             new ImageData(
                                     largeSet.get(foundIndex).getNAME(),
@@ -84,6 +90,7 @@ public class GenerateData {
                 + " entries dropped.");
     }
 
+    // Assigns the datasets to dedicated variables
     private static void assignDataSets() {
         LOG.info("Assigning the datasets to lists.");
         try {
