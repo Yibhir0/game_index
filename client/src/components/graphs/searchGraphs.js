@@ -12,16 +12,22 @@ import {
     RadialChart,
 } from "react-vis";
 
+/**
+ * This component hold the three dynamic graphs which take the games in the search bar as data.
+ * It displays a bar graph with the sorted games (most sold)
+ * It displays a clustered bar graph with the games total sales grouped by region
+ * It diplays a piechart with the games genres as data
+ */
 class SearchGraphs extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            gamesInPage: props.gamesInPage,
-            popularGames: [],
-            clusterGames: [],
-            pieGames: [],
-            piePercentage: [],
+            gamesInPage: props.gamesInPage, // A list containg the games in the search result page
+            popularGames: [], // List containing most popular games
+            clusterGames: [], // List containing games and their sales relative to their region
+            pieGames: [], // List containing the games and their genre
+            piePercentage: [], // List to hold the genres and their respective percentage.
         };
     }
 
@@ -29,12 +35,18 @@ class SearchGraphs extends Component {
         this.arrangeGraphData();
     }
 
+    /**
+     * Sorts and arranges the graph data in their respective states for use in the React-vis graphs
+     */
     arrangeGraphData() {
+
+        // Sort games by popularity (Most sold) and keep first 10
         let popularGames = []
             .concat(this.state.gamesInPage)
             .sort((a, b) => a.globalSales < b.globalSales)
             .slice(0, 10);
 
+        // Sort games by least popular (least sold) and keep first 10
         let leastGames = []
             .concat(this.state.gamesInPage.reverse())
             .sort((a, b) => a.globalSales > b.globalSales)
@@ -46,27 +58,37 @@ class SearchGraphs extends Component {
             clusterGames: this.getClusterDataFormat(this.state.gamesInPage),
             pieGames: this.getRadialDataFormat(this.state.gamesInPage),
         });
-
-        console.log(this.state.clusterGames);
-        console.log(this.state.pieGames);
     }
 
+    /**
+     * Arranges and sorts the data properly in order to use in the piechart
+     * @param {*} gamesArray 
+     * @returns React-vis compatible list to be used and data for the pie chart
+     */
     getRadialDataFormat(gamesArray) {
         let genreCount = {};
         let formatedForChartGenreCount = [];
         let totalGameSales = 0;
 
+        // Loop through each game and associate the genre with their globalsales.
         for (let game of gamesArray) {
+            // If the genre does not exist, declare the genre in the object and the current games globalsales.
             if (!(game.genre in genreCount)) {
                 genreCount[game.genre] = game.globalSales;
-            } else {
+            }
+            // If it does exist, then add the current global sales to the current genre.
+            else {
                 genreCount[game.genre] += game.globalSales;
             }
             totalGameSales += game.globalSales;
         }
 
+        // Loop throught the newly created object and format it into a React-vis (piechart) appropriate Object.
         for (const [gameGenre, totalGameGlobalSales] of Object.entries(genreCount)) {
-            let piePercentage = Math.round(totalGameGlobalSales * 100 / totalGameSales)
+
+            let piePercentage = Math.round(totalGameGlobalSales * 100 / totalGameSales) // Calculate the percentage of the current genre
+
+            // Push a formatted object into the list.
             formatedForChartGenreCount.push({
                 angle: totalGameGlobalSales,
                 label: gameGenre + " " + piePercentage + "%",
@@ -76,6 +98,11 @@ class SearchGraphs extends Component {
         return formatedForChartGenreCount;
     }
 
+    /**
+     * Arranges and sorts the data properly in order to use in the cluster bar graph
+     * @param {*} gamesArray 
+     * @returns 
+     */
     getClusterDataFormat(gamesArray) {
         let clusterArray = [];
         let jpArray = [];
@@ -83,30 +110,41 @@ class SearchGraphs extends Component {
         let euArray = [];
         let otherArray = [];
 
+        // Format data for North American portion of the cluster
         for (let game of gamesArray) {
             naArray.push({ x: game.name, y: game.naSales });
         }
 
+        // Format data for European portion of the cluste
         for (let game of gamesArray) {
             euArray.push({ x: game.name, y: game.euSales });
         }
 
+        // Format data for Japanese portion of the cluster
         for (let game of gamesArray) {
             jpArray.push({ x: game.name, y: game.jpSales });
         }
 
+        // Format data for Other portion of the cluster
         for (let game of gamesArray) {
             otherArray.push({ x: game.name, y: game.otherSales });
         }
 
+        // Push all the formatted arrays into the clusterArray
         clusterArray.push(naArray, euArray, jpArray, otherArray);
 
         return clusterArray;
     }
-
+  /**
+   * Format the data passed to a React-vis compatible object.
+   * @param {list} gamesArray 
+   * @returns 
+   */
     getGraphDataFormat(gamesArray) {
         let dataArray = [];
 
+        // For each game in the list, create an object with keys: (x,y) and values:(name, globalsales)
+        // Then push object into array
         for (let game of gamesArray) {
             dataArray.push({ x: game.name, y: game.globalSales, id: game._id });
         }

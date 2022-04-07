@@ -10,7 +10,8 @@ import {
 import './style.css'
 
 /**
- * Most Sold game graph component
+ * This component contains the React-vis graph contructed with the popularGames list from the parent component (GraphController)
+ * It displays a bar graph with the 10 most sold games of all time.
  */
 class MostSold extends Component {
 
