@@ -1,32 +1,23 @@
 import { Textarea, Button, Grid, Center } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
 import RatingBox from '../feedback/rating';
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import {
+    IconMessagePlus,
+} from '@tabler/icons';
+import { showNotification } from "@mantine/notifications";
+
+/**
+ * This component allow user to add a comment/feedback
+ * It receives a callback function that adds the
+ *  comment to the db and render the component.
+ * @param {*} props 
+ * @returns 
+ */
 export default function FeedbackBox(props) {
 
 
-    useEffect(() => {
-
-        //fetchFeedback();
-
-    }, []);
-
-
-    // const fetchGame = async () => {
-    //     const url = `/games/${id}`;
-    //     try {
-    //         const response = await fetch(url);
-    //         const json = await response.json();
-    //         setGame(json);
-
-    //     } catch (error) {
-    //         console.log("error", error);
-    //     }
-    // };
-
     const [rating, setRating] = useState(1);
-    //let navigate = useNavigate();
-
 
     const form = useForm({
         initialValues: {
@@ -46,26 +37,55 @@ export default function FeedbackBox(props) {
         setRating(value);
     }
 
+    const displayNotification = (title, desc, color, icon) => {
+        showNotification({
+            title: title,
+            color: color,
+            icon: icon,
+            style: {
+                backgroundColor: '#18181b',
+                borderColor: '#18181b'
+            },
+            styles: (theme) => ({
+                title: { color: theme.white },
+                description: { color: theme.white },
+                closeButton: {
+                    color: theme.colors.red[7]
+                  },
+            }),
+            message: desc,
+        })
+    }
+    
     return (
 
+        <Center>
+            <form onSubmit={form.onSubmit((values) => submitComment(values))}>
+                <Grid justify="space-between" >
+                    <Grid.Col span={10} >
+                        <Textarea size="xl"
+                            required
+                            placeholder="Your comment"
 
-        <form onSubmit={form.onSubmit((values) => submitComment(values))}>
+                            {...form.getInputProps('comment')}
+                        /></Grid.Col>
+                    <Grid.Col style={{ minHeight: 80 }} span={2}>
+                        <RatingBox rating={rating} dis={false} getRating={getRating} />
+                        <Button onClick={() => {
+                            displayNotification(
+                                'Comment Added',
+                                `Comment has been successfully added to the game page`,
+                                'green',
+                                <IconMessagePlus />,
+                            )
+                        }}
+                            className="duration-200 shadow-md hover:scale-110 bg-zinc-900 hover:bg-yellow-600" type="submit">Comment/Rate</Button>
+                    </Grid.Col>
 
-            <Grid justify="space-between" >
-                <Grid.Col span={10} >
-                    <Textarea size="xl"
-                        required
-                        placeholder="Your comment"
+                </Grid>
+            </form>
 
-                        {...form.getInputProps('comment')}
-                    /></Grid.Col>
-                <Grid.Col style={{ minHeight: 80 }} span={2}>
-                    <RatingBox rating={rating} dis={false} getRating={getRating} />
-                    <Button type="submit">Comment/Rate</Button>
-                </Grid.Col>
-
-            </Grid>
-        </form>
+        </Center>
 
 
     );

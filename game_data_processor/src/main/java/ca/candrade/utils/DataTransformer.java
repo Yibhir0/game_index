@@ -57,11 +57,18 @@ public class DataTransformer {
         );
     }
     
+    /**
+     * Method used for correcting empty entry values for the ESRB Rating
+     */
     private String correctESRBRating(String esrbRating) {
         if (esrbRating.equals("")) return "Unknown";
         else return esrbRating;
     }
     
+    /**
+     * Method used for calculating the global sales value. Merges the total shipped,
+     * sum of region specific sales, and former global sales into one value.
+     */
     private double correctGlobalSales(double totalShipped,
             double naSales,
             double euSales,
@@ -103,6 +110,10 @@ public class DataTransformer {
             return 0;
     }
     
+    /**
+     * Method used for correcting two double values by merging them into
+     * one and rounding if two are found
+     */
     private double correctDoubleValues(double dataOne,
             double dataTwo) {
         if (dataOne != 0 && dataTwo != 0) 
@@ -132,6 +143,7 @@ public class DataTransformer {
         return -1;
     }
     
+    // Method used to normalise a string to only [a-zA-Z0-9_]
     private String normaliseString(String gameName) {
         return gameName.replaceAll("\\W_", "").toLowerCase();
     }

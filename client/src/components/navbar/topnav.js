@@ -1,34 +1,52 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Anchor } from "@mantine/core";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import {
+  Group,
+  Text,
+  Button,
+  Image,
+} from "@mantine/core";
 
-import SignIn from '../user/signin';
-import './styles.css';
+import SignIn from "../user/signin";
+import "./styles.css";
+import logo from "./images/logo.png";
+
 /**
  * This class renders the top navigation bar.
  */
 class TopNav extends Component {
-
-
-
-    render() {
-        return (
-            <div>
-                <h1>Game Index</h1>
-                <nav className="topnav"
-                >
-
-                    <Anchor component={Link} to={'/'} >
-                        Home
-                    </Anchor>
-                    <Anchor component={Link} to={'/games'} >
-                        Games
-                    </Anchor>
-                    <SignIn />
-                </nav>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div style={{ paddingLeft: "50px", paddingRight: "50px", paddingTop: "15px" }}>
+        <nav>
+          <Group className="topnav">
+            <Image Title className="duration-200 mr-auto hover:scale-110" src={logo} width={200} component={Link} to={"/"}></Image>
+            <Button
+              className="duration-200 shadow-md hover:scale-125 bg-zinc-900 hover:bg-yellow-600"
+              variant="subtle"
+              radius="xs"
+              component={Link} to={"/"}
+            >
+              <Text color="white">
+                Home
+              </Text>
+            </Button>
+            <Button
+              className="duration-200 shadow-md hover:scale-125 bg-zinc-900 hover:bg-yellow-600"
+              variant="subtle"
+              radius="xs"
+              component={Link} to={"/games"}
+            >
+              <Text color="white">
+                Games
+              </Text>
+            </Button>
+            <SignIn className="content-end" />
+          </Group>
+        </nav>
+      </div>
+    );
+  }
 }
 
 export default TopNav;

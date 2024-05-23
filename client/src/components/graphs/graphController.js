@@ -1,117 +1,65 @@
-import { Component, useState } from "react";
-import {ChartLabel,XYPlot, Borders , ContourSeries, FlexibleXYPlot, XAxis, YAxis, VerticalBarSeries, Hint, MarkSeries, Crosshair} from 'react-vis';
+import { Component } from "react";
+
 import {
     Center
 } from "@mantine/core";
+import { Navigate } from "react-router-dom";
+import MostSold from './mostSold';
+import LeastSold from './leastSold';
+import RatingSales from './ratingSales'
 
+/**
+ * This component displays the associated graph that
+ * the user requested in the home page
+ */
 class GraphController extends Component {
 
     constructor(props) {
         super(props)
-            this.state = {
-                crossValue: [],
-                crosshairValues: [],
-            }
+        this.state = {
+            gameId: '',
+        }
+        this.setId = this.setId.bind(this);
     }
 
-    _onNearestX = (value, {index}) => {
-        this.setState({ crosshairValues: this.props.states.graphData.ratingSalesGames[index] });
-    };
-    
+    /**
+     * Sets the gameId state to the passed parameter
+     * @param {ObjectID} id 
+     */
+    setId(id) {
+        this.setState({ gameId: id })
+    }
+
+    /**
+     * 
+     * @returns Div containing a centered graph
+     */
     render() {
         let graph;
+        // Build the appropriate graph component according to the graphType value
         if (this.props.states.graphType === 'Sold-Most') {
             graph =
-                <FlexibleXYPlot margin={{ top: 25 }} xType="ordinal">
-                    <VerticalBarSeries
-                        data={this.props.states.graphData.popularGames}
-                        onValueMouseOver={(datapoint, { event }) => {
-                            this.setState({ crossValue: datapoint })
-                        }}
-                    // onValueMouseOut={this.setState({crossValue:[]})} This causes the graph to not render, idk why yet?
-                    />
-                    <XAxis style={{ line: { stroke: 'black' } }} />
-                    <YAxis style={{ line: { stroke: 'black' } }}
-                        tickSize={1}
-                        tickPadding={2}
-                        tickFormat={v => v / 1000000}
-                    />
-                    <ChartLabel
-                        text="Global Sales (Millions)"
-                        className="alt-y-label"
-                        includeMargin={false}
-                        xPercent={0.09}
-                        yPercent={0.035}
-                        style={{
-                            textAnchor: 'end'
-                        }}
-                    />
-                    <ChartLabel
-                        text="Game"
-                        className="alt-x-label"
-                        includeMargin={false}
-                        xPercent={1}
-                        yPercent={1.115}
-                        style={{
-                            textAnchor: 'end'
-                        }}
-                    />
-                    {this.state.crossValue.length > 0 &&
-                        < Hint value={this.state.crossValue} align={{ horizontal: Hint.ALIGN.AUTO, vertical: Hint.ALIGN.BOTTOM_EDGE }}>
-                    <p>{this.state.crossValue.x}</p>
-                    <p>{this.state.crossValue.y}</p>
-                    </Hint>
-        }
-                </FlexibleXYPlot>;
+                <MostSold popularGames={this.props.states.graphData.popularGames} changeId={this.setId} />
 
+        }
+        else if (this.props.states.graphType === 'Sold-Least') {
+            graph =
+                <LeastSold leastGames={this.props.states.graphData.leastGames} changeId={this.setId} />
         }
         else {
             graph =
-                    <FlexibleXYPlot
-                        xDomain={[0, 17000000]}
-                        getX={d => d.globalsales}
-                        getY={d => d.criticscore}
-                        margin={{ top: 25 }}
-                >
-            <ContourSeries
-            animation
-            className="contour-series-example"
-            style={{
-              stroke: '#125C77',
-              strokeLinejoin: 'round'
-            }}
-            colorRange={['#79C7E3', '#FF9833']}
-            data={this.props.states.graphData.ratingSalesGames}
-          />
-           <MarkSeries onNearestX={this._onNearestX} animation data={this.props.states.graphData.ratingSalesGames} size={2} color={'#125C77'} />
-           <Borders style={{all: {fill: '#fff'}}} />
-           <XAxis tickFormat={v => v / 1000000}  style={{ line: { stroke:'black'}}} />
-           <YAxis style={{ line: { stroke: 'black' } }} />
-                    
-            <ChartLabel
-                text="Rating"
-                className="alt-y-label"
-                includeMargin={false}
-                yPercent={0.035}
-                xPercent={0.02}
-                style={{
-                    textAnchor: 'end'
-                    }}
-                    />
-            <ChartLabel
-                text="Unit Sales (Millions)"
-                className="alt-x-label"
-                includeMargin={false}
-                xPercent={1}
-                yPercent={1.115}
-                style={{
-                textAnchor: 'end'
-                        }}
-                    />
-        </FlexibleXYPlot>
+                <RatingSales ratingSalesGames={this.props.states.graphData.ratingSalesGames} changeId={this.setId} />
+        }
+
+        // Pass the game id to the Navigate component to allow the page to redirect to the clicked game page
+        if (this.state.gameId) {
+            let url = 'games/' + this.state.gameId
+            return <Navigate to={url} replace={true} />
+
         }
 
         return (
+
             <div>
                 <Center style={{ height: 400, textAlign: 'center' }}>
                     {graph}
@@ -123,5 +71,4 @@ class GraphController extends Component {
 }
 
 export default GraphController;
-
 
